@@ -242,15 +242,6 @@ dend.e.s=hclust(ddd.e, method= "single")
 To assess whether the main source of variability of the data is biological or technical, we can plot the dendrograms.
 
 ```{r geDend, eval=FALSE, include=FALSE}
-# labelCol <- function(x) {
-#   if (is.leaf(x)) {
-#     label <- attr(x, "label")
-#     subtype = correct_patients$subtype[correct_patients$geo_accession == label]
-#     attr(x, "nodePar") <- list(lab.col=colors[subtype])
-#   }
-#   return(x)
-# }
-
 labelCol <- function(x) {
   if (is.leaf(x)) {
     label <- attr(x, "label")
@@ -356,12 +347,12 @@ ppi_relevance_score = as.data.frame(t(pp_tmp))
 colnames(ppi_relevance_score) = tmp_pat
 
 ppi_relevance_score$probe = rownames(ppi_relevance_score)
-write.csv(ppi_relevance_score, file = "data/PPI_relevance_score.csv", row.names = FALSE)
+write.csv(ppi_relevance_score, file = "data/ppi_relevance_score.csv", row.names = FALSE)
 ```
 
 
 ```{r relevanceLoad}
-relevance_score = read.csv("data/PPI_relevance_score.csv")
+relevance_score = read.csv("data/ppi_relevance_score.csv")
 print(unique(gsub("GSM[0-9]+","GSM...",colnames(relevance_score))))
 ```
 
@@ -897,7 +888,58 @@ names(subnetworks) = names(relevant_genes)
 sapply(subnetworks, function(s){length(s$nodes$name)})
 ```
 
+
+# Molecular Tumor Board (MTB) Report
+
+This script filters SNVs and CNVs using gene-drug public databases. 
+Then classifies the variants into levels of evidence and finally presents the results.
+
+The expression of each gene can be found in column "Patient.Expr". The expression is devidied into three groups:
+
+- HIGH: above 75% quantile
+- NOMRAL: between 25%-75% quantile
+- LOW: below 25% quantile
+
+In "MTB-report/results_curated" the results are limited to those in which "Known Var" matches with the expression of the gene (eg. HIGH expression corresponds to GoF evidence). For normal expression the decision is unclear.
+
+
+```{r tmp, warning=FALSE}
+mtb = new.env()
+source("MTB/mtb_analysis.R", local = mtb)
+mtb_results = mtb$mtb_analysis(
+  patients = patients$geo_accession,
+  exprs.quant = ge_expression_level_by_quantiles,
+  relevant.genes = relevant_genes,
+  cancer = "BRCA",
+  verbose = TRUE
+)
+```
+
 ---finished till here---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Add differentially expressed genes
 
@@ -1170,239 +1212,7 @@ visualize = function(networksToVis,
 ```
 
 
-# Molecular Tumor Board (MTB) Report
 
-Load data:
-
-This script filters SNVs and CNVs using gene-drug public databases. 
-Then classifies the variants into levels of evidence and finally presents the results.
-
-```{r setup, include=FALSE}
-###################################################
-## Prepare variables
-###################################################
-
-
-files  = list.files(file.path("MTB-report","input/"),pattern = "*_08_04_2020.CSV")# lusc
-patients = gsub("_gene_.*","",files)
-
-
-######################################################
-## Load everything necessary for downstream analysis #
-######################################################
-
-## Load helper functions
-source_url("https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/helpers/get_druggable.r")
-source_url("https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/helpers/get_levels.r")
-
-
-# Cancer type synonyms between databases
-synonyms = read.csv(url("https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/cancer_types.csv"), header = TRUE,sep="\t")
-
-# DBs
-CIVIC=read.csv(url("https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/CIViC.csv"), header = TRUE,sep="\t")
-GDKD=read.csv(url("https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/GDKD.csv"), header = TRUE,sep="\t")
-TARGET=read.csv(url("https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/TARGET_MERIC.csv"), header = TRUE,sep="\t")
-
-
-############
-# Gene expression
-##################
-
-exprs.quant=as.data.frame(readRDS(file.path("data/gene_expression","ge_expression_level_by_quantiles.data.frame.RDS")))
-exprs.std=as.data.frame(readRDS(file.path("data/gene_expression","ge_expression_level_by_stdev.data.frame.RDS")))
-
-```
-
-The expression of each gene can be found in column "Patient.Expr". The expression is devidied into three groups:
-
-- HIGH: above 75% quantile
-- NOMRAL: between 25%-75% quantile
-- LOW: below 25% quantile
-
-In "MTB-report/results_curated" the results are limited to those in which "Known Var" matches with the expression of the gene (eg. HIGH expression corresponds to GoF evidence). For normal expression the decision is unclear.
-
-```{r echo=FALSE,message = FALSE,warning=F,results='asis'}
-### Just for checking the one patient, that fails
-# for (patient in "GSM615368"){
-for (patient in patients){
-cat('\n')  
-cat("## ", patient, "{.tabset}\n") 
-  
-#############
-# Load data #
-#############
-
-## Read genes list
-SNV = data.frame(Hugo_Symbol=readRDS(paste0("data/gene_lists/", patient, "_gene_list.character.RDS", collapse = "")),
-                 Variant_Classification="missense mutation",
-                 Protein_Change = "")
-
-## Assume all are "missense mutation"
-# SNV$Variant_Classification = rep("missense mutation",nrow(SNV))
-# SNV$Protein_Change = rep("",nrow(SNV))
-## Assume all are "nonsense mutation"
-SNV.2   = SNV
-SNV.2$Variant_Classification = gsub("missense mutation","nonsense mutation",SNV.2$Variant_Classification )
-
-## Read genes list
-CNV = data.frame(Hugo_Symbol=readRDS(paste0("data/gene_lists/", patient, "_gene_list.character.RDS", collapse = "")),
-                 cn_alteration = "amplification")
-
-## Assume all are amplified
-# CNV$cn_alteration = rep("amplification",nrow(CNV))
-## Assume all are deleted
-CNV.2   = CNV
-CNV.2$cn_alteration = gsub("amplification","deletion",CNV.2$cn_alteration )
-
-if( nrow(SNV) == 0 & nrow(CNV) == 0) warning('The patient has no SNVs nor CNVs. Not worth continuing with the analysis!')
-
-## Get cancer type synonyms in the databases
-cancer           = "BRCA" # Breas cancer
-cancer_GDKD      = unique(as.character(synonyms[grep(cancer,synonyms$tcga_cancer,ignore.case = T),"knowledge"]))
-cancer_CIVIC     = sapply(cancer,function(x) as.character(na.omit(synonyms[grep(x,synonyms$tcga_cancer,ignore.case = T),"civic"])[1]))
-cancer_CIVIC     = paste(cancer_CIVIC,collapse = ",")
-cancer_CIVIC     = unique(strsplit(cancer_CIVIC,",")[[1]])
-
-#####################################
-## Filter SNVs and CNVs by database #
-#####################################
-
-#### GDKD DB
-druggableGDKD = data.frame()
-druggableGDKD = rbind(match_SNV_GDKD(SNV,db = GDKD),match_SNV_GDKD(SNV.2,db = GDKD))
-druggableGDKD = rbind(druggableGDKD,match_CNV_GDKD(CNV,db = GDKD),match_CNV_GDKD(CNV.2,db = GDKD))
-druggableGDKD = rbind(druggableGDKD,match_WT_GDKD(SNV,CNV,cancer_GDKD,db = GDKD))
-rownames(druggableGDKD) = NULL
-
-#### CIVIC
-druggableCIVIC = data.frame()
-druggableCIVIC = unique(rbind(match_SNV_CIVIC(SNV,db = CIVIC),match_SNV_CIVIC(SNV.2,db = CIVIC)))
-druggableCIVIC = rbind(druggableCIVIC,match_CNV_CIVIC(CNV,db = CIVIC),match_CNV_CIVIC(CNV.2,db = CIVIC))
-rownames(druggableCIVIC) = NULL
-
-
-#### TARGET DB
-druggableTARGET = data.frame()
-druggableTARGET = rbind(match_TARGET_MERIC(SNV,CNV,db = TARGET),match_TARGET_MERIC(SNV.2,CNV.2,db = TARGET))
-
-if( nrow(druggableGDKD) == 0 & nrow(druggableCIVIC) == 0 & nrow(druggableTARGET)==0) warning('No gene-drug interations were found. Not worth continuing with the analysis!')
-
-
-#########################################################
-## Classify filtered variants by Levels of Evidence    ##
-#########################################################
-
-### KNWOLEDGE
-levelsGDKD = c()
-levelsGDKD = get_levels_GDKD(druggableGDKD,cancer_GDKD)
-#print(levelsGDKD)
-
-### CIVIC
-levelsCIVIC = c()
-levelsCIVIC = get_levels_CIVIC(druggableCIVIC,cancer_CIVIC)
-#print(levelsCIVIC)
-
-levels = merge_levels(levelsGDKD,levelsCIVIC)
-
-# Homogeneize/clean the final table
-table = clean_levels(levels,synonyms,sort_by="genes")
-
-#################################################
-## Generate report from table and patient data ##
-#################################################
-# Fix format issues
-table$`Pat Var` <- sapply(table$`Pat Var` , function(x) gsub("NEW", "", x))
-table$`Pat Var` <- sapply(table$`Pat Var` , function(x) gsub("([A-Z]) ([A-Z])", "\\1, \\2", x))
-table$`Pat Var` <- sapply(table$`Pat Var` , function(x) gsub(" ", "", x))
-table=unique(table)
-
-###############
-# TARGET with other genes
-#############
-
-#Recover genes not in previous table
-druggableTARGET <- as.data.frame(lapply(druggableTARGET, as.character),stringsAsFactors = FALSE)
-
-if (nrow(druggableTARGET) !=0){
-  new_gene <- !(druggableTARGET$Gene %in% table$Gene)
-  druggableTARGET <- druggableTARGET[new_gene,]
-  druggableTARGET <- druggableTARGET[,c(1,2,4,3,5)]
-  
-  if (nrow(druggableTARGET) !=0){
-    
-    #Clean
-    druggableTARGET$Patient_variant <- gsub(pattern = "amplification",replacement = "amp.",
-                                            druggableTARGET$Patient_variant)
-    druggableTARGET$Patient_variant <- gsub(pattern = "deletion",replacement = "del.",
-                                            druggableTARGET$Patient_variant)
-    
-    # colnames
-    colnames(druggableTARGET) <- c("Gene","Pat Var","Known Var","Predicts","Drugs")
-
-    # remove duplicated rows
-    druggableTARGET=druggableTARGET[!duplicated(druggableTARGET[,-2]),]
-    # keep only predictive (Drugs column full)
-    druggableTARGET=druggableTARGET[druggableTARGET$Drugs!="",]
-    
-    if (nrow(druggableTARGET) !=0){
-    # merge table + target
-    result=rbind(table,
-          setNames(data.frame(matrix(NA,nrow = nrow(druggableTARGET),ncol = ncol(table))),
-                   colnames(table))) 
-    result[(nrow(table)+1):(nrow(table)+nrow(druggableTARGET)),c(1,2,4,5,6)]=druggableTARGET
-    }else{result=table}
-  }else{result=table}
-}else{result=table}
-
-
-# Add expression
-result$`Patient.Expr`=exprs.quant[match(result$Gene,exprs.quant$GeneSymbol),patient]
-#result$`Pat Var.std`=exprs.quant[match(result$Gene,exprs.quant$GeneSymbol),patient]
-# print(result)
-# print(result$Gene)
-# print(exprs.quant[match(result$Gene,exprs.quant$GeneSymbol),patient])
-# Match expression with effect observed in evidence
-retain=c()
-# Remove normal unless "Known Var=="expression"
-normal=subset(result,subset = Patient.Expr=="NORMAL"&`Known Var`=="expression")
-# Match HIGH with GoF
-retain=c()
-high=subset(result,subset = Patient.Expr=="HIGH")
-retain=unique(high$Gene[grep("GoF|Amplification|ampl\\.|overexpression",high$`Known Var`)])
-high=subset(result,subset = Gene %in% retain)
-# Match LOW with LoF
-retain=c()
-low=subset(result,subset = Patient.Expr=="LOW")
-retain=unique(high$Gene[grep("LoF|deletion|del\\.",high$`Known Var`)])
-low=subset(low,subset = Gene %in% retain)
-
-# Merge normal, high and low
-result=rbind(normal,high,low)
-
-
-result=result[,c(1,10,3:9)]
-# save
-write.csv(result, 
-          paste0("MTB-report/results/", patient, "_MTB-report_12_04_2020.csv", collapse = ""),
-          row.names = F)
-
-# save it also as RDS (makes it easier for generating JSON)
-saveRDS(result,
-        paste0("data/mtb_results/", patient, "_mtb_results.data.frame.RDS", collapse = ""),)
-
- #Print table
-
- # print(kable(result,row.names = F,escape = F,align ="c") %>%
- #            kable_styling(c("striped","condensed"), full_width = F)%>%
- #            add_header_above(c("Patient" = 2, "Drug-Gene Interactions" = 7)) %>%
- #            column_spec(c(2),  border_right = "2px solid gray"))
- 
-
-}
-
-
-```
 
 
 
