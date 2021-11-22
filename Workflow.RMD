@@ -14,6 +14,19 @@ Ask Greg:
 - patient information of all 969 patients available?
 - Where does the HPRD network come from? Last release 2010!
 
+TODO: rename all node attributes:
+GSMxxxxxx_Score
+GSMxxxxxx_GE
+GSMxxxxxx_GE_Level
+GSMxxxxxx_GE_StdDev
+GSMxxxxxx_GE_Mean
+GSMxxxxxx_GE_Q25
+GSMxxxxxx_GE_Q50
+GSMxxxxxx_GE_Q75
+GSMxxxxxx_GE_MTB
+
+TODO: rename network attributes
+
 # Install libraries
 
 ```{r, eval=FALSE}
@@ -486,18 +499,18 @@ Adding patient information to the network attributes
 
 ```{r rcxPatientInfo}
 networkAttributes = createNetworkAttributes(
-  name = c("MetastaticPatients", 
-           "NonMetatstaticPatients", 
-           "MetastaticPatientsSubtype", 
-           "NonMetatstaticPatientsSubtype",
-           "MetastaticPatientsMfsYears", 
-           "NonMetatstaticPatientsMfsYears"),
-  value = list(patients$geo_accession[selMetastatic], 
-               patients$geo_accession[!selMetastatic],
-               patients$subtype[selMetastatic], 
-               patients$subtype[!selMetastatic],
-               patients$mfs.years[selMetastatic], 
-               patients$mfs.years[!selMetastatic])
+  name = c(
+    "Patients",
+    "PatientGroups",
+    "PatientSubtype", 
+    "PatientSurvivalYears"
+    ),
+  value = list(
+    patients$geo_accession,
+    ifelse(patients$met.event == 1, "Metastatic", "Non-Metastatic"),
+    patients$subtype,
+    patients$mfs.years
+    )
 )
 ppi_integrated_network_rcx = updateNetworkAttributes(
   ppi_integrated_network_rcx, 
@@ -519,7 +532,7 @@ for (patientId in patients$geo_accession) {
   sel_nodes = match(ppi_integrated_network_rcx$nodes$name, relevance_score$probe)
   nodeAttributes = createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep(paste0(patientId,"_score"), length(sel_nodes)),
+    name = rep(paste0(patientId,"_Score"), length(sel_nodes)),
     value = relevance_score[sel_nodes, patientId]
   )
   ppi_integrated_network_rcx = updateNodeAttributes(ppi_integrated_network_rcx, nodeAttributes)
@@ -529,7 +542,7 @@ for (patientId in patients$geo_accession) {
   sel_nodes = match(ppi_integrated_network_rcx$nodes$name, rownames(ge_patients))
   nodeAttributes = createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep(paste0(patientId,"_ge"), length(sel_nodes)),
+    name = rep(paste0(patientId,"_GE"), length(sel_nodes)),
     value = ge_patients[sel_nodes, patientId]
   )
   ppi_integrated_network_rcx = updateNodeAttributes(ppi_integrated_network_rcx, nodeAttributes)
@@ -539,7 +552,7 @@ for (patientId in patients$geo_accession) {
   sel_nodes = match(ppi_integrated_network_rcx$nodes$name, ge_expression_level_by_quantiles$probe)
   nodeAttributes = createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep(paste0(patientId,"_level"), length(sel_nodes)),
+    name = rep(paste0(patientId,"_GE_Level"), length(sel_nodes)),
     value = ge_expression_level_by_quantiles[sel_nodes, patientId]
   )
   ppi_integrated_network_rcx = updateNodeAttributes(ppi_integrated_network_rcx, nodeAttributes)
@@ -553,7 +566,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("mean", length(sel_nodes)),
+    name = rep("GE_Mean", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "mean"]
   )
 )
@@ -563,7 +576,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("stdev", length(sel_nodes)),
+    name = rep("GE_StdDev", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "stdev"]
   )
 )
@@ -573,7 +586,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("Q25", length(sel_nodes)),
+    name = rep("GE_Q25", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "Q25"]
   )
 )
@@ -583,7 +596,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("Q50", length(sel_nodes)),
+    name = rep("GE_Q50", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "Q50"]
   )
 )
@@ -593,7 +606,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("Q75", length(sel_nodes)),
+    name = rep("GE_Q75", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "Q75"]
   )
 )
@@ -673,7 +686,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("mean", length(sel_nodes)),
+    name = rep("GE_Mean", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "mean"]
   )
 )
@@ -682,7 +695,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("stdev", length(sel_nodes)),
+    name = rep("GE_StdDev", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "stdev"]
   )
 )
@@ -691,7 +704,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("Q25", length(sel_nodes)),
+    name = rep("GE_Q25", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "Q25"]
   )
 )
@@ -700,7 +713,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("Q50", length(sel_nodes)),
+    name = rep("GE_Q50", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "Q50"]
   )
 )
@@ -709,7 +722,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   createNodeAttributes(
     propertyOf = ppi_integrated_network_rcx$nodes$id, 
-    name = rep("Q75", length(sel_nodes)),
+    name = rep("GE_Q75", length(sel_nodes)),
     value = ge_with_statistics[sel_nodes, "Q75"]
   )
 )
@@ -717,7 +730,6 @@ ppi_integrated_network_rcx = updateNodeAttributes(
 cat("Node attributes:\n")
 unique(ppi_integrated_network_rcx$nodeAttributes$name)
 ```
-
 
 ```{r rcxIntegratedSave, eval=FALSE, include=FALSE}
 ## Save the data
@@ -738,10 +750,11 @@ unique(ppi_integrated_network_rcx$nodeAttributes$name)
 The PPI network with integrated data is also available on NDEx, so the above time consuming integration steps don't have to be repeated every time:
 
 ```{r ppiIntegratedNDExLoad, eval=FALSE}
-ppi_network_rcx = ndex_get_network(ndex_con, "833b1cee-42f6-11ec-b3be-0ac135e8bacf")
+ppi_integrated_network_rcx = ndex_get_network(ndex_con, "833b1cee-42f6-11ec-b3be-0ac135e8bacf")
 ```
 
-# Creation of subnetworks
+# Molecular Tumor Board (MTB) Report
+## Relevant genes
 
 The subnetworks are created based on the top 140 most relevant genes for each patient.
 To get the 140 most relevant genes for each patient, first lets find out the least relevance score of the top 140 genes (i. e. threshold) for every patient:
@@ -763,12 +776,12 @@ thresholds = sapply(patients$geo_accession, function(patientId){
 })
 
 thresholds
-boxplot(thresholds, horizontal = TRUE)
+boxplot(thresholds)
 ```
 
 Now get the relevant genes for all patients
 
-```{r getSubgraph}
+```{r getRelevantGenes}
 relevant_genes = lapply(patients$geo_accession, function(patientId){
   # get the only the scores for a patient
   score = relevance_score[,patientId]
@@ -787,7 +800,7 @@ print(sapply(relevant_genes, length))
 ```
 The helping function to generate subnetwork and remove isolate nodes, and corresponding edges
 
-```{r getRelevantGenes}
+```{r getRelevantGenesRemoveIsolate}
 relevant_genes = lapply(relevant_genes, function(rel_genes){
   tmp_nodes = ppi_integrated_network_rcx$nodes
   tmp_edges = ppi_integrated_network_rcx$edges
@@ -811,6 +824,119 @@ print(sapply(relevant_genes, length))
 cat("Number of total relevant genes:\n")
 length(unique(unlist(relevant_genes)))
 ```
+
+## MTB analysis
+
+This script filters SNVs and CNVs using gene-drug public databases. 
+Then classifies the variants into levels of evidence and finally presents the results.
+
+The expression of each gene can be found in column "Patient.Expr". The expression is devidied into three groups:
+
+- HIGH: above 75% quantile
+- NOMRAL: between 25%-75% quantile
+- LOW: below 25% quantile
+
+In "MTB-report/results_curated" the results are limited to those in which "Known Var" matches with the expression of the gene (eg. HIGH expression corresponds to GoF evidence). For normal expression the decision is unclear.
+
+
+```{r MTBresults, warning=FALSE}
+mtb = new.env()
+source("MTB/mtb_analysis.R", local = mtb)
+mtb_results = mtb$mtb_analysis(
+  patients = patients$geo_accession,
+  exprs.quant = ge_expression_level_by_quantiles,
+  relevant.genes = relevant_genes,
+  cancer = "BRCA",
+  verbose = TRUE
+)
+rm(mtb)
+```
+
+
+## Include MTB results in the network
+
+```{r rcxNodeAttributesMTBData, warning=FALSE}
+## MTB columns
+mtb_attributes = c(
+  Cancer = "Cancer", 
+  KnownVar = "Known Var", 
+  Prediction = "Predicts", 
+  Drugs = "Drugs", 
+  Evidence = "Evidence", 
+  Reference = "Ref", 
+  ConfidenceLevel = "level")
+
+mtb_nodeAttributes = NULL
+
+for(patientId in patients$geo_accession){
+  cat(paste0("MTB patient ", patientId))
+  if(nrow(mtb_results[[patientId]]) != 0){
+    genes = unique(mtb_results[[patientId]]$Gene)
+    
+    for(gene in genes){
+      ## Get the node id for the gene
+      tmp_gene_id = big_subnetwork$nodes$id[big_subnetwork$nodes$name == gene]
+      
+      ## Add a boolean indicator for the gene
+      ## (for visualization)
+      res = createNodeAttributes(
+            propertyOf = tmp_gene_id,
+            name = paste0(patientId,"_MTB"),
+            value = TRUE
+          )
+      
+      if(is.null(mtb_nodeAttributes)){
+        mtb_nodeAttributes = res
+      }else{
+        mtb_nodeAttributes = updateNodeAttributes(
+          mtb_nodeAttributes,
+          res
+        )
+      }
+      
+      cat(".")
+      
+      ## Add all MTB attributes as ordered lists
+      for (attr_i in seq(length(mtb_attributes))) {
+        tmp_gene = append(tmp_gene, gene)
+        
+        attr_name = mtb_attributes[attr_i]
+        attr_called = names(mtb_attributes)[attr_i]
+        
+        sel_gene = mtb_results[[patientId]]$Gene == gene
+        
+        tmp_mtb_value = mtb_results[[patientId]][,attr_name][sel_gene]
+        tmp_mtb_value[is.na(tmp_mtb_value)] = ""
+        
+        mtb_nodeAttributes = updateNodeAttributes(
+          mtb_nodeAttributes,
+          createNodeAttributes(
+            propertyOf = tmp_gene_id,
+            name = paste0(patientId,"_MTB_",attr_called),
+            value = list(tmp_mtb_value),
+            isList = TRUE
+          )
+        )
+        
+        cat(".")
+      }
+    }
+  }
+  cat("done\n")
+}
+
+mtb_nodeAttributes
+
+ppi_integrated_network_rcx = updateNodeAttributes(
+  ppi_integrated_network_rcx, 
+  mtb_nodeAttributes
+)
+
+ppi_integrated_network_rcx$metaData
+```
+
+# Create patient-specific subnetworks
+
 
 ```{r getCombinedSubnetwork}
 big_subnetwork = ppi_integrated_network_rcx
@@ -853,9 +979,30 @@ for(patientId in names(relevant_genes)){
 big_subnetwork = updateMetaData(big_subnetwork)
 
 big_subnetwork$metaData
+
+big_subnetwork = updateNetworkAttributes(
+  big_subnetwork,
+  createNetworkAttributes(
+    name="name",
+    value = "Combined patient-specific breast cancer subnetworks"
+    )                                       
+  )
+```
+
+```{r writeBigSubnetwork, eval=FALSE, include=FALSE}
+## Save the data
+writeCX(big_subnetwork, "tmp/big_subnetwork.cx")
+saveRDS(big_subnetwork, "tmp/big_subnetwork.RDS")
 ```
 
 
+```{r bigSubnetworkNDExLoad, eval=FALSE}
+big_subnetwork = ndex_get_network(ndex_con, "a420aaee-4be9-11ec-b3be-0ac135e8bacf")
+```
+
+
+
+---finished till here---
 
 ```{r getSubnetworks}
 subnetworks = lapply(names(relevant_genes), function(patientId){
@@ -887,38 +1034,6 @@ subnetworks = lapply(names(relevant_genes), function(patientId){
 names(subnetworks) = names(relevant_genes)
 sapply(subnetworks, function(s){length(s$nodes$name)})
 ```
-
-
-# Molecular Tumor Board (MTB) Report
-
-This script filters SNVs and CNVs using gene-drug public databases. 
-Then classifies the variants into levels of evidence and finally presents the results.
-
-The expression of each gene can be found in column "Patient.Expr". The expression is devidied into three groups:
-
-- HIGH: above 75% quantile
-- NOMRAL: between 25%-75% quantile
-- LOW: below 25% quantile
-
-In "MTB-report/results_curated" the results are limited to those in which "Known Var" matches with the expression of the gene (eg. HIGH expression corresponds to GoF evidence). For normal expression the decision is unclear.
-
-
-```{r tmp, warning=FALSE}
-mtb = new.env()
-source("MTB/mtb_analysis.R", local = mtb)
-mtb_results = mtb$mtb_analysis(
-  patients = patients$geo_accession,
-  exprs.quant = ge_expression_level_by_quantiles,
-  relevant.genes = relevant_genes,
-  cancer = "BRCA",
-  verbose = TRUE
-)
-```
-
----finished till here---
-
-
-
 
 
 
