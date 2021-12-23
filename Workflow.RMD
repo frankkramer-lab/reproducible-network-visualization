@@ -2,7 +2,10 @@
 title: "Workflow"
 author: "Florian J. Auer"
 date: "10/30/2021"
-output: html_document
+output: 
+  html_document:
+    self_contained: no
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -27,6 +30,8 @@ GSMxxxxxx_GE_MTB
 
 TODO: rename network attributes
 
+TODO: MTB results: drugs as nodes in network!!!
+
 # Install libraries
 
 ```{r, eval=FALSE}
@@ -45,6 +50,7 @@ library(RColorBrewer)
 library(GEOquery)
 library(igraph)
 library(dplyr)
+library(plyr)
 
 library(kableExtra)
 library(stringr)
@@ -281,7 +287,7 @@ plot(dendrapply(as.dendrogram(dend.e.s), labelCol), main = "dend.e.s")
 
 t-test
 
-```{r}
+```{r diffentialExpression}
 ## perform a t-test for each gene
 ttest = apply(ge_patients, 1, function(x){
  res = t.test(x[selMetastatic],
@@ -420,6 +426,30 @@ ppi_network_rcx = fromIgraph(ppi_network_igraph, nodeName = "name")
 ppi_network_rcx$metaData
 ```
 
+Helper function to print attributes independently from the patient ids
+
+```{r helperAttributePrint}
+printAttributes = function(aspect,
+                           property = "name",
+                           pattern = "GSM[0-9]+_",
+                           replacement = "GSM*_"){
+  
+  property = aspect[,property]
+  result = table(
+    sub(pattern, replacement, unique(property))
+  )
+  
+  result = data.frame(
+    attribute = names(result),
+    versions = as.numeric(result),
+    occurrences = as.numeric(table(
+      sub(pattern, replacement, property)
+    ))
+  )
+  return(result)
+}
+```
+
 Add some information to the network
 
 ```{r rcxNetworkAttributes}
@@ -439,7 +469,7 @@ networkAttributes = createNetworkAttributes(
 )
 ppi_network_rcx = updateNetworkAttributes(ppi_network_rcx, networkAttributes)
 
-ppi_network_rcx$metaData
+printAttributes(ppi_network_rcx$networkAttributes)
 ```
 
 ```{r ppi_load, eval=FALSE, include=FALSE}
@@ -503,13 +533,15 @@ networkAttributes = createNetworkAttributes(
     "Patients",
     "PatientGroups",
     "PatientSubtype", 
-    "PatientSurvivalYears"
+    "PatientSurvivalYears",
+    "OccurrenceInSubtype"
     ),
   value = list(
     patients$geo_accession,
     ifelse(patients$met.event == 1, "Metastatic", "Non-Metastatic"),
     patients$subtype,
-    patients$mfs.years
+    patients$mfs.years,
+    unique(patients$subtype)
     )
 )
 ppi_integrated_network_rcx = updateNetworkAttributes(
@@ -517,9 +549,27 @@ ppi_integrated_network_rcx = updateNetworkAttributes(
   networkAttributes
 )
 
-ppi_integrated_network_rcx$metaData
+printAttributes(ppi_integrated_network_rcx$networkAttributes)
 ```
+#TODO: remove
+```{r}
+tmp_ppi_integrated_network_rcx = ppi_integrated_network_rcx
+ppi_integrated_network_rcx = updateNetworkAttributes(
+  ppi_integrated_network_rcx, 
+  createNetworkAttributes(
+    name = c(
+      "OccurrenceBySubtype"
+    ),
+    value = list(
+      unique(patients$subtype)
+    )
+  )
+)
 
+printAttributes(ppi_integrated_network_rcx$networkAttributes)
+ppi_integrated_network_rcx$networkAttributes = ppi_integrated_network_rcx$networkAttributes[ppi_integrated_network_rcx$networkAttributes$name!="OccurrenceBySubtype",]
+ppi_integrated_network_rcx = updateMetaData(ppi_integrated_network_rcx)
+```
 Now include the relevance scores, gene expression and gene expression levels in the network for all 79 patients.
 Also include the gene expression statistics, namely mean, standard deviation and 25%, 50% and 75% quantiles.
 
@@ -612,7 +662,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
 )
 
 cat("Node attributes:\n")
-unique(ppi_integrated_network_rcx$nodeAttributes$name)
+printAttributes(ppi_integrated_network_rcx$nodeAttributes)
 ```
 
 
@@ -728,7 +778,7 @@ ppi_integrated_network_rcx = updateNodeAttributes(
 )
 
 cat("Node attributes:\n")
-unique(ppi_integrated_network_rcx$nodeAttributes$name)
+printAttributes(ppi_integrated_network_rcx$nodeAttributes)
 ```
 
 ```{r rcxIntegratedSave, eval=FALSE, include=FALSE}
@@ -744,7 +794,7 @@ for (patientId in patients$geo_accession) {
   cat(paste0("Adding node attributes for patient ", patientId, "...done\n"))
 }
 cat("Node attributes:\n")
-unique(ppi_integrated_network_rcx$nodeAttributes$name)
+printAttributes(ppi_integrated_network_rcx$nodeAttributes)
 ```
 
 The PPI network with integrated data is also available on NDEx, so the above time consuming integration steps don't have to be repeated every time:
@@ -753,7 +803,7 @@ The PPI network with integrated data is also available on NDEx, so the above tim
 ppi_integrated_network_rcx = ndex_get_network(ndex_con, "833b1cee-42f6-11ec-b3be-0ac135e8bacf")
 ```
 
-# Molecular Tumor Board (MTB) Report
+# Patient-specific subnetworks
 ## Relevant genes
 
 The subnetworks are created based on the top 140 most relevant genes for each patient.
@@ -775,9 +825,36 @@ thresholds = sapply(patients$geo_accession, function(patientId){
   return(sort(score, decreasing = TRUE)[topNr])
 })
 
-thresholds
 boxplot(thresholds)
+title("Thresholds for the patients by the top 140 most relevant proteins")
 ```
+
+```{r getThreshold, eval=FALSE, include=FALSE}
+topNr=140
+
+thresholds = sapply(patients$geo_accession, function(patientId){
+  ## get the scores for one patient
+  ## column names of relevance score = gene ids + patientIdCol
+  score = as.numeric(relevance_score[,patientId])
+  
+  ## check if there are less genes than topNr
+  topNr = ifelse(length(score) > topNr,
+                 topNr,
+                 length(score))
+  ## return the score at topNr (=threshold)
+  return(sort(score, decreasing = TRUE)[topNr])
+})
+
+thresholds = data.frame(
+  patients = names(thresholds),
+  subtype = patients$subtype,
+  thresholds = thresholds
+)
+# boxplot(thresholds, horizontal = T)
+boxplot(thresholds$thresholds)
+boxplot(thresholds~subtype, data = thresholds)
+```
+
 
 Now get the relevant genes for all patients
 
@@ -824,8 +901,7 @@ print(sapply(relevant_genes, length))
 cat("Number of total relevant genes:\n")
 length(unique(unlist(relevant_genes)))
 ```
-
-## MTB analysis
+## Molecular Tumor Board (MTB) Report
 
 This script filters SNVs and CNVs using gene-drug public databases. 
 Then classifies the variants into levels of evidence and finally presents the results.
@@ -838,6 +914,11 @@ The expression of each gene can be found in column "Patient.Expr". The expressio
 
 In "MTB-report/results_curated" the results are limited to those in which "Known Var" matches with the expression of the gene (eg. HIGH expression corresponds to GoF evidence). For normal expression the decision is unclear.
 
+The code for performing the MTB analysis is contained in the `MTB/mtb_analysis.R` file:
+```{r, code=xfun::read_utf8('MTB/mtb_analysis.R'), eval=FALSE}
+```
+
+The script is loaded into a dedicated environment to avoid side effects, and the `mtb_analysis` function is called to perform the analysis and to retrieve the results:
 
 ```{r MTBresults, warning=FALSE}
 mtb = new.env()
@@ -875,7 +956,9 @@ for(patientId in patients$geo_accession){
     
     for(gene in genes){
       ## Get the node id for the gene
-      tmp_gene_id = big_subnetwork$nodes$id[big_subnetwork$nodes$name == gene]
+      tmp_gene_id = ppi_integrated_network_rcx$nodes$id[
+        ppi_integrated_network_rcx$nodes$name == gene
+        ]
       
       ## Add a boolean indicator for the gene
       ## (for visualization)
@@ -925,26 +1008,25 @@ for(patientId in patients$geo_accession){
   cat("done\n")
 }
 
-mtb_nodeAttributes
 
 ppi_integrated_network_rcx = updateNodeAttributes(
   ppi_integrated_network_rcx, 
   mtb_nodeAttributes
 )
 
-ppi_integrated_network_rcx$metaData
+printAttributes(ppi_integrated_network_rcx$nodeAttributes)
 ```
 
-# Create patient-specific subnetworks
+## Create patient-specific subnetworks
 
 
 ```{r getCombinedSubnetwork}
-big_subnetwork = ppi_integrated_network_rcx
+combined_subnetwork_rcx = ppi_integrated_network_rcx
 
 all_rel_genes = unique(unlist(relevant_genes))
 
-tmp_nodes = big_subnetwork$nodes
-tmp_edges = big_subnetwork$edges
+tmp_nodes = combined_subnetwork_rcx$nodes
+tmp_edges = combined_subnetwork_rcx$edges
 
 ## select node in the subnetwork
 sel_nodes = tmp_nodes$name %in% all_rel_genes
@@ -954,34 +1036,34 @@ tmp_nodes = tmp_nodes[sel_nodes,]
 sel_edges = tmp_edges$source %in% tmp_nodes$id & tmp_edges$target %in% tmp_nodes$id
 tmp_edges = tmp_edges[sel_edges,]
 
-big_subnetwork$nodes = tmp_nodes
-big_subnetwork$edges = tmp_edges
+combined_subnetwork_rcx$nodes = tmp_nodes
+combined_subnetwork_rcx$edges = tmp_edges
 
 ## remove all attributes not included in the nodes
-big_subnetwork$nodeAttributes = big_subnetwork$nodeAttributes[
-  big_subnetwork$nodeAttributes$propertyOf %in% big_subnetwork$nodes$id,
+combined_subnetwork_rcx$nodeAttributes = combined_subnetwork_rcx$nodeAttributes[
+  combined_subnetwork_rcx$nodeAttributes$propertyOf %in% combined_subnetwork_rcx$nodes$id,
 ]
 
 for(patientId in names(relevant_genes)){
   ## get ids of relevant genes for patients
-  rel_gene_ids = big_subnetwork$nodes$id[
-    big_subnetwork$nodes$name %in% relevant_genes[[patientId]]
+  rel_gene_ids = combined_subnetwork_rcx$nodes$id[
+    combined_subnetwork_rcx$nodes$name %in% relevant_genes[[patientId]]
   ]
   
   ## select node attributes relevant for patient
-  sel_node_attr = startsWith(big_subnetwork$nodeAttributes$name, patientId)
-  keep_node_attr = big_subnetwork$nodeAttributes$propertyOf %in% rel_gene_ids
+  sel_node_attr = startsWith(combined_subnetwork_rcx$nodeAttributes$name, patientId)
+  keep_node_attr = combined_subnetwork_rcx$nodeAttributes$propertyOf %in% rel_gene_ids
   remove_node_attr = sel_node_attr & !keep_node_attr
   
-  big_subnetwork$nodeAttributes = big_subnetwork$nodeAttributes[!remove_node_attr,]
+  combined_subnetwork_rcx$nodeAttributes = combined_subnetwork_rcx$nodeAttributes[!remove_node_attr,]
 }
 
-big_subnetwork = updateMetaData(big_subnetwork)
+combined_subnetwork_rcx = updateMetaData(combined_subnetwork_rcx)
 
-big_subnetwork$metaData
+combined_subnetwork_rcx$metaData
 
-big_subnetwork = updateNetworkAttributes(
-  big_subnetwork,
+combined_subnetwork_rcx = updateNetworkAttributes(
+  combined_subnetwork_rcx,
   createNetworkAttributes(
     name="name",
     value = "Combined patient-specific breast cancer subnetworks"
@@ -989,15 +1071,93 @@ big_subnetwork = updateNetworkAttributes(
   )
 ```
 
+Include the number of occurrences of the genes in the patients
+
+```{r addOccurrences}
+getOccurrences = function(network){
+  gene_occurrences = table(unlist(relevant_genes))
+  gene_occurrences_po = network$nodes$id[match(names(gene_occurrences), network$nodes$name)]
+  names(gene_occurrences) = NULL
+  
+  result = createNodeAttributes(
+      propertyOf = gene_occurrences_po,
+      name = rep("Occurrence", length(gene_occurrences)),
+      value = gene_occurrences,
+      dataType = rep("integer", length(gene_occurrences))
+    )
+  return(result)
+}
+
+occurrence = getOccurrences(combined_subnetwork_rcx)
+combined_subnetwork_rcx = updateNodeAttributes(
+  combined_subnetwork_rcx,
+  occurrence
+)
+
+printAttributes(combined_subnetwork_rcx$nodeAttributes)
+```
+
+
+```{r addOccurrencesBySubtype}
+getOccurrencesBySubtype = function(network){
+  subtypes = unique(patients$subtype)
+  occurrences = data.frame(gene = sort(unique(unlist(relevant_genes))))
+  for (s in subtypes) {
+    pats = patients[patients$subtype == s, 'geo_accession']
+    ## combine all genes with the gene in each patient
+    genes = c(occurrences$gene, unlist(relevant_genes[pats]))
+    ## substract the one count added gene
+    occurrences[s] = table(unlist(genes)) - 1
+  }
+  ## prepare for creating nodeAttributes aspect
+  occurrences = dlply(occurrences, 1, function(x){list(x[-1])})
+  occurrences = lapply(occurrences, unlist)
+  gene_occurrences_po = network$nodes$id[match(names(occurrences), network$nodes$name)]
+  
+  result = createNodeAttributes(
+      propertyOf = gene_occurrences_po,
+      name = rep("OccurrenceBySubtype", length(occurrences)),
+      value = occurrences,
+      dataType = rep("integer", length(gene_occurrences))
+    )
+  return(result)
+}
+
+occurrenceBySubtype = getOccurrencesBySubtype(combined_subnetwork_rcx)
+combined_subnetwork_rcx  = updateNodeAttributes(
+  combined_subnetwork_rcx,
+  occurrenceBySubtype
+)
+
+printAttributes(combined_subnetwork_rcx$nodeAttributes)
+```
+#TODO: remove
+```{r, include=F, eval=FALSE}
+tmp_combined_subnetwork_rcx = combined_subnetwork_rcx
+combined_subnetwork_rcx = updateNetworkAttributes(
+  combined_subnetwork_rcx, 
+  createNetworkAttributes(
+    name = c(
+      "OccurrenceBySubtype"
+    ),
+    value = list(
+      unique(patients$subtype)
+    )
+  )
+)
+
+printAttributes(combined_subnetwork_rcx$networkAttributes)
+```
+
 ```{r writeBigSubnetwork, eval=FALSE, include=FALSE}
 ## Save the data
-writeCX(big_subnetwork, "tmp/big_subnetwork.cx")
-saveRDS(big_subnetwork, "tmp/big_subnetwork.RDS")
+writeCX(combined_subnetwork_rcx, "tmp/combined_subnetwork_rcx.cx")
+saveRDS(combined_subnetwork_rcx, "tmp/combined_subnetwork_rcx.RDS")
 ```
 
 
 ```{r bigSubnetworkNDExLoad, eval=FALSE}
-big_subnetwork = ndex_get_network(ndex_con, "a420aaee-4be9-11ec-b3be-0ac135e8bacf")
+combined_subnetwork_rcx = ndex_get_network(ndex_con, "a420aaee-4be9-11ec-b3be-0ac135e8bacf")
 ```
 
 
@@ -1008,7 +1168,7 @@ big_subnetwork = ndex_get_network(ndex_con, "a420aaee-4be9-11ec-b3be-0ac135e8bac
 subnetworks = lapply(names(relevant_genes), function(patientId){
   rel_genes = relevant_genes[[patientId]]
   
-  subnet = big_subnetwork
+  subnet = combined_subnetwork_rcx
   
   tmp_nodes = ppi_integrated_network_rcx$nodes
   tmp_edges = ppi_integrated_network_rcx$edges
@@ -1036,119 +1196,100 @@ sapply(subnetworks, function(s){length(s$nodes$name)})
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Add differentially expressed genes
-
-```{r rcxDEgenes}
-poId = ppi_network_rcx$nodes$id[ppi_network_rcx$nodes$name %in% de_genes]
-nodeAttributes = createNodeAttributes(
-  propertyOf = poId,
-  name = rep("DE", length(poId)),
-  value = rep(TRUE, length(poId))
-)
-ppi_network_rcx = updateNodeAttributes(ppi_network_rcx, nodeAttributes)
-```
-
-
-
-
-```{r tmp, eval=F, include=F}
-visualize(combined_network_rcx, c(name="cose"))
-
-combined_network_rcx$nodes$name[! combined_network_rcx$nodes$name %in% combined_rcx_network$nodes$name]
-
-tmp = createRCX(nodes=createNodes(name=c(LETTERS[1:3])),edges = createEdges(source = 1, target = 2))
-tmp2 = generateSubnetwork(tmp, LETTERS[1:3])
-```
-
-
-```{r important}
-V(combined_network)$id = seq(0,gorder(combined_network)-1)
-V(combined_network)$nodeName = V(combined_network)$name
-
-E(combined_network)$id = seq(0,gsize(combined_network)-1)
-
-for (attr in vertex_attr_names(combined_network)) {
-  if(is.logical(vertex_attr(combined_network, attr))){
-    vertex_attr(combined_network, paste0(attr,"...dataType")) = "boolean"
-  }else if(is.numeric(vertex_attr(combined_network, attr))){
-    vertex_attr(combined_network, paste0(attr,"...dataType")) = "double"
-  }
-}
-
-combined_rcx_network = fromIgraph(combined_network)
-
-networkAttributes = createNetworkAttributes(
-  name = c("MetastaticPatients", "NonMetatstaticPatients", 
-           "MetastaticPatientsSubtype", "NonMetatstaticPatientsSubtype",
-           "MetastaticPatientsMfsYears", "NonMetatstaticPatientsMfsYears"),
-  value = list(patient_metastatic$geo_accession, patient_non_metastatic$geo_accession,
-               patient_metastatic$subtype, patient_non_metastatic$subtype,
-               patient_metastatic$mfs.years, patient_non_metastatic$mfs.years)
-)
-combined_rcx_network = updateNetworkAttributes(combined_rcx_network, networkAttributes)
-
-networkAttributes = createNetworkAttributes(
-  name = c("author", 
-           "name"),
-  value = c("Florian J. Auer",
-            "Combined subnetworks of relevant genes of the HPRD-PPI network")
-)
-combined_rcx_network = updateNetworkAttributes(combined_rcx_network, networkAttributes)
-
-poId = combined_rcx_network$nodes$id[combined_rcx_network$nodes$name %in% de_genes]
-nodeAttributes = createNodeAttributes(
-  propertyOf = poId,
-  name = rep("DE", length(poId)),
-  value = rep(TRUE, length(poId))
-)
-combined_rcx_network = updateNodeAttributes(combined_rcx_network, nodeAttributes)
-```
-
-
-
 # Visualization
 
-## NDExEdit
 
-```{r exportRCX}
-# nodeAttributes = combined_rcx_network$nodeAttributes
-# nodeAttributes = nodeAttributes[nodeAttributes$name %in% c("occurrence","DE", "GSM615195","GSM615195_score","GSM615195_expression","GSM615195_level"),]
-# 
-# combined_rcx_network$nodeAttributes = nodeAttributes
-# combined_rcx_network$nodeAttributes = NULL
-# combined_rcx_network$networkAttributes = NULL
-# combined_rcx_network = updateMetaData(combined_rcx_network)
-
-distance = 80
-catesianLayout = createCartesianLayout(
-  combined_rcx_network$nodes$id, 
-  x = rep(seq(0,19)*distance,21)[1:length(combined_rcx_network$nodes$id)],
-  y = rep(seq(0,20)*distance,each=20)[1:length(combined_rcx_network$nodes$id)]
-)
-combined_rcx_network = updateCartesianLayout(combined_rcx_network, catesianLayout)
-
-writeCX(combined_rcx_network, "tmp/CombinedNetwork.cx")
+```{r tmp, eval=F}
+visualize(combined_subnetwork_rcx, c(name="circle"))
 ```
+![Combined subnetworks with circle (circular) layout (default on NDEx)](Combined_subnetworks.png)
+
+
+```{r buildConcentricLayout}
+#' Build a concentric layout for a RCX network
+#'
+#' @param rcx_network RCX network
+#' @param dX horizontal distance between nodes
+#' @param dY vertical distance between nodes
+#'
+#' @return cartesianLayoutAspect
+buildLayout = function(rcx_network, dX = 70, dY = 70){
+  nodes = rcx_network$nodes$id
+
+  layer = 0
+  nodesInLayer = 0
+  counter = 0
+  remaining = length(nodes) - counter
+  
+  xs = c()
+  ys = c()
+
+  ## determine max. number of nodes in the layers
+  getMaxNodesInLayer = function(layer){
+    if(layer==0) res = 1
+    else if(layer==1) res = 4
+    else if(layer==2) res = 12
+    else res = 8 * (layer - 1) - (4 * floor( log(layer, 8)))
+    return(res)
+  }
+  maxNodesInLayer = getMaxNodesInLayer(layer)
+  
+  for(n in nodes){
+    ## distribute all nodes evenly in a circle
+    if(remaining < maxNodesInLayer) fracts = 360/remaining
+    else fracts = 360/maxNodesInLayer
+    
+    ## calc x and y position
+    x = sin((pi/180) * fracts * nodesInLayer) * dX * layer
+    y = cos((pi/180) * fracts * nodesInLayer) * dY * layer
+    
+    xs = append(xs, x)
+    ys = append(ys, y)
+    
+    nodesInLayer = nodesInLayer + 1
+    counter = counter + 1
+    
+    ## if one layer is full
+    if(nodesInLayer == maxNodesInLayer){
+      remaining = length(nodes) - counter
+      nodesInLayer = 0
+      layer = layer + 1
+      
+      maxNodesInLayer = getMaxNodesInLayer(layer)
+      maxNodesInNextLayer = getMaxNodesInLayer(layer+1)
+      ## for the outer two circles, distribute more evenly
+      if(
+        remaining>maxNodesInLayer & 
+        (remaining < maxNodesInLayer + maxNodesInNextLayer)
+      ) {
+        ## keep the fraction between the two circles
+        maxNodesInLayer = min(
+          floor(remaining * (maxNodesInLayer/maxNodesInLayer + maxNodesInNextLayer)),
+          maxNodesInLayer
+        )
+      }
+    }
+  }
+  
+  res = createCartesianLayout(
+    combined_subnetwork_rcx$nodes$id,
+    xs,
+    ys
+  )
+  
+  return(res)
+}
+
+cartesianLayout = buildLayout(combined_subnetwork_rcx)
+tmp = updateCartesianLayout(
+  combined_subnetwork_rcx,
+  cartesianLayout
+)
+writeCX(tmp, "tmp/combined_with_cartesian_layout.cx")
+visualize(tmp)
+```
+
+## NDExEdit
 
 
 ```{r exportRCX, eval=FALSE}
@@ -1342,11 +1483,91 @@ visualize = function(networksToVis,
 
 
 
+---- unused ----
+
+
+Add differentially expressed genes
+
+```{r rcxDEgenes}
+poId = ppi_network_rcx$nodes$id[ppi_network_rcx$nodes$name %in% de_genes]
+nodeAttributes = createNodeAttributes(
+  propertyOf = poId,
+  name = rep("DE", length(poId)),
+  value = rep(TRUE, length(poId))
+)
+ppi_network_rcx = updateNodeAttributes(ppi_network_rcx, nodeAttributes)
+```
 
 
 
 
 
+
+
+```{r important}
+V(combined_network)$id = seq(0,gorder(combined_network)-1)
+V(combined_network)$nodeName = V(combined_network)$name
+
+E(combined_network)$id = seq(0,gsize(combined_network)-1)
+
+for (attr in vertex_attr_names(combined_network)) {
+  if(is.logical(vertex_attr(combined_network, attr))){
+    vertex_attr(combined_network, paste0(attr,"...dataType")) = "boolean"
+  }else if(is.numeric(vertex_attr(combined_network, attr))){
+    vertex_attr(combined_network, paste0(attr,"...dataType")) = "double"
+  }
+}
+
+combined_rcx_network = fromIgraph(combined_network)
+
+networkAttributes = createNetworkAttributes(
+  name = c("MetastaticPatients", "NonMetatstaticPatients", 
+           "MetastaticPatientsSubtype", "NonMetatstaticPatientsSubtype",
+           "MetastaticPatientsMfsYears", "NonMetatstaticPatientsMfsYears"),
+  value = list(patient_metastatic$geo_accession, patient_non_metastatic$geo_accession,
+               patient_metastatic$subtype, patient_non_metastatic$subtype,
+               patient_metastatic$mfs.years, patient_non_metastatic$mfs.years)
+)
+combined_rcx_network = updateNetworkAttributes(combined_rcx_network, networkAttributes)
+
+networkAttributes = createNetworkAttributes(
+  name = c("author", 
+           "name"),
+  value = c("Florian J. Auer",
+            "Combined subnetworks of relevant genes of the HPRD-PPI network")
+)
+combined_rcx_network = updateNetworkAttributes(combined_rcx_network, networkAttributes)
+
+poId = combined_rcx_network$nodes$id[combined_rcx_network$nodes$name %in% de_genes]
+nodeAttributes = createNodeAttributes(
+  propertyOf = poId,
+  name = rep("DE", length(poId)),
+  value = rep(TRUE, length(poId))
+)
+combined_rcx_network = updateNodeAttributes(combined_rcx_network, nodeAttributes)
+```
+
+
+
+```{r exportRCX}
+# nodeAttributes = combined_rcx_network$nodeAttributes
+# nodeAttributes = nodeAttributes[nodeAttributes$name %in% c("occurrence","DE", "GSM615195","GSM615195_score","GSM615195_expression","GSM615195_level"),]
+# 
+# combined_rcx_network$nodeAttributes = nodeAttributes
+# combined_rcx_network$nodeAttributes = NULL
+# combined_rcx_network$networkAttributes = NULL
+# combined_rcx_network = updateMetaData(combined_rcx_network)
+
+distance = 80
+catesianLayout = createCartesianLayout(
+  combined_rcx_network$nodes$id, 
+  x = rep(seq(0,19)*distance,21)[1:length(combined_rcx_network$nodes$id)],
+  y = rep(seq(0,20)*distance,each=20)[1:length(combined_rcx_network$nodes$id)]
+)
+combined_rcx_network = updateCartesianLayout(combined_rcx_network, catesianLayout)
+
+writeCX(combined_rcx_network, "tmp/CombinedNetwork.cx")
+```
 
 
 
