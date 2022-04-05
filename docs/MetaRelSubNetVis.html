@@ -276,8 +276,11 @@ function toggle_visibility(id1) {
 The previously created and to the NDEx uploaded network contains all the necessary information and description of the data attribute.
 It is available on NDEx as “Combined patient-specific breast cancer subnetworks” at <a href="https://www.ndexbio.org/viewer/networks/a420aaee-4be9-11ec-b3be-0ac135e8bacf" class="uri">https://www.ndexbio.org/viewer/networks/a420aaee-4be9-11ec-b3be-0ac135e8bacf</a></p>
 <p>The MetaRelSubNetVis website is available at <a href="https://frankkramer-lab.github.io/MetaRelSubNetVis" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis</a>:</p>
-<p><img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/home.png" alt="Shareable visualization of interactive patient comparison on MetaRelSubNetVis" />
-With MetaRelSubNetVis we provide a visualization tool that allows users to inspect differences between two groups of patients by directly loading the network from the NDEx platform.
+<div class="figure">
+<img src="img/MetaRelSubNetVis/home.png" alt="" />
+<p class="caption">Shareable visualization of interactive patient comparison on MetaRelSubNetVis</p>
+</div>
+<p>With MetaRelSubNetVis we provide a visualization tool that allows users to inspect differences between two groups of patients by directly loading the network from the NDEx platform.
 Our previous network is already available as sample network on the website, but NDEx platform can be queried for any other publicly available networks.
 Additionaly, the network not only has to be set to be public, but explicitly marked as searchable to be found by the search.</p>
 </div>
@@ -326,7 +329,7 @@ The following are required for each patient:</p>
 <h1><span class="header-section-number">3</span> Interactive exploration</h1>
 <p>Clicking the “Open the app with this network” for the “Combined patient-specific breast cancer subnetworks” will open it in for exploration:</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/without-selection.png" alt="" />
+<img src="img/MetaRelSubNetVis/without-selection.png" alt="" />
 <p class="caption">“Combined patient-specific breast cancer subnetworks” network loaded in MetaRelSubNetVis <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=1&amp;cT=1&amp;cN=1&amp;cL=1&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=1&amp;cT=1&amp;cN=1&amp;cL=1&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <p>By default all nodes are displayed in a concentric layout.
@@ -336,7 +339,7 @@ The graph can also be zoomed in and moved to adjust the investigation of the con
 For the single available patients their cancer subtype is displayed along their identifier.
 Selecting for example the patient GSM615368 with Basal cancer subtype from the metastatic group displays only the relevant genes to this subnetwork.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient-gel-rel.png" alt="" />
+<img src="img/MetaRelSubNetVis/one-patient-gel-rel.png" alt="" />
 <p class="caption">Visualization of patient GSM615368 colored by gene expression level and sized by relevance score <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <p>By default the subnetwork is colored by its gene expression level, and sized by the relevance score.
@@ -344,7 +347,7 @@ The results of the molecular tumor board analysis are marked by a green border a
 The coloring and sizing of the nodes can easily be adjusted, for example by changing it to gene expression and relevance score respectively.
 The displayed nodes can be filtered to lie above a certain threshold.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient-rel-ge.png" alt="" />
+<img src="img/MetaRelSubNetVis/one-patient-rel-ge.png" alt="" />
 <p class="caption">Visualization of patient GSM615368 colored by relevance score and sized by gene expression, and adjusted threshold <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00037401755&amp;col=2&amp;size=0&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00037401755&amp;col=2&amp;size=0&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <div style="page-break-after: always;"></div>
@@ -355,7 +358,7 @@ the selected genes still represent the top 140 relevant genes.</p>
 Since not being relevant to this subnetwork, they are displayed in gray.
 The adjustment of the threshold (although here reset to include all relevant genes) then still includes otherwise no longer applicable nodes as default gray nodes.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient-ge-rel-all.png" alt="" />
+<img src="img/MetaRelSubNetVis/one-patient-ge-rel-all.png" alt="" />
 <p class="caption">Visualization of patient GSM615368 colored by gene expression and sized by relevance score including genes present in remaining subnetworks <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;sel=3406,1106&amp;col=1&amp;size=1&amp;all=true&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;sel=3406,1106&amp;col=1&amp;size=1&amp;all=true&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <p>Additionally the available nodes can searched and highlited within the graph.
@@ -364,27 +367,27 @@ All the adjacent edges are highlighted as well to put focus on the interaction w
 Gene only present in the patient of one group are colored gray for the other group.
 The size of the nodes is set to small for nodes only present in one group and double the size when present in both groups to make it easily distinguishable.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/two-patients.png" alt="" />
+<img src="img/MetaRelSubNetVis/two-patients.png" alt="" />
 <p class="caption">Comparative visualization of patient GSM615368 and GSM615184 colored by relevance score <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <p>However, it is also possible to only display the nodes shared between both patients.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/two-patients-only-shared.png" alt="" />
+<img src="img/MetaRelSubNetVis/two-patients-only-shared.png" alt="" />
 <p class="caption">Comparative visualization of common genes between patient GSM615368 and GSM615184 colored by relevance score <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <p>Disselecting the patient from the metastatic group leaves only the remaining patient visualized, here with marked genes <code>MYC</code> and <code>CCND1</code>.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient2.png" alt="" />
+<img src="img/MetaRelSubNetVis/one-patient2.png" alt="" />
 <p class="caption">Visualization of patient GSM615184 colored by relevance score and sized by gene expression <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 <p>The visualizations generated by setting the various parameters can easily exported as images in different formats for further use or publication.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/image-export.png" alt="" />
+<img src="img/MetaRelSubNetVis/image-export.png" alt="" />
 <p class="caption">Image export options</p>
 </div>
 <p>The exported image in PNG format with transparent background from the current visualized network then can be included everywhere, even here:</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/patient2-GSM615184.PNG" alt="" />
+<img src="img/MetaRelSubNetVis/patient2-GSM615184.PNG" alt="" />
 <p class="caption">Shareable visualization of interactive patient comparison on MetaRelSubNetVis <br/>(<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;dwn=true&amp;img=PNG,1,true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;dwn=true&amp;img=PNG,1,true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
 </div>
 </div>
@@ -397,13 +400,13 @@ Sharing the visualization only as images omits much of the otherwise included in
 One can generate links for sharing a specific subnetwork including the settings from current visualization.<br />
 Furthermore it is possible to set the options for automatic image download or display of the sidebar and its components.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/link-generator1.png" alt="" />
+<img src="img/MetaRelSubNetVis/link-generator1.png" alt="" />
 <p class="caption">Exported PNG image of patient GSM615184 colored by relevance score and sized by gene expression with transparend background</p>
 </div>
 <div style="page-break-after: always;"></div>
 <p>The current visualization is summarized to comprehend and review the current settings.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/link-generator2.png" alt="" />
+<img src="img/MetaRelSubNetVis/link-generator2.png" alt="" />
 <p class="caption">Set options for image download or display of the sidebar and its components</p>
 </div>
 <div style="page-break-after: always;"></div>

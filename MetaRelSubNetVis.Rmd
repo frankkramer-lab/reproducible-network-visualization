@@ -36,7 +36,8 @@ It is available on NDEx as "Combined patient-specific breast cancer subnetworks"
 
 The MetaRelSubNetVis website is available at https://frankkramer-lab.github.io/MetaRelSubNetVis:
 
-![Shareable visualization of interactive patient comparison on MetaRelSubNetVis](img/MetaRelSubNetVis/home.png)
+![Shareable visualization of interactive patient comparison on MetaRelSubNetVis](docs/img/MetaRelSubNetVis/home.png)
+
 With MetaRelSubNetVis we provide a visualization tool that allows users to inspect differences between two groups of patients by directly loading the network from the NDEx platform.
 Our previous network is already available as sample network on the website, but NDEx platform can be queried for any other publicly available networks.
 Additionaly, the network not only has to be set to be public, but explicitly marked as searchable to be found by the search.
@@ -81,7 +82,7 @@ Furthermore the property name contains the network's name (property `name`) that
 
 Clicking the "Open the app with this network" for the "Combined patient-specific breast cancer subnetworks" will open it in for exploration:
 
-!["Combined patient-specific breast cancer subnetworks" network loaded in MetaRelSubNetVis <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&col=0&size=1&all=false&shared=false&mtb=true&sb=0&cP=1&cT=1&cN=1&cL=1&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/without-selection.png)
+!["Combined patient-specific breast cancer subnetworks" network loaded in MetaRelSubNetVis <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&col=0&size=1&all=false&shared=false&mtb=true&sb=0&cP=1&cT=1&cN=1&cL=1&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/without-selection.png)
 
 By default all nodes are displayed in a concentric layout.
 The graph is interactive, meaning the nodes are draggable and preserve their position, even when the patient selection or visualization parameters change.
@@ -91,14 +92,14 @@ A specific patient can be investigated by selecting one from the metastatic or n
 For the single available patients their cancer subtype is displayed along their identifier.
 Selecting for example the patient GSM615368 with Basal cancer subtype from the metastatic group displays only the relevant genes to this subnetwork.
 
-![Visualization of patient GSM615368 colored by gene expression level and sized by relevance score <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00029828155&col=0&size=1&all=false&shared=false&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/one-patient-gel-rel.png)
+![Visualization of patient GSM615368 colored by gene expression level and sized by relevance score <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00029828155&col=0&size=1&all=false&shared=false&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/one-patient-gel-rel.png)
 
 By default the subnetwork is colored by its gene expression level, and sized by the relevance score.
 The results of the molecular tumor board analysis are marked by a green border around the corresponding nodes.
 The coloring and sizing of the nodes can easily be adjusted, for example by changing it to gene expression and relevance score respectively.
 The displayed nodes can be filtered to lie above a certain threshold.
 
-![Visualization of patient GSM615368 colored by relevance score and sized by gene expression, and adjusted threshold <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00037401755&col=2&size=0&all=false&shared=false&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/one-patient-rel-ge.png)
+![Visualization of patient GSM615368 colored by relevance score and sized by gene expression, and adjusted threshold <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00037401755&col=2&size=0&all=false&shared=false&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/one-patient-rel-ge.png)
 
 \newpage
 
@@ -110,7 +111,7 @@ To display the subnetwork in the context of all genes combined by all patients, 
 Since not being relevant to this subnetwork, they are displayed in gray.
 The adjustment of the threshold (although here reset to include all relevant genes) then still includes otherwise no longer applicable nodes as default gray nodes.
 
-![Visualization of patient GSM615368 colored by gene expression and sized by relevance score including genes present in remaining subnetworks <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00029828155&sel=3406,1106&col=1&size=1&all=true&shared=false&mtb=true&sb=0&cP=0&cT=1&cN=0&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/one-patient-ge-rel-all.png)
+![Visualization of patient GSM615368 colored by gene expression and sized by relevance score including genes present in remaining subnetworks <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00029828155&sel=3406,1106&col=1&size=1&all=true&shared=false&mtb=true&sb=0&cP=0&cT=1&cN=0&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/one-patient-ge-rel-all.png)
 
 Additionally the available nodes can searched and highlited within the graph.
 All the adjacent edges are highlighted as well to put focus on the interaction with the remaining nodes.
@@ -119,23 +120,23 @@ Selecting an aditional patient from the non-metastatic group, e.g. GSM615184, as
 Gene only present in the patient of one group are colored gray for the other group.
 The size of the nodes is set to small for nodes only present in one group and double the size when present in both groups to make it easily distinguishable.
 
-![Comparative visualization of patient GSM615368 and GSM615184 colored by relevance score <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&pb=GSM615184&th=0.00031651055&sel=3406,1106&col=2&size=1&all=false&shared=false&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/two-patients.png)
+![Comparative visualization of patient GSM615368 and GSM615184 colored by relevance score <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&pb=GSM615184&th=0.00031651055&sel=3406,1106&col=2&size=1&all=false&shared=false&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/two-patients.png)
 
 However, it is also possible to only display the nodes shared between both patients.
 
-![Comparative visualization of common genes between patient GSM615368 and GSM615184 colored by relevance score <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&pb=GSM615184&th=0.00031651055&sel=3406,1106&col=2&size=1&all=false&shared=true&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/two-patients-only-shared.png)
+![Comparative visualization of common genes between patient GSM615368 and GSM615184 colored by relevance score <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&pb=GSM615184&th=0.00031651055&sel=3406,1106&col=2&size=1&all=false&shared=true&mtb=true&sb=0&cP=0&cT=0&cN=1&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/two-patients-only-shared.png)
 
 Disselecting the patient from the metastatic group leaves only the remaining patient visualized, here with marked genes `MYC` and `CCND1`.
 
-![Visualization of patient GSM615184 colored by relevance score and sized by gene expression <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pb=GSM615184&th=0.00030449335&sel=1016,1251&col=2&size=1&all=false&shared=true&mtb=true&sb=0&cP=0&cT=1&cN=0&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/one-patient2.png)
+![Visualization of patient GSM615184 colored by relevance score and sized by gene expression <br/> (https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pb=GSM615184&th=0.00030449335&sel=1016,1251&col=2&size=1&all=false&shared=true&mtb=true&sb=0&cP=0&cT=1&cN=0&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/one-patient2.png)
 
 The visualizations generated by setting the various parameters can easily exported as images in different formats for further use or publication.
 
-![Image export options](img/MetaRelSubNetVis/image-export.png)
+![Image export options](docs/img/MetaRelSubNetVis/image-export.png)
 
 The exported image in PNG format with transparent background from the current visualized network then can be included everywhere, even here:
 
-![Shareable visualization of interactive patient comparison on MetaRelSubNetVis <br/>(https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pb=GSM615184&th=0.00030449335&sel=1016,1251&col=2&size=1&all=false&shared=true&mtb=true&dwn=true&img=PNG,1,true&sb=0&cP=0&cT=1&cN=0&cL=0&cD=1&cG=1&cIm=1)](img/MetaRelSubNetVis/patient2-GSM615184.PNG)
+![Shareable visualization of interactive patient comparison on MetaRelSubNetVis <br/>(https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pb=GSM615184&th=0.00030449335&sel=1016,1251&col=2&size=1&all=false&shared=true&mtb=true&dwn=true&img=PNG,1,true&sb=0&cP=0&cT=1&cN=0&cL=0&cD=1&cG=1&cIm=1)](docs/img/MetaRelSubNetVis/patient2-GSM615184.PNG)
 
 
 # Sharing the network by visualization link
@@ -148,13 +149,13 @@ MetaRelSubNetVis combines both to an advanced, but simple to use web-based visua
 One can generate links for sharing a specific subnetwork including the settings from current visualization.  
 Furthermore it is possible to set the options for automatic image download or display of the sidebar and its components.
 
-![Exported PNG image of patient GSM615184 colored by relevance score and sized by gene expression with transparend background](img/MetaRelSubNetVis/link-generator1.png)
+![Exported PNG image of patient GSM615184 colored by relevance score and sized by gene expression with transparend background](docs/img/MetaRelSubNetVis/link-generator1.png)
 
 \newpage
 
 The current visualization is summarized to comprehend and review the current settings.
 
-![Set options for image download or display of the sidebar and its components](img/MetaRelSubNetVis/link-generator2.png)
+![Set options for image download or display of the sidebar and its components](docs/img/MetaRelSubNetVis/link-generator2.png)
 
 \newpage
 
