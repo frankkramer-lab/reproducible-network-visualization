@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2022-03-30" />
+
+<title>Data Exploration and Preparation</title>
+
+<script src="SoftwareRequirements_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="SoftwareRequirements_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="SoftwareRequirements_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="SoftwareRequirements_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="SoftwareRequirements_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="SoftwareRequirements_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="SoftwareRequirements_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="SoftwareRequirements_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="SoftwareRequirements_files/navigation-1.1/tabsets.js"></script>
+<link href="SoftwareRequirements_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="SoftwareRequirements_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Exploration and Preparation</h1>
+<p class="author-name">Florian J. Auer<span class="affil-mark">1</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>IT-Infrastructure for Translational Medical Research, University of Augsburg</p>
+<h4 class="date">03/30/2022</h4>
+
+</div>
+
+
+<ul>
+<li><a href="Overview.html">Overview</a> <em>A short introduction</em>
+<ul>
+<li><a href="SoftwareRequirements.html">Software requirements</a> <em>Installation of required packages</em></li>
+<li><a href="Ndexr.html">ndexr</a> <em>ndexr - interface with the network data exchange (NDEx)</em></li>
+<li><a href="RCX.html">RCX</a> <em>RCX - R implementation of the Cytoscape Exchange (CX) format</em></li>
+</ul></li>
+<li><a href="DataExplorationAndPreparation.html">Data Exploration and Preparation</a> <em>Loading the source data, explore the content and prepare the data for its usage</em></li>
+<li><a href="DataIntegration.html">Data Integration</a> <em>Combine the network data with patient information, gene expression and relevance score</em></li>
+<li><a href="Visualization.html">Visualization</a> <em>Explore different ways of visualizing the networks</em>
+<ul>
+<li><a href="MetaRelSubNetVis.html">MetaRelSubNetVis</a> <em>Comparative web-based visualization</em></li>
+<li><a href="NDExEdit.html">NDExEdit</a> <em>Web-based data-dependant visualization with NDExEdit</em></li>
+<li><a href="RCXvis.html">RCX based</a> <em>R-based visualization with the RCX package</em></li>
+<li><a href="CytoscapeAndRCy3.html">Cytoscape and RCy3</a> <em>Using the RCy3 package to remotly control Cytoscape</em></li>
+</ul></li>
+</ul>
+<div id="ndexr" class="section level1">
+<h1><span class="header-section-number">1</span> ndexr</h1>
+<p>Installation via Bioconductor:</p>
+<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;)
+BiocManager::install(&quot;ndexr&quot;)
+
+library(ndexr)</code></pre>
+</div>
+<div id="rcx" class="section level1">
+<h1><span class="header-section-number">2</span> RCX</h1>
+<p>For installing packages from github the <code>devtools</code> package is the most common approach.
+However, it requires XML libraries installed on the system which can cause problems while installation due to unmet dependencies.
+The <code>remotes</code> package covers the functionality to download and install R packages stored in ‘GitHub’, ‘GitLab’, ‘Bitbucket’, ‘Bioconductor’, or plain ‘subversion’ or ‘git’ repositories without depending on XML libraries.
+If <code>devtools</code> is already installed, of course it can be used, otherwise it is recommended to use the lightweight <code>remotes</code> package.</p>
+<div id="from-bioconductor" class="section level2">
+<h2><span class="header-section-number">2.1</span> From Bioconductor:</h2>
+<pre class="r"><code>if (!&quot;BiocManager&quot; %in% installed.packages()) {
+    install.packages(&quot;BiocManager&quot;)
+}
+if (!&quot;RCX&quot; %in% installed.packages()) {
+    BiocManager::install(&quot;RCX&quot;)
+}
+library(RCX)</code></pre>
+</div>
+<div id="from-github-using-remotes" class="section level2">
+<h2><span class="header-section-number">2.2</span> From github using remotes:</h2>
+<pre class="r"><code>if (!&quot;remotes&quot; %in% installed.packages()) {
+    install.packages(&quot;remotes&quot;)
+}
+if (!&quot;RCX&quot; %in% installed.packages()) {
+    remotes::install_github(&quot;frankkramer-lab/RCX&quot;)
+}
+library(RCX)</code></pre>
+</div>
+<div id="from-github-using-devtools" class="section level2">
+<h2><span class="header-section-number">2.3</span> From github using devtools:</h2>
+<pre class="r"><code>if (!&quot;devtools&quot; %in% installed.packages()) {
+    install.packages(&quot;devtools&quot;)
+}
+if (!&quot;RCX&quot; %in% installed.packages()) {
+    devtools::install_github(&quot;frankkramer-lab/RCX&quot;)
+}
+library(RCX)</code></pre>
+<div class="pagination">
+<div class="prev">
+Previous: <a href="Overview.html">Overview</a>
+</div>
+<div class="curr">
+Software requirements
+</div>
+<div class="next">
+Next: <a href="Ndexr.html">ndexr</a>
+</div>
+</div>
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1><span class="header-section-number">3</span> Session info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.0.3 (2020-10-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.3 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
+##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
+##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
+## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+## 
+## loaded via a namespace (and not attached):
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
+##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
+## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
+## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
+## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
+## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
+## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
+## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
+## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

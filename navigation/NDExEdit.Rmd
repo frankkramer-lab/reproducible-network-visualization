@@ -1,0 +1,5 @@
+<div class="pagination">
+<div class="prev">Previous: [MetaRelSubNetVis](MetaRelSubNetVis.html)</div>
+<div class="curr">NDExEdit</div>
+<div class="next">Next: [RCX based](RCXvis.html)</div>
+</div>

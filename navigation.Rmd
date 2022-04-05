@@ -1,0 +1,62 @@
+---
+title: "navigation"
+author: 
+  - name: Florian J. Auer
+    url: https://github.com/florian-j-auer
+    affiliation: IT-Infrastructure for Translational Medical Research, University of Augsburg
+    affiliation_url: https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/
+date: "03/30/2022"
+output: 
+  BiocStyle::html_document:
+    css: custom.css
+    self_contained: no
+    toc: yes
+    toc_float: yes
+  BiocStyle::pdf_document:
+    toc: yes
+
+---
+
+```{r}
+pages = yaml::read_yaml("navigation.yml")
+
+generateRMD = function(pages, indent=0){
+  iC = "  "
+  results = c()
+  for(p in pages){
+    results = c(results, paste0(rep(iC, indent),"- [",p$title, "](",p$file,".html) ",p$description,"\n"))
+    if(!is.null(p$subpages)) results = c(results, generateRMD(p$subpages))
+  }
+  return(results)
+}
+
+sink("navigation/navigation.Rmd")
+cat(paste(generateRMD(pages)))
+sink()
+
+generateLinks = function(pages){
+  results = c()
+  for(p in pages){
+    results = c(results, paste0("[",p$title, "](",p$file,".html)\n"))
+    if(!is.null(p$subpages)) results = c(results, generateRMD(p$subpages))
+  }
+  return(results)
+}
+
+links = generateLinks(pages)
+counter = 1
+generateFiles = function(pages, total){
+  for(p in pages){
+    sink(paste0("navigation/",p$file,".Rmd"))
+    if(counter != 1) cat(paste0("- Previous: ",links[counter-1]))
+    cat(paste0("- ", p$title))
+    if(counter != total) cat(paste0("- Next: ",links[counter+1]))
+    sink()
+    if(!is.null(p$subpages)) generateFiles(p$subpages, total)
+  }
+  counter = counter + 1
+}
+
+generateFiles(pages, length(pages))
+
+```

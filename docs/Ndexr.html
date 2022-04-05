@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2022-03-30" />
+
+<title>ndexr - interface with the network data exchange (NDEx)</title>
+
+<script src="Ndexr_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Ndexr_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="Ndexr_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Ndexr_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Ndexr_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Ndexr_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="Ndexr_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Ndexr_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Ndexr_files/navigation-1.1/tabsets.js"></script>
+<link href="Ndexr_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="Ndexr_files/highlightjs-9.12.0/highlight.js"></script>
+<script src="Ndexr_files/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="Ndexr_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="Ndexr_files/datatables-binding-0.21/datatables.js"></script>
+<link href="Ndexr_files/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="Ndexr_files/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="Ndexr_files/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="Ndexr_files/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="Ndexr_files/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">ndexr - interface with the network data exchange (NDEx)</h1>
+<p class="author-name">Florian J. Auer<span class="affil-mark">1</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>IT-Infrastructure for Translational Medical Research, University of Augsburg</p>
+<h4 class="date">03/30/2022</h4>
+
+</div>
+
+
+<ul>
+<li><a href="Overview.html">Overview</a> <em>A short introduction</em>
+<ul>
+<li><a href="SoftwareRequirements.html">Software requirements</a> <em>Installation of required packages</em></li>
+<li><a href="Ndexr.html">ndexr</a> <em>ndexr - interface with the network data exchange (NDEx)</em></li>
+<li><a href="RCX.html">RCX</a> <em>RCX - R implementation of the Cytoscape Exchange (CX) format</em></li>
+</ul></li>
+<li><a href="DataExplorationAndPreparation.html">Data Exploration and Preparation</a> <em>Loading the source data, explore the content and prepare the data for its usage</em></li>
+<li><a href="DataIntegration.html">Data Integration</a> <em>Combine the network data with patient information, gene expression and relevance score</em></li>
+<li><a href="Visualization.html">Visualization</a> <em>Explore different ways of visualizing the networks</em>
+<ul>
+<li><a href="MetaRelSubNetVis.html">MetaRelSubNetVis</a> <em>Comparative web-based visualization</em></li>
+<li><a href="NDExEdit.html">NDExEdit</a> <em>Web-based data-dependant visualization with NDExEdit</em></li>
+<li><a href="RCXvis.html">RCX based</a> <em>R-based visualization with the RCX package</em></li>
+<li><a href="CytoscapeAndRCy3.html">Cytoscape and RCy3</a> <em>Using the RCy3 package to remotly control Cytoscape</em></li>
+</ul></li>
+</ul>
+<div id="load-libraries" class="section level1">
+<h1><span class="header-section-number">1</span> Load libraries</h1>
+<pre class="r"><code>library(ndexr)
+library(RCX)</code></pre>
+</div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">2</span> Introduction</h1>
+<p>The Network Data Exchange, or NDEx, is an open-source software framework
+to manipulate, store and exchange networks of various types and formats (Pratt et al., 2015, Cell Systems 1, 302-305, October 28, 2015 ©2015 Elsevier Inc. <a href="http://www.sciencedirect.com/science/article/pii/S2405471215001477">ScienceDirect</a>).
+NDEx can be used to upload, share and publicly distribute networks, while providing
+an output in formats, that can be used by plenty of other applications.</p>
+<p>This package provides an interface to query the public NDEx server (<a href="https://www.ndexbio.org/" class="uri">https://www.ndexbio.org/</a>), as well as private installations, in order to upload, download or modify biological networks.</p>
+<p>This document aims to help the user to install and benefit from the
+wide range of funtionality of this implementation.
+The package also provides classes to implement the Cytoscape
+Cyberinfrastructure (CX) Format and to extend the [iGraph Package] (<a href="http://igraph.org/r/" class="uri">http://igraph.org/r/</a>).</p>
+<p>ndexr is compatible with both NDEx API versions 1.3 and 2.0.</p>
+<p>For a complete documentation see the package vignette and reference manual at Bioconductor:</p>
+<p><a href="https://bioconductor.org/packages/ndexr" class="uri">https://bioconductor.org/packages/ndexr</a></p>
+</div>
+<div id="quick-start" class="section level1">
+<h1><span class="header-section-number">3</span> Quick Start</h1>
+<p>Some short overview of the most important functions:</p>
+<pre class="r"><code>## login to the NDEx server
+ndexcon &lt;- ndex_connect(&quot;username&quot;, &quot;password&quot;)</code></pre>
+<pre class="r"><code>## search the networks for &#39;EGFR&#39;
+networks &lt;- ndex_find_networks(ndexcon, &quot;EGFR&quot;)
+
+## UUID of the first search result
+networkId &lt;- networks[1, &quot;externalId&quot;]
+
+## get summary of the network
+networkSummary &lt;- ndex_network_get_summary(ndexcon, networkId)
+
+## get the entire network as RCX object
+rcx &lt;- ndex_get_network(ndexcon, networkId)
+
+## remove NDEx artefacts from network
+rcx &lt;- rcx_asNewNetwork(rcx)
+
+## do some fancy stuff with the network, then update
+## the meta-data
+rcx &lt;- rcx_updateMetaData(rcx)</code></pre>
+<pre class="r"><code>## upload network as a new network to the NDEx server
+networkId &lt;- ndex_create_network(ndexcon, rcx)
+
+## do some other fancy stuff with the network, then
+## update the network on the server
+networkId &lt;- ndex_update_network(ndexcon, rcx)
+
+## realize, you did bad things to the poor network, so
+## better delete it on the server
+ndex_delete_network(ndexcon, networkId)</code></pre>
+</div>
+<div id="connect-to-a-server" class="section level1">
+<h1><span class="header-section-number">4</span> Connect to a server</h1>
+<p>First, establish an connection to the NDEx server. This object is
+required for most of the other ndexr functions, because it stores
+options and authentication details. It is possible to connect to the
+server anonymously or provide a username and password to enable further
+functionality.</p>
+<pre class="r"><code>## connect anonymously
+ndexcon &lt;- ndex_connect()
+
+## log in with user name and password
+ndexconUser &lt;- ndex_connect(username = &quot;username&quot;, password = &quot;password&quot;)</code></pre>
+<p>This package is developed following the structure of the documented api structure.
+For complete description of the NDEx server api see <a href="http://www.home.ndexbio.org/using-the-ndex-server-api/"><em>http://www.home.ndexbio.org/using-the-ndex-server-api/</em></a>. The R functions are named by the category, context and function they fulfill.
+In the following, the usage is described in detail, and hopefully gives a better understanding of logic behind the naming convention of this package.</p>
+</div>
+<div id="find-networks" class="section level1">
+<h1><span class="header-section-number">5</span> Find Networks</h1>
+<p>To explore or search the networks on an NDEx server, this package offers a function to retrieve a list of networks from the server.
+It is possible to restrict the networks to a specific search string (e.g. “EGFR”), an account name (only networks of this account will be shown), or limit the number of fetched networks.</p>
+<pre class="r"><code>## list networks on server
+networks &lt;- ndex_find_networks(ndexcon)
+## same as previous
+networks &lt;- ndex_find_networks(ndexcon, start = 0, size = 5)
+
+## search for &#39;EGFR&#39;
+networksEgfr &lt;- ndex_find_networks(ndexcon, searchString = &quot;EGFR&quot;)
+## same as previous
+networksEgfr &lt;- ndex_find_networks(ndexcon, &quot;EGFR&quot;)
+
+## same as previous
+networksOfUser &lt;- ndex_find_networks(ndexcon, accountName = &quot;ndextutorials&quot;)</code></pre>
+<p>As result you get a data.frame containing information of the networks.</p>
+<pre class="r"><code>names(networks)</code></pre>
+<pre><code>##  [1] &quot;ownerUUID&quot;        &quot;isReadOnly&quot;       &quot;subnetworkIds&quot;    &quot;isValid&quot;          &quot;warnings&quot;         &quot;isShowcase&quot;       &quot;isCertified&quot;     
+##  [8] &quot;indexLevel&quot;       &quot;hasLayout&quot;        &quot;hasSample&quot;        &quot;cxFileSize&quot;       &quot;cx2FileSize&quot;      &quot;visibility&quot;       &quot;nodeCount&quot;       
+## [15] &quot;edgeCount&quot;        &quot;version&quot;          &quot;completed&quot;        &quot;owner&quot;            &quot;description&quot;      &quot;name&quot;             &quot;properties&quot;      
+## [22] &quot;externalId&quot;       &quot;isDeleted&quot;        &quot;modificationTime&quot; &quot;creationTime&quot;</code></pre>
+<pre class="r"><code>print(networks[, c(&quot;name&quot;, &quot;externalId&quot;)])</code></pre>
+<div id="htmlwidget-830415bd37d0a91b3aef" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-830415bd37d0a91b3aef">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["San Diego Research Connectivity Map (Top Journals)","San Diego Research Connectivity Map","covid19","painmachine","rasmachine"],["9936b382-b06f-11ec-b3be-0ac135e8bacf","c2751109-b08a-11ec-b3be-0ac135e8bacf","a8c0decc-6bbb-11ea-bfdc-0ac135e8bacf","e1e5963a-eb0e-11e9-bb65-0ac135e8bacf","cdba5bd5-5195-11e9-9f06-0ac135e8bacf"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>externalId<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="simple-network-operations" class="section level1">
+<h1><span class="header-section-number">6</span> Simple network operations</h1>
+<p>To both, users and networks stored on an NDEx server, a universally
+unique identifier (UUID) is assigned. Although both have the same format
+(i.e. “xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”, where x is one of
+<code>[a-z0-9]</code>), it has to be distinguished between the user UUID and the
+network UUID, but the difference is obvious by the context. Within RCX
+objects and search results, the network UUID is also referred to as
+“externalId” (see previous section). This UUID can be
+used to access a network on the server and retrieve just a summary of
+the network (similar to the results of a network search) or even the
+entire network as RCX object (see next section).</p>
+<p>Since networks can contain many nodes and edges, and a huge amount of other
+attributes, it is typically advisable to first get a network summary, to
+check the node and edge counts for a network before retrieving the
+entire network. Thereby the structure of the network summary is similar
+the structure of the network list</p>
+<pre class="r"><code>## UUID of the first search result
+networkId &lt;- networksOfUser[1, &quot;externalId&quot;]
+
+## get network summary
+networkSummary &lt;- ndex_network_get_summary(ndexcon, networkId)
+
+names(networkSummary)</code></pre>
+<pre><code>##  [1] &quot;ownerUUID&quot;        &quot;isReadOnly&quot;       &quot;subnetworkIds&quot;    &quot;isValid&quot;          &quot;warnings&quot;         &quot;isShowcase&quot;       &quot;isCertified&quot;     
+##  [8] &quot;indexLevel&quot;       &quot;hasLayout&quot;        &quot;hasSample&quot;        &quot;cxFileSize&quot;       &quot;cx2FileSize&quot;      &quot;visibility&quot;       &quot;nodeCount&quot;       
+## [15] &quot;edgeCount&quot;        &quot;version&quot;          &quot;completed&quot;        &quot;owner&quot;            &quot;description&quot;      &quot;name&quot;             &quot;properties&quot;      
+## [22] &quot;externalId&quot;       &quot;isDeleted&quot;        &quot;modificationTime&quot; &quot;creationTime&quot;</code></pre>
+<pre class="r"><code>networkSummary[c(&quot;name&quot;, &quot;externalId&quot;)]</code></pre>
+<pre><code>## $name
+## [1] &quot;Metabolism&quot;
+## 
+## $externalId
+## [1] &quot;3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb&quot;</code></pre>
+<pre class="r"><code>## get the entire network as RCX object
+rcx &lt;- ndex_get_network(ndexcon, networkId)</code></pre>
+<p>To send a network to an server, there are two possibilities. Either one
+wants to update an existing network on the server or create a new one.
+In both cases, a UUID is returned, either of the updated network or a
+newly generated one for the created network. For updating a network, the
+UUID is extracted from the “externalId” property of the “ndexStatus”
+aspect, or can be set manually.</p>
+<pre class="r"><code>## create a new network on server
+networkId &lt;- ndex_create_network(ndexcon, rcx)
+
+## update a network on server
+networkId &lt;- ndex_update_network(ndexcon, rcx)
+
+## same as previous
+networkId &lt;- ndex_update_network(ndexcon, rcx, networkId)</code></pre>
+<p>Besides creating, reading and updating, it is also possible to delete
+networks on the server. This operation cannot be undone, so be careful!</p>
+<pre class="r"><code>## deletes the network from the server
+ndex_delete_network(ndexcon, networkId)</code></pre>
+</div>
+<div id="example-workflow" class="section level1">
+<h1><span class="header-section-number">7</span> Example Workflow</h1>
+<p>This example workflow shows how to connect to the public NDEx server, browse and retrieve the pathways of the Pathway Interaction Database of the NCI which are hosted there.</p>
+<pre class="r"><code>## load the library!
+library(ndexr)
+
+## login to the NDEx server
+ndexcon &lt;- ndex_connect()
+
+## retrieve pathways of user &#39;nci-pid&#39;
+networks_pid &lt;- ndex_find_networks(ndexcon, accountName = &quot;nci-pid&quot;)
+
+## list retrieved network information
+networks_pid[, &quot;name&quot;]
+
+## show information on the first pathways listed
+networks_pid[1, ]
+
+## retrieve network data
+mynetwork &lt;- ndex_get_network(ndexcon, networks_pid[1, &quot;externalId&quot;])</code></pre>
+<p>This code snippet starts with loading the ndexr library and connecting to the server anonymously.
+Afterwards <code>ndex_find_networks</code> retrieves a list of networks of user <code>nci-pid</code>, which contains the data of the Pathway Interaction Database. The function <code>ndex_get_network</code> downloads the network data and stores in the <code>RCX</code> format.</p>
+</div>
+<div id="aspects-and-metadata" class="section level1">
+<h1><span class="header-section-number">8</span> Aspects and Metadata</h1>
+<p>In general it is not advisable to retrieve a complete RCX object from a
+server without knowing the number of aspects and its corresponding size,
+because this may cause unwanted or unnecessary network traffic and
+decline in performance. To avoid these problems, a possible workflow is
+to download the meta-data of a network at first to check the available
+aspects.</p>
+<pre class="r"><code>## get meta-data for a network
+metadata &lt;- ndex_network_get_metadata(ndexcon, networkId)
+
+names(metadata)</code></pre>
+<pre><code>## [1] &quot;name&quot;         &quot;elementCount&quot; &quot;version&quot;      &quot;idCounter&quot;</code></pre>
+<pre class="r"><code>print(metadata[c(&quot;name&quot;, &quot;elementCount&quot;)])</code></pre>
+<div id="htmlwidget-3ea483ab3a62cc162e8b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3ea483ab3a62cc162e8b">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],["nodeAttributes","cyHiddenAttributes","nodes","networkAttributes","cyTableColumn","cartesianLayout","edgeAttributes","edges","cyVisualProperties","citations","edgeCitations"],[6259,3,6376,7,19,6376,56924,56924,3,2916,44129]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>elementCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Afterwards, only the favored aspects can be downloaded individually.</p>
+<pre class="r"><code>## get aspect &#39;nodeCitations&#39; for the network
+networkAttibutes &lt;- ndex_network_get_aspect(ndexcon, networkId, &quot;networkAttributes&quot;)
+
+print(networkAttibutes)</code></pre>
+<div id="htmlwidget-4d4b48bb6a4f71903dc1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4d4b48bb6a4f71903dc1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["description","version","URI","@context","Source","name","ndex:sourceFormat"],["&lt;b&gt;*** This network is used for tutorial purpose only and will not be updated. ***&lt;/b&gt;","Official","http://identifiers.org/reactome/REACT_111217.4","{\"KEGG GLYCAN\":\"http://identifiers.org/kegg.glycan/\",\"RAT GENOME DATABASE\":\"http://identifiers.org/rgd/\",\"CAZY\":\"http://identifiers.org/cazy/\",\"genbank indentifier\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/genbank_indentifier/\",\"HETEROGEN\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/HETEROGEN/\",\"hprd\":\"http://identifiers.org/hprd/\",\"GENE ONTOLOGY\":\"http://identifiers.org/go/\",\"UniProt Isoform\":\"http://identifiers.org/uniprot.isoform/\",\"sphingomyelin d18\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/sphingomyelin_d18/\",\"mint\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/mint/\",\"biogrid\":\"http://identifiers.org/biogrid/\",\"WIKIPEDIA\":\"http://identifiers.org/wikipedia.en/\",\"HGNC\":\"http://identifiers.org/hgnc/\",\"CHEBI\":\"http://identifiers.org/chebi/\",\"UniProt Knowledgebase\":\"http://identifiers.org/uniprot/\",\"PHARMGKB DRUG\":\"http://identifiers.org/pharmgkb.drug/\",\"Prosite\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/Prosite/\",\"KEGG COMPOUND\":\"http://identifiers.org/kegg.compound/\",\"PDBsum\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/PDBsum/\",\"GENPEPT\":\"http://www.ncbi.nlm.nih.gov/protein/\",\"NCBI GENE\":\"http://identifiers.org/ncbigene/\",\"PUBCHEM-COMPOUND\":\"http://identifiers.org/pubchem.compound/\",\"reactome\":\"http://identifiers.org/reactome/\",\"CHEMICAL NAME\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/CHEMICAL_NAME/\",\"KEGG DRUG\":\"http://identifiers.org/kegg.drug/\",\"ENSEMBL\":\"http://identifiers.org/ensembl/\",\"PROTEIN DATA BANK\":\"http://identifiers.org/pdb/\",\"Pfam\":\"http://identifiers.org/pfam/\",\"HGNC SYMBOL\":\"http://identifiers.org/hgnc.symbol/\",\"amaze\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/amaze/\",\"Smart\":\"http://identifiers.org/smart/\",\"interpro\":\"http://identifiers.org/interpro/\",\"intact\":\"http://identifiers.org/intact/\",\"InChIKey\":\"http://identifiers.org/inchikey/\",\"CAS\":\"http://identifiers.org/cas/\",\"REFSEQ\":\"http://identifiers.org/refseq/\",\"omim\":\"http://identifiers.org/omim/\",\"ENA\":\"http://identifiers.org/ena.embl/\",\"PANTHER Family\":\"http://identifiers.org/panther.family/\",\"nucleotide genbank identifier\":\"http://www.ncbi.nlm.nih.gov/nuccore/\",\"CHEMBL\":\"http://identifiers.org/chembl.compound/\",\"Prints\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/Prints/\",\"vega\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/vega/\",\"DRUGBANK\":\"http://www.drugbank.ca/drugs/\"}","http://purl.org/pc2/6/reactome_human","Metabolism","SIF"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>n<\/th>\n      <th>v<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="ndex-network-properties" class="section level1">
+<h1><span class="header-section-number">9</span> NDEx Network properties</h1>
+<p>Even after creation, it is possible to change the name, the description
+or version of a network.</p>
+<pre class="r"><code>ndex_network_update_profile(
+    ndexcon, networkId, name = &quot;My network&quot;, version = &quot;1.3&quot;
+)
+ndex_network_update_profile(
+    ndexcon, networkId, description = &quot;Nothing to see here&quot;
+)</code></pre>
+<p>For collaborative work, it is necessary to share networks between
+several users and groups. Therefore there are specialized functions to
+grant access to a network, change the permissions and withdraw access
+permissions. It is possible to use those functions on single users or
+groups. Possible permissions are “READ” to have reading access to
+private networks, “WRITE” to be able modify, and “ADMIN” for the owner
+of the network.</p>
+<pre class="r"><code>## show all user who have permission to a network
+permissions &lt;- ndex_network_get_permission(ndexcon, networkId, &quot;user&quot;)
+
+## show all groups who have permission to a network
+permissions &lt;- ndex_network_get_permission(ndexcon, networkId, &quot;group&quot;)
+
+## show all users with write access to a network
+permissions &lt;- ndex_network_get_permission(ndexcon, networkId, &quot;user&quot;, &quot;WRITE&quot;)
+
+## grant an user permission to a network
+ndex_network_update_permission(ndexcon, networkId, user = someUserUuid, &quot;READ&quot;)
+
+## change the permission of an user to the network
+ndex_network_update_permission(ndexcon, networkId, user = someUserUuid, &quot;WRITE&quot;)
+
+## withdraw the permission from an user
+ndex_network_delete_permission(ndexcon, networkId, user = someUserUuid)</code></pre>
+<p>Besides permission management on user and group level, it is also
+possible to set some system properties on a network that influence the
+accessibility further. By default a network is private, which means that
+it is only visible to the owner and invited users and groups. If at some
+point one decides to make the network readable by anyone, it is possible
+to change the visibility of a network to “PUBLIC”.</p>
+<pre class="r"><code>ndex_network_set_systemProperties(ndexcon, networkId, visibility = &quot;PUBLIC&quot;)
+ndex_network_set_systemProperties(ndexcon, networkId, visibility = &quot;PRIVATE&quot;)</code></pre>
+<p>When a network has reached the point to be published, further edits
+should be prevented. While it would be possible to set the access
+permissions of all users and groups to “READ”, this approach is very
+inconvenient. Therefore, a simpler way is to just set the network to
+read-only using the network system properties.</p>
+<pre class="r"><code>ndex_network_set_systemProperties(ndexcon, networkId, readOnly = TRUE)</code></pre>
+<p>One also has the option at the NDEx server to choose a selection of
+their favorite networks for display in his or her home page.</p>
+<pre class="r"><code>ndex_network_set_systemProperties(ndexcon, networkId, showcase = TRUE)
+ndex_network_set_systemProperties(ndexcon, networkId, showcase = FALSE)
+
+# change more than one property simultaneously
+ndex_network_set_systemProperties(
+    ndexcon, networkId, readOnly = TRUE, visibility = &quot;PUBLIC&quot;,
+    showcase = TRUE
+)</code></pre>
+<div class="pagination">
+<div class="prev">
+Previous: <a href="SoftwareRequirements.html">Software requirements</a>
+</div>
+<div class="curr">
+ndexr
+</div>
+<div class="next">
+Next: <a href="RCX.html">RCX</a>
+</div>
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1><span class="header-section-number">10</span> Session info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.0.3 (2020-10-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.3 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
+##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
+##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
+## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+## 
+## loaded via a namespace (and not attached):
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
+##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
+## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
+## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
+## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
+## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
+## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
+## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
+## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

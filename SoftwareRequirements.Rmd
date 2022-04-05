@@ -1,0 +1,102 @@
+---
+title: "Data Exploration and Preparation"
+author: 
+  - name: Florian J. Auer
+    url: https://github.com/florian-j-auer
+    affiliation: IT-Infrastructure for Translational Medical Research, University of Augsburg
+    affiliation_url: https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/
+date: "03/30/2022"
+output: 
+  BiocStyle::html_document:
+    css: custom.css
+    self_contained: no
+    toc: yes
+    toc_float: yes
+  BiocStyle::pdf_document:
+    toc: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=55,
+                                     args.newline = TRUE,
+                                     arrow = TRUE),
+                      tidy=TRUE)
+```
+
+```{r navigation, eval=HTML, results='asis', echo=FALSE}
+res <- knitr::knit_child('navigation/navigation.Rmd', quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+
+# ndexr
+
+Installation via Bioconductor:
+
+```{r ndexrBioconductor, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("ndexr")
+
+library(ndexr)
+```
+
+
+# RCX
+
+For installing packages from github the `devtools` package is the most common approach.
+However, it requires XML libraries installed on the system which can cause problems while installation due to unmet dependencies.
+The `remotes` package covers the functionality to download and install R packages stored in 'GitHub', 'GitLab', 'Bitbucket', 'Bioconductor', or plain 'subversion' or 'git' repositories without depending on XML libraries.
+If `devtools` is already installed, of course it can be used, otherwise it is recommended to use the lightweight `remotes` package.
+
+
+## From Bioconductor:
+
+```{r rcxBioconductor, eval=FALSE}
+if(!"BiocManager" %in% installed.packages()){
+  install.packages("BiocManager")
+}
+if(!"RCX" %in% installed.packages()){
+  BiocManager::install("RCX")
+}
+library(RCX)
+```
+
+## From github using remotes:
+
+```{r rcxGithub, eval=FALSE}
+if(!"remotes" %in% installed.packages()){
+  install.packages("remotes")
+}
+if(!"RCX" %in% installed.packages()){
+  remotes::install_github("frankkramer-lab/RCX")
+}
+library(RCX)
+```
+
+## From github using devtools:
+
+```{r rcxDevtools, eval=FALSE}
+if(!"devtools" %in% installed.packages()){
+  install.packages("devtools")
+}
+if(!"RCX" %in% installed.packages()){
+  devtools::install_github("frankkramer-lab/RCX")
+}
+library(RCX)
+```
+
+
+
+
+```{r navigation2, eval=HTML, results='asis', echo=FALSE}
+res <- knitr::knit_child(HTML_file, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+# Session info
+```{r sessionInfo}
+sessionInfo()
+```
+

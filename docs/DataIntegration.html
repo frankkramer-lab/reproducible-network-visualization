@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2022-03-30" />
+
+<title>Data Integration</title>
+
+<script src="DataIntegration_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="DataIntegration_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="DataIntegration_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="DataIntegration_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="DataIntegration_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="DataIntegration_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="DataIntegration_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="DataIntegration_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="DataIntegration_files/navigation-1.1/tabsets.js"></script>
+<link href="DataIntegration_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="DataIntegration_files/highlightjs-9.12.0/highlight.js"></script>
+<script src="DataIntegration_files/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="DataIntegration_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="DataIntegration_files/datatables-binding-0.21/datatables.js"></script>
+<link href="DataIntegration_files/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="DataIntegration_files/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="DataIntegration_files/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="DataIntegration_files/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="DataIntegration_files/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Integration</h1>
+<p class="author-name">Florian J. Auer<span class="affil-mark">1</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>IT-Infrastructure for Translational Medical Research, University of Augsburg</p>
+<h4 class="date">03/30/2022</h4>
+
+</div>
+
+
+<ul>
+<li><a href="Overview.html">Overview</a> <em>A short introduction</em>
+<ul>
+<li><a href="SoftwareRequirements.html">Software requirements</a> <em>Installation of required packages</em></li>
+<li><a href="Ndexr.html">ndexr</a> <em>ndexr - interface with the network data exchange (NDEx)</em></li>
+<li><a href="RCX.html">RCX</a> <em>RCX - R implementation of the Cytoscape Exchange (CX) format</em></li>
+</ul></li>
+<li><a href="DataExplorationAndPreparation.html">Data Exploration and Preparation</a> <em>Loading the source data, explore the content and prepare the data for its usage</em></li>
+<li><a href="DataIntegration.html">Data Integration</a> <em>Combine the network data with patient information, gene expression and relevance score</em></li>
+<li><a href="Visualization.html">Visualization</a> <em>Explore different ways of visualizing the networks</em>
+<ul>
+<li><a href="MetaRelSubNetVis.html">MetaRelSubNetVis</a> <em>Comparative web-based visualization</em></li>
+<li><a href="NDExEdit.html">NDExEdit</a> <em>Web-based data-dependant visualization with NDExEdit</em></li>
+<li><a href="RCXvis.html">RCX based</a> <em>R-based visualization with the RCX package</em></li>
+<li><a href="CytoscapeAndRCy3.html">Cytoscape and RCy3</a> <em>Using the RCy3 package to remotly control Cytoscape</em></li>
+</ul></li>
+</ul>
+<div id="load-libraries" class="section level1">
+<h1><span class="header-section-number">1</span> Load libraries</h1>
+<pre class="r"><code># library(survival) library(RColorBrewer)
+# library(GEOquery) library(igraph) library(dplyr)
+# library(plyr) library(kableExtra) library(stringr)
+# library(xtable) library(pander) library(timeSeries)
+# library(devtools)
+library(igraph)
+library(ndexr)
+library(RCX)</code></pre>
+</div>
+<div id="load-the-required-data" class="section level1">
+<h1><span class="header-section-number">2</span> Load the required data</h1>
+<div id="load-the-hprd-network-from-ndex" class="section level2">
+<h2><span class="header-section-number">2.1</span> Load the HPRD network from NDEx</h2>
+<p>The network is also available on the NDEx platform:</p>
+<p><a href="https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf" class="uri">https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf</a></p>
+<p>The R package <code>ndexr</code> can be used to download the network from NDEx:</p>
+<pre class="r"><code>ndex_con &lt;- ndex_connect()
+ndexHPRD &lt;- ndex_find_networks(ndex_con, &quot;HPRD AND owner:florianjauer&quot;)
+
+print(
+    ndexHPRD[c(
+        &quot;name&quot;, &quot;owner&quot;, &quot;externalId&quot;, &quot;nodeCount&quot;, &quot;edgeCount&quot;
+    )]
+)</code></pre>
+<div id="htmlwidget-3f8380322d10f11f3d45" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3f8380322d10f11f3d45">{"x":{"filter":"none","vertical":false,"data":[["1"],["Human Protein Reference Database (HPRD) PPI network"],["florianjauer"],["079f4c66-3b77-11ec-b3be-0ac135e8bacf"],[6888],[27841]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>owner<\/th>\n      <th>externalId<\/th>\n      <th>nodeCount<\/th>\n      <th>edgeCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Alternatively, the network can be loaded directly using its UUID:</p>
+<pre class="r"><code>ppi_network_uuid &lt;- &quot;079f4c66-3b77-11ec-b3be-0ac135e8bacf&quot;
+ppi_network_rcx &lt;- ndex_get_network(ndex_con, ppi_network_uuid)
+print(ppi_network_rcx$metaData)</code></pre>
+<pre><code>## Meta-data:</code></pre>
+<div id="htmlwidget-976b085d97b1ee4f9883" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-976b085d97b1ee4f9883">{"x":{"filter":"none","vertical":false,"data":[["1","2","3"],["nodes","edges","networkAttributes"],["1.0","1.0","1.0"],[6887,27840,null],[6888,27841,7],[1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>print(ppi_network_rcx$networkAttributes$name)</code></pre>
+<pre><code>## [1] &quot;name&quot;        &quot;description&quot; &quot;version&quot;     &quot;author&quot;      &quot;networkType&quot; &quot;organism&quot;    &quot;reference&quot;</code></pre>
+<p>NDEx added automatically the version to the network attributes.</p>
+</div>
+<div id="load-patient-data" class="section level2">
+<h2><span class="header-section-number">2.2</span> Load patient data</h2>
+<p>Load the previously processed patient information about the 97 patients:</p>
+<pre class="r"><code>patients &lt;- read.csv(&quot;data/processed/patients.csv&quot;, stringsAsFactors = F)
+head(patients)</code></pre>
+<div id="htmlwidget-587138f59b7974ed4395" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-587138f59b7974ed4395">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["GSM615195","GSM615184","GSM519380","GSM615651","GSM411374","GSM411334"],[1,0,0,1,1,1],[1,0,0,1,1,1],["Basal","Basal","Basal","Basal","Basal","Basal"],[0.764,7.302,9.2,0.791238877481177,0.444444444444444,1.06111111111111],[1,0,0,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>geo_accession<\/th>\n      <th>label<\/th>\n      <th>predicted<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Load the gene expression in the patients with is previously calculated statistics:</p>
+<pre class="r"><code>ge_with_statistics &lt;- read.csv(file = &quot;data/processed/ge_with_statistics.csv.gz&quot;)
+print(
+    unique(
+        gsub(&quot;GSM[0-9]+&quot;, &quot;GSM*&quot;, colnames(ge_with_statistics))
+    )
+)</code></pre>
+<pre><code>## [1] &quot;GSM*&quot;  &quot;probe&quot; &quot;mean&quot;  &quot;stdev&quot; &quot;Q25&quot;   &quot;Q50&quot;   &quot;Q75&quot;</code></pre>
+<p>Load the previously deducted gene expression level based on the quantiles:</p>
+<pre class="r"><code>ge_expression_level_by_quantiles &lt;- read.csv(
+    file = &quot;data/processed/ge_expression_level_by_quantiles.csv.gz&quot;
+)
+print(
+    unique(
+        gsub(
+            &quot;GSM[0-9]+&quot;, &quot;GSM*&quot;, colnames(ge_expression_level_by_quantiles)
+        )
+    )
+)</code></pre>
+<pre><code>## [1] &quot;probe&quot; &quot;GSM*&quot;</code></pre>
+<p>Load the results from the performed differential gene expression analysis:</p>
+<pre class="r"><code>de &lt;- read.csv(&quot;data/processed/de.csv&quot;)
+de_genes &lt;- de$prope[de$qvalue &lt; 0.01]
+print(de_genes)</code></pre>
+<pre><code>##  [1] &quot;MELK&quot;  &quot;PLAT&quot;  &quot;RRM2&quot;  &quot;CENPE&quot; &quot;TPX2&quot;  &quot;PDE4A&quot; &quot;FMOD&quot;  &quot;KCND3&quot; &quot;AURKA&quot; &quot;HJURP&quot; &quot;BIRC5&quot; &quot;CCNB2&quot; &quot;C7&quot;    &quot;EVL&quot;   &quot;BTG2&quot;  &quot;BUB1B&quot; &quot;YWHAZ&quot;</code></pre>
+<p>Load relevance score of the genes for every patient:</p>
+<pre class="r"><code>relevance_score &lt;- read.csv(&quot;data/ppi_relevance_score.csv&quot;)
+print(
+    unique(gsub(&quot;GSM[0-9]+&quot;, &quot;GSM*&quot;, colnames(relevance_score)))
+)</code></pre>
+<pre><code>## [1] &quot;GSM*&quot;  &quot;probe&quot;</code></pre>
+</div>
+<div id="helping-functions" class="section level2">
+<h2><span class="header-section-number">2.3</span> Helping functions</h2>
+<p>The patient data is saved as attribute within an RCX network for every patient.
+To be able to distinguish the patients and its attributes, the attributes are named <code>&lt;patient-id&gt;_&lt;attribute&gt;</code>, for example <code>GSM615195_ge_level</code>.
+Since there are many patients (97) with different attributes, this function helps by condensing the patient ids to <code>GSM*</code> and notes the number of different patients for this attribute, which leads to <code>GSM*_ge_level</code>.</p>
+<pre class="r"><code>printAttributes &lt;- function(
+    aspect, property = &quot;name&quot;, pattern = &quot;GSM[0-9]+_&quot;, replacement = &quot;GSM*_&quot;
+) {
+
+    property &lt;- aspect[, property]
+    result &lt;- table(sub(pattern, replacement, unique(property)))
+
+    result &lt;- data.frame(
+        attribute = names(result),
+        versions = as.numeric(result),
+        occurrences = as.numeric(table(sub(pattern, replacement, property)))
+    )
+    print(result)
+    invisible(result)
+}
+
+nodeAttributes &lt;- createNodeAttributes(
+    propertyOf = c(1, 2, 3, 4),
+    name = c(
+        &quot;GSM615195_GE&quot;, &quot;Occurrence&quot;, &quot;GSM491186_GE&quot;, &quot;GSM615195_Score&quot;
+    ),
+    value = list(9.15, 11, 3.14, 0.98)
+)
+
+printAttributes(nodeAttributes)</code></pre>
+</div>
+</div>
+<div id="data-integration" class="section level1">
+<h1><span class="header-section-number">3</span> Data integration</h1>
+<p>For integrating previous genomic data into the HPRD network firstly create a new network from the HPRD network and update the network information:</p>
+<pre class="r"><code>ppi_integrated_network_rcx &lt;- ppi_network_rcx
+
+networkAttributes &lt;- createNetworkAttributes(
+  name = c(&quot;name&quot;,
+           &quot;sourceNetwork&quot;,
+           &quot;description&quot;),
+  value = c(&quot;Integrated PPI network from HPRD with breast cancer gene expression from GEO&quot;,
+            ppi_network_uuid,
+            &#39;Protein-protein interaction (PPI) network from the &lt;a href=&quot;http://hprd.org/&quot; target=&quot;_blank&quot;&gt;Human Protein Reference Database (HPRD)&lt;/a&gt; used for training and generating subnetworks. The network contains the mean, standard deviation, 25%, 50% and 75% qunatile of gene expression for each gene. Also for each patient the gene expression, gene expression levels by quartiles, and relevance scores from GCNN and GLRP are included.&#39;)
+)
+
+ppi_integrated_network_rcx &lt;- updateNetworkAttributes(
+  ppi_integrated_network_rcx, 
+  networkAttributes, 
+  replace = TRUE
+)</code></pre>
+<p>Adding patient information to the network attributes</p>
+<pre class="r"><code>networkAttributes &lt;- createNetworkAttributes(
+  name = c(
+    &quot;Patients&quot;,
+    &quot;PatientGroups&quot;,
+    &quot;PatientSubtype&quot;, 
+    &quot;PatientSurvivalYears&quot;,
+    &quot;OccurrenceInSubtype&quot;
+    ),
+  value = list(
+    patients$geo_accession,
+    ifelse(patients$met.event == 1, &quot;Metastatic&quot;, &quot;Non-Metastatic&quot;),
+    patients$subtype,
+    patients$mfs.years,
+    unique(patients$subtype)
+    )
+)
+
+ppi_integrated_network_rcx &lt;- updateNetworkAttributes(
+  ppi_integrated_network_rcx, 
+  networkAttributes
+)
+
+print(ppi_integrated_network_rcx$networkAttributes)</code></pre>
+<pre><code>## Network attributes:
+##                    name
+## 1                author
+## 2           description
+## 3                  name
+## 4           networkType
+## 5              organism
+## 6             reference
+## 7         sourceNetwork
+## 8               version
+## 9              Patients
+## 10        PatientGroups
+## 11       PatientSubtype
+## 12 PatientSurvivalYears
+## 13  OccurrenceInSubtype
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 value
+## 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Florian J. Auer
+## 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Protein-protein interaction (PPI) network from the &lt;a href=&quot;http://hprd.org/&quot; target=&quot;_blank&quot;&gt;Human Protein Reference Database (HPRD)&lt;/a&gt; used for training and generating subnetworks. The network contains the mean, standard deviation, 25%, 50% and 75% qunatile of gene expression for each gene. Also for each patient the gene expression, gene expression levels by quartiles, and relevance scores from GCNN and GLRP are included.
+## 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Integrated PPI network from HPRD with breast cancer gene expression from GEO
+## 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Protein-protein interaction
+## 5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Homo sapiens
+## 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Chereda, H., Bleckmann, A., Menck, K. et al. Explaining decisions of graph convolutional neural networks: patient-specific molecular subnetworks responsible for metastasis prediction in breast cancer. Genome Med 13, 42 (2021). &lt;a href=&quot;https://doi.org/10.1186/s13073-021-00845-7&quot; target=&quot;_blank&quot; style=&quot;font-size: 12px;&quot;&gt;https://doi.org/10.1186/s13073-021-00845-7&lt;/a&gt;&lt;br/&gt;
+## 7                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                079f4c66-3b77-11ec-b3be-0ac135e8bacf
+## 8                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 1.0
+## 9                                                                                                                                                                                                                                                                                    GSM615195, GSM615184, GSM519380, GSM615651, GSM411374, GSM411334, GSM519217, GSM411387, GSM615695, GSM50112, GSM50102, GSM491233, GSM50093, GSM491186, GSM615160, GSM177970, GSM615368, GSM519167, GSM447209, GSM519266, GSM447247, GSM615233, GSM441751, GSM491230, GSM441624, GSM150978, GSM491264, GSM282439, GSM282391, GSM441626, GSM151024, GSM615180, GSM150944, GSM150990, GSM151054, GSM441661, GSM441813, GSM491251, GSM177894, GSM519397, GSM519175, GSM441789, GSM441637, GSM151009, GSM150958, GSM411347, GSM615221, GSM282516, GSM178025, GSM441693, GSM491205, GSM615662, GSM150976, GSM519171, GSM519131, GSM441726, GSM151268, GSM615189, GSM615823, GSM615200, GSM519120, GSM615196, GSM615332, GSM441755, GSM441690, GSM491283, GSM441857, GSM441643, GSM282406, GSM441851, GSM177885, GSM519358, GSM282450, GSM615633, GSM178060, GSM282570, GSM519415, GSM519222, GSM282401
+## 10 Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Metastatic, Metastatic, Metastatic, Metastatic, Non-Metastatic, Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Metastatic, Metastatic, Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Metastatic, Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Non-Metastatic, Non-Metastatic, Non-Metastatic, Metastatic, Metastatic, Non-Metastatic, Metastatic, Non-Metastatic
+## 11                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Basal, Her2, Her2, Her2, Her2, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumA, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, LumB, Normal
+## 12                                                                                                                                                                                                 0.76400000, 7.30200000, 9.20000000, 0.79123888, 0.44444444, 1.06111111, 0.90000000, 0.17500000, 5.37713895, 1.18000000, 0.67000000, 6.25000000, 7.86000000, 0.08333333, 0.38300000, 9.14722222, 0.72800000, 7.00000000, 4.84583333, 0.90000000, 2.99833333, 0.79100000, 8.20833333, 5.83333333, 7.57808219, 5.25000000, 6.16666667, 8.25000000, 7.75000000, 7.73972603, 9.96944444, 5.75800000, 7.84722222, 9.93888889, 8.87222222, 5.35616438, 8.10833333, 7.33333333, 3.42500000, 9.30000000, 5.30000000, 8.81666667, 8.00000000, 8.20277778, 7.28888889, 0.61944444, 3.36200000, 8.41666667, 2.23611111, 5.31780822, 6.50000000, 1.89733060, 5.02222222, 6.90000000, 7.00000000, 8.11232877, 2.11111111, 1.14400000, 2.29979466, 3.45200000, 6.30000000, 6.46700000, 1.43700000, 9.40000000, 4.52876712, 5.91666667, 6.29166667, 1.97534247, 7.08333333, 9.44166667, 2.00833333, 8.90000000, 9.58333333, 5.36892539, 2.20555556, 2.66666667, 8.40000000, 3.60000000, 6.50000000
+## 13                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Basal, Her2, LumA, LumB, Normal
+##    dataType isList
+## 1    string  FALSE
+## 2    string  FALSE
+## 3    string  FALSE
+## 4    string  FALSE
+## 5    string  FALSE
+## 6    string  FALSE
+## 7    string  FALSE
+## 8    string  FALSE
+## 9    string   TRUE
+## 10   string   TRUE
+## 11   string   TRUE
+## 12   double   TRUE
+## 13   string   TRUE</code></pre>
+<p>Now include the relevance scores, gene expression and gene expression levels in the network for all 79 patients.
+Also include the gene expression statistics, namely mean, standard deviation and 25%, 50% and 75% quantiles.</p>
+<p><strong>Note: this will take a while</strong></p>
+<pre class="r"><code>for (counter in seq_len(length(patients$geo_accession))) {
+    patientId &lt;- patients$geo_accession[counter]
+
+    # progress logging
+    cat(
+        paste0(
+            &quot;Adding node attributes for patient &quot;, patientId,
+            &quot; (&quot;, counter, &quot;/&quot;, length(patients$geo_accession),
+            &quot;)&quot;, &quot;.&quot;
+        )
+    )
+
+    # add score as attribute to the nodes
+    sel_nodes &lt;- match(
+        ppi_integrated_network_rcx$nodes$name, relevance_score$probe
+    )
+    nodeAttributes &lt;- createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(
+            paste0(patientId, &quot;_Score&quot;),
+            length(sel_nodes)
+        ),
+        value = relevance_score[sel_nodes, patientId]
+    )
+    ppi_integrated_network_rcx &lt;- updateNodeAttributes(ppi_integrated_network_rcx, nodeAttributes)
+
+    cat(&quot;.&quot;)
+    # add gene expression as attribute to the nodes
+    # sel_nodes =
+    # match(ppi_integrated_network_rcx$nodes$name,
+    # rownames(ge_patients))
+    sel_nodes &lt;- match(
+        ppi_integrated_network_rcx$nodes$name, ge_with_statistics$probe
+    )
+    nodeAttributes &lt;- createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(
+            paste0(patientId, &quot;_GE&quot;),
+            length(sel_nodes)
+        ),
+        value = ge_with_statistics[sel_nodes, patientId]
+    )
+    ppi_integrated_network_rcx &lt;- updateNodeAttributes(ppi_integrated_network_rcx, nodeAttributes)
+
+    cat(&quot;.&quot;)
+    # add gene expression level as attribute to the
+    # nodes
+    sel_nodes &lt;- match(
+        ppi_integrated_network_rcx$nodes$name, ge_expression_level_by_quantiles$probe
+    )
+    nodeAttributes &lt;- createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(
+            paste0(patientId, &quot;_GE_Level&quot;),
+            length(sel_nodes)
+        ),
+        value = ge_expression_level_by_quantiles[sel_nodes,
+            patientId]
+    )
+    ppi_integrated_network_rcx &lt;- updateNodeAttributes(ppi_integrated_network_rcx, nodeAttributes)
+    cat(&quot;done\n&quot;)
+}
+
+## include gene expression statistics mean
+cat(&quot;Adding mean as attribute to the nodes...&quot;)
+sel_nodes &lt;- match(
+    ppi_integrated_network_rcx$nodes$name, ge_with_statistics$probe
+)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;GE_Mean&quot;, length(sel_nodes)),
+        value = ge_with_statistics[sel_nodes, &quot;mean&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+## standard deviation
+cat(
+    &quot;Adding standard deviation as attribute to the nodes...&quot;
+)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;GE_StdDev&quot;, length(sel_nodes)),
+        value = ge_with_statistics[sel_nodes, &quot;stdev&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+## 25% quantile
+cat(&quot;Adding 25% quantile as attribute to the nodes...&quot;)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;GE_Q25&quot;, length(sel_nodes)),
+        value = ge_with_statistics[sel_nodes, &quot;Q25&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+## 50% quantile
+cat(&quot;Adding 50% quantile as attribute to the nodes...&quot;)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;GE_Q50&quot;, length(sel_nodes)),
+        value = ge_with_statistics[sel_nodes, &quot;Q50&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+## 75% quantile
+cat(&quot;Adding 75% quantile as attribute to the nodes...&quot;)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;GE_Q75&quot;, length(sel_nodes)),
+        value = ge_with_statistics[sel_nodes, &quot;Q75&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+## differential expression
+cat(
+    &quot;Adding pvalue of differential expression as attribute to the nodes...&quot;
+)
+sel_nodes &lt;- match(ppi_integrated_network_rcx$nodes$name, de$prope)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;pvalue&quot;, length(sel_nodes)),
+        value = de[sel_nodes, &quot;pvalue&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+cat(
+    &quot;Adding qvalue of differential expression as attribute to the nodes...&quot;
+)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id,
+        name = rep(&quot;qvalue&quot;, length(sel_nodes)),
+        value = de[sel_nodes, &quot;qvalue&quot;]
+    )
+)
+cat(&quot;done\n&quot;)
+
+cat(
+    &quot;Adding significance of differential expression as attribute to the nodes...&quot;
+)
+sel_nodes &lt;- match(de_genes, ppi_integrated_network_rcx$nodes$name)
+ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+    ppi_integrated_network_rcx, createNodeAttributes(
+        propertyOf = ppi_integrated_network_rcx$nodes$id[sel_nodes],
+        name = rep(&quot;significant&quot;, length(sel_nodes)),
+        value = rep(TRUE, length(sel_nodes))
+    )
+)
+cat(&quot;done\n&quot;)
+
+cat(&quot;Node attributes:\n&quot;)
+printAttributes(ppi_integrated_network_rcx$nodeAttributes)</code></pre>
+<p>With a better insight into the RCX data structure, a faster but not as clear version could be used.
+To avoid temporally variables be loaded into the global environment, a new environment is created and used only for the calculation.</p>
+<pre class="r"><code>## Same as above, but faster run in a separate
+## environment to omit local variables
+rcx_integration &lt;- new.env()
+local(
+    {
+        tmp_rel_po &lt;- c()
+        tmp_rel_n &lt;- c()
+        tmp_rel_v &lt;- c()
+
+        tmp_ge_po &lt;- c()
+        tmp_ge_n &lt;- c()
+        tmp_ge_v &lt;- c()
+
+        tmp_level_po &lt;- c()
+        tmp_level_n &lt;- c()
+        tmp_level_v &lt;- c()
+
+        for (counter in seq_len(length(patients$geo_accession))) {
+            patientId &lt;- patients$geo_accession[counter]
+
+            # progress logging
+            cat(
+                paste0(
+                  &quot;Prepare node attributes for patient &quot;,
+                  patientId, &quot; (&quot;, counter, &quot;/&quot;, length(patients$geo_accession),
+                  &quot;)&quot;, &quot;.&quot;
+              )
+            )
+
+            # add score as attribute to the nodes
+            sel_nodes &lt;- match(
+                ppi_integrated_network_rcx$nodes$name, relevance_score$probe
+            )
+            tmp_rel_po &lt;- c(tmp_rel_po, ppi_integrated_network_rcx$nodes$id)
+            tmp_rel_n &lt;- c(
+                tmp_rel_n, rep(
+                  paste0(patientId, &quot;_Score&quot;),
+                  length(sel_nodes)
+              )
+            )
+            tmp_rel_v &lt;- c(tmp_rel_v, relevance_score[sel_nodes, patientId])
+            cat(&quot;.&quot;)
+            # add gene expression as attribute to the
+            # nodes sel_nodes =
+            # match(ppi_integrated_network_rcx$nodes$name,
+            # rownames(ge_patients))
+            sel_nodes &lt;- match(
+                ppi_integrated_network_rcx$nodes$name, ge_with_statistics$probe
+            )
+            tmp_ge_po &lt;- c(tmp_ge_po, ppi_integrated_network_rcx$nodes$id)
+            tmp_ge_n &lt;- c(
+                tmp_ge_n, rep(
+                  paste0(patientId, &quot;_GE&quot;),
+                  length(sel_nodes)
+              )
+            )
+            tmp_ge_v &lt;- c(
+                tmp_ge_v, ge_with_statistics[sel_nodes,
+                  patientId]
+            )
+            cat(&quot;.&quot;)
+            # add gene expression level as attribute
+            # to the nodes
+            sel_nodes &lt;- match(
+                ppi_integrated_network_rcx$nodes$name, ge_expression_level_by_quantiles$probe
+            )
+            tmp_level_po &lt;- c(tmp_level_po, ppi_integrated_network_rcx$nodes$id)
+            tmp_level_n &lt;- c(
+                tmp_level_n, rep(
+                  paste0(patientId, &quot;_GE_Level&quot;),
+                  length(sel_nodes)
+              )
+            )
+            tmp_level_v &lt;- c(
+                tmp_level_v, ge_expression_level_by_quantiles[sel_nodes,
+                  patientId]
+            )
+            cat(&quot;done\n&quot;)
+        }
+
+        # add score as attribute to the nodes
+        cat(&quot;Adding score as attribute to the nodes...&quot;)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = tmp_rel_po, name = tmp_rel_n,
+                value = tmp_rel_v
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        # add gene expression as attribute to the
+        # nodes
+        cat(&quot;Adding gene expression as attribute to the nodes...&quot;)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = tmp_ge_po, name = tmp_ge_n,
+                value = tmp_ge_v
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        # add gene expression level as attribute to
+        # the nodes
+        cat(
+            &quot;Adding gene expression level as attribute to the nodes...&quot;
+        )
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = tmp_level_po, name = tmp_level_n,
+                value = tmp_level_v
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        ## include gene expression statistics mean
+        cat(&quot;Adding mean as attribute to the nodes...&quot;)
+        sel_nodes &lt;- match(
+            ppi_integrated_network_rcx$nodes$name, ge_with_statistics$probe
+        )
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;GE_Mean&quot;, length(sel_nodes)),
+                value = ge_with_statistics[sel_nodes, &quot;mean&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        ## standard deviation
+        cat(
+            &quot;Adding standard deviation as attribute to the nodes...&quot;
+        )
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;GE_StdDev&quot;, length(sel_nodes)),
+                value = ge_with_statistics[sel_nodes, &quot;stdev&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        ## 25% quantile
+        cat(&quot;Adding 25% quantile as attribute to the nodes...&quot;)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;GE_Q25&quot;, length(sel_nodes)),
+                value = ge_with_statistics[sel_nodes, &quot;Q25&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        ## 50% quantile
+        cat(&quot;Adding 50% quantile as attribute to the nodes...&quot;)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;GE_Q50&quot;, length(sel_nodes)),
+                value = ge_with_statistics[sel_nodes, &quot;Q50&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        ## 75% quantile
+        cat(&quot;Adding 75% quantile as attribute to the nodes...&quot;)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;GE_Q75&quot;, length(sel_nodes)),
+                value = ge_with_statistics[sel_nodes, &quot;Q75&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        ## differential expression
+        cat(
+            &quot;Adding pvalue of differential expression as attribute to the nodes...&quot;
+        )
+        sel_nodes &lt;- match(ppi_integrated_network_rcx$nodes$name, de$prope)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;pvalue&quot;, length(sel_nodes)),
+                value = de[sel_nodes, &quot;pvalue&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        cat(
+            &quot;Adding qvalue of differential expression as attribute to the nodes...&quot;
+        )
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id,
+                name = rep(&quot;qvalue&quot;, length(sel_nodes)),
+                value = de[sel_nodes, &quot;qvalue&quot;]
+            )
+        )
+        cat(&quot;done\n&quot;)
+
+        cat(
+            &quot;Adding significance of differential expression as attribute to the nodes...&quot;
+        )
+        sel_nodes &lt;- match(de_genes, ppi_integrated_network_rcx$nodes$name)
+        ppi_integrated_network_rcx &lt;- updateNodeAttributes(
+            ppi_integrated_network_rcx, createNodeAttributes(
+                propertyOf = ppi_integrated_network_rcx$nodes$id[sel_nodes],
+                name = rep(&quot;significant&quot;, length(sel_nodes)),
+                value = rep(TRUE, length(sel_nodes))
+            )
+        )
+        cat(&quot;done\n&quot;)
+    }, rcx_integration
+)  ## the local environment
+
+## retrieve the results from the local environment
+ppi_integrated_network_rcx &lt;- rcx_integration$ppi_integrated_network_rcx
+
+## delete the local environment
+rm(rcx_integration)
+
+cat(&quot;Node attributes:\n&quot;)
+printAttributes(ppi_integrated_network_rcx$nodeAttributes)</code></pre>
+<pre><code>## Adding node attributes for patient GSM615195...done
+## Adding node attributes for patient GSM615184...done
+## Adding node attributes for patient GSM519380...done
+## Adding node attributes for patient GSM615651...done
+## Adding node attributes for patient GSM411374...done
+## Adding node attributes for patient GSM411334...done
+## Adding node attributes for patient GSM519217...done
+## Adding node attributes for patient GSM411387...done
+## Adding node attributes for patient GSM615695...done
+## Adding node attributes for patient GSM50112...done
+## Adding node attributes for patient GSM50102...done
+## Adding node attributes for patient GSM491233...done
+## Adding node attributes for patient GSM50093...done
+## Adding node attributes for patient GSM491186...done
+## Adding node attributes for patient GSM615160...done
+## Adding node attributes for patient GSM177970...done
+## Adding node attributes for patient GSM615368...done
+## Adding node attributes for patient GSM519167...done
+## Adding node attributes for patient GSM447209...done
+## Adding node attributes for patient GSM519266...done
+## Adding node attributes for patient GSM447247...done
+## Adding node attributes for patient GSM615233...done
+## Adding node attributes for patient GSM441751...done
+## Adding node attributes for patient GSM491230...done
+## Adding node attributes for patient GSM441624...done
+## Adding node attributes for patient GSM150978...done
+## Adding node attributes for patient GSM491264...done
+## Adding node attributes for patient GSM282439...done
+## Adding node attributes for patient GSM282391...done
+## Adding node attributes for patient GSM441626...done
+## Adding node attributes for patient GSM151024...done
+## Adding node attributes for patient GSM615180...done
+## Adding node attributes for patient GSM150944...done
+## Adding node attributes for patient GSM150990...done
+## Adding node attributes for patient GSM151054...done
+## Adding node attributes for patient GSM441661...done
+## Adding node attributes for patient GSM441813...done
+## Adding node attributes for patient GSM491251...done
+## Adding node attributes for patient GSM177894...done
+## Adding node attributes for patient GSM519397...done
+## Adding node attributes for patient GSM519175...done
+## Adding node attributes for patient GSM441789...done
+## Adding node attributes for patient GSM441637...done
+## Adding node attributes for patient GSM151009...done
+## Adding node attributes for patient GSM150958...done
+## Adding node attributes for patient GSM411347...done
+## Adding node attributes for patient GSM615221...done
+## Adding node attributes for patient GSM282516...done
+## Adding node attributes for patient GSM178025...done
+## Adding node attributes for patient GSM441693...done
+## Adding node attributes for patient GSM491205...done
+## Adding node attributes for patient GSM615662...done
+## Adding node attributes for patient GSM150976...done
+## Adding node attributes for patient GSM519171...done
+## Adding node attributes for patient GSM519131...done
+## Adding node attributes for patient GSM441726...done
+## Adding node attributes for patient GSM151268...done
+## Adding node attributes for patient GSM615189...done
+## Adding node attributes for patient GSM615823...done
+## Adding node attributes for patient GSM615200...done
+## Adding node attributes for patient GSM519120...done
+## Adding node attributes for patient GSM615196...done
+## Adding node attributes for patient GSM615332...done
+## Adding node attributes for patient GSM441755...done
+## Adding node attributes for patient GSM441690...done
+## Adding node attributes for patient GSM491283...done
+## Adding node attributes for patient GSM441857...done
+## Adding node attributes for patient GSM441643...done
+## Adding node attributes for patient GSM282406...done
+## Adding node attributes for patient GSM441851...done
+## Adding node attributes for patient GSM177885...done
+## Adding node attributes for patient GSM519358...done
+## Adding node attributes for patient GSM282450...done
+## Adding node attributes for patient GSM615633...done
+## Adding node attributes for patient GSM178060...done
+## Adding node attributes for patient GSM282570...done
+## Adding node attributes for patient GSM519415...done
+## Adding node attributes for patient GSM519222...done
+## Adding node attributes for patient GSM282401...done</code></pre>
+<pre><code>## Adding mean as attribute to the nodes...done</code></pre>
+<pre><code>## Adding standard deviation as attribute to the nodes...done</code></pre>
+<pre><code>## Adding 25% quantile as attribute to the nodes...done</code></pre>
+<pre><code>## Adding 50% quantile as attribute to the nodes...done</code></pre>
+<pre><code>## Adding 75% quantile as attribute to the nodes...done</code></pre>
+<pre><code>## Adding pvalue of differential expression as attribute to the nodes...done</code></pre>
+<pre><code>## Adding qvalue of differential expression as attribute to the nodes...done</code></pre>
+<pre><code>## Adding significance of differential expression as attribute to the nodes...done</code></pre>
+<pre><code>## Node attributes:</code></pre>
+<div id="save-integrated-ppi-network" class="section level2">
+<h2><span class="header-section-number">3.1</span> Save integrated PPI network</h2>
+<p>To make the network available to for further analyses, we can upload the network to the NDEx platform (<a href="https://www.ndexbio.org/" class="uri">https://www.ndexbio.org/</a>).
+Of course for this an account is required.</p>
+<pre class="r"><code>ndex_con &lt;- ndex_connect(username = &quot;florianjauer&quot;, password = &quot;****&quot;)
+ndexHPRDuuid &lt;- ndex_create_network(ndex_con, ppi_network_rcx)
+ndexHPRDuuid</code></pre>
+<p>Until now, the network is only visible to the owner.
+To change that, and make it visible to everyone, we have to update this property:</p>
+<pre class="r"><code>ndex_network_set_systemProperties(ndex_con, ndexHPRDuuid, visibility = TRUE)</code></pre>
+<p>The PPI network with integrated data is also available on NDEx, so the above time consuming integration steps don’t have to be repeated every time:</p>
+<pre class="r"><code>ppi_integrated_network_rcx &lt;- ndex_get_network(ndex_con, &quot;833b1cee-42f6-11ec-b3be-0ac135e8bacf&quot;)</code></pre>
+</div>
+</div>
+<div id="patient-specific-subnetworks" class="section level1">
+<h1><span class="header-section-number">4</span> Patient-specific subnetworks</h1>
+<div id="relevant-genes" class="section level2">
+<h2><span class="header-section-number">4.1</span> Relevant genes</h2>
+<p>The subnetworks are created based on the top 140 most relevant genes for each patient.
+To get the 140 most relevant genes for each patient, first lets find out the least relevance score of the top 140 genes (i. e. threshold) for every patient:</p>
+<pre class="r"><code>topNr &lt;- 140
+
+thresholds &lt;- sapply(
+    patients$geo_accession, function(patientId) {
+        ## get the scores for one patient column names
+        ## of relevance score = gene ids +
+        ## patientIdCol
+        score &lt;- as.numeric(relevance_score[, patientId])
+
+        ## check if there are less genes than topNr
+        topNr &lt;- ifelse(
+            length(score) &gt;
+                topNr, topNr, length(score)
+        )
+        ## return the score at topNr (=threshold)
+        return(sort(score, decreasing = TRUE)[topNr])
+    }
+)
+
+boxplot(thresholds)
+title(
+    &quot;Thresholds for the patients by the top 140 most relevant proteins&quot;
+)</code></pre>
+<p><img src="DataIntegration_files/figure-html/getThreshold-1.png" width="100%" /></p>
+<p>Now get the relevant genes for all patients (should be 140 for every patient)</p>
+<pre class="r"><code>relevant_genes &lt;- lapply(
+    patients$geo_accession, function(patientId) {
+        # get the only the scores for a patient
+        score &lt;- relevance_score[, patientId]
+
+        # Filter genes with threshold for patient
+        sel_scores &lt;- score &gt;= thresholds[patientId]
+        # The genes are the column names
+        rel_genes &lt;- relevance_score$probe[sel_scores]
+
+        return(rel_genes)
+    }
+)
+
+names(relevant_genes) &lt;- patients$geo_accession
+
+print(sapply(relevant_genes, length))</code></pre>
+<pre><code>## GSM615195 GSM615184 GSM519380 GSM615651 GSM411374 GSM411334 GSM519217 GSM411387 GSM615695  GSM50112  GSM50102 GSM491233  GSM50093 GSM491186 
+##       140       140       140       140       140       140       140       140       140       140       140       140       140       140 
+## GSM615160 GSM177970 GSM615368 GSM519167 GSM447209 GSM519266 GSM447247 GSM615233 GSM441751 GSM491230 GSM441624 GSM150978 GSM491264 GSM282439 
+##       140       140       140       140       140       140       140       140       140       140       140       140       140       140 
+## GSM282391 GSM441626 GSM151024 GSM615180 GSM150944 GSM150990 GSM151054 GSM441661 GSM441813 GSM491251 GSM177894 GSM519397 GSM519175 GSM441789 
+##       140       140       140       140       140       140       140       140       140       140       140       140       140       140 
+## GSM441637 GSM151009 GSM150958 GSM411347 GSM615221 GSM282516 GSM178025 GSM441693 GSM491205 GSM615662 GSM150976 GSM519171 GSM519131 GSM441726 
+##       140       140       140       140       140       140       140       140       140       140       140       140       140       140 
+## GSM151268 GSM615189 GSM615823 GSM615200 GSM519120 GSM615196 GSM615332 GSM441755 GSM441690 GSM491283 GSM441857 GSM441643 GSM282406 GSM441851 
+##       140       140       140       140       140       140       140       140       140       140       140       140       140       140 
+## GSM177885 GSM519358 GSM282450 GSM615633 GSM178060 GSM282570 GSM519415 GSM519222 GSM282401 
+##       140       140       140       140       140       140       140       140       140</code></pre>
+<p>Generate subnetworks and remove isolate nodes, and corresponding edges</p>
+<pre class="r"><code>relevant_genes &lt;- lapply(
+    relevant_genes, function(rel_genes) {
+        tmp_nodes &lt;- ppi_integrated_network_rcx$nodes
+        tmp_edges &lt;- ppi_integrated_network_rcx$edges
+
+        ## select node in the subnetwork
+        sel_nodes &lt;- tmp_nodes$name %in% rel_genes
+        tmp_nodes &lt;- tmp_nodes[sel_nodes, ]
+
+        ## select edges that start AND end in the
+        ## selected nodes
+        sel_edges &lt;- tmp_edges$source %in% tmp_nodes$id &amp;
+            tmp_edges$target %in% tmp_nodes$id
+        tmp_edges &lt;- tmp_edges[sel_edges, ]
+
+        ## remove isolate nodes
+        sel_nodes &lt;- tmp_nodes$id %in% tmp_edges$source |
+            tmp_nodes$id %in% tmp_edges$target
+        tmp_nodes &lt;- tmp_nodes[sel_nodes, ]
+        return(tmp_nodes$name)
+    }
+)
+
+print(sapply(relevant_genes, length))</code></pre>
+<pre><code>## GSM615195 GSM615184 GSM519380 GSM615651 GSM411374 GSM411334 GSM519217 GSM411387 GSM615695  GSM50112  GSM50102 GSM491233  GSM50093 GSM491186 
+##       112       110       107        89       103       109       107       100       100       105       104        98       113       109 
+## GSM615160 GSM177970 GSM615368 GSM519167 GSM447209 GSM519266 GSM447247 GSM615233 GSM441751 GSM491230 GSM441624 GSM150978 GSM491264 GSM282439 
+##       101       107       102        94        86       104       117        96       104       109       110        98       101       101 
+## GSM282391 GSM441626 GSM151024 GSM615180 GSM150944 GSM150990 GSM151054 GSM441661 GSM441813 GSM491251 GSM177894 GSM519397 GSM519175 GSM441789 
+##       102        98       103        97        99        94       106        91       101        98        99        97        87        95 
+## GSM441637 GSM151009 GSM150958 GSM411347 GSM615221 GSM282516 GSM178025 GSM441693 GSM491205 GSM615662 GSM150976 GSM519171 GSM519131 GSM441726 
+##        98       102       102       101       101       103       105       104        98       102       104       103        95       106 
+## GSM151268 GSM615189 GSM615823 GSM615200 GSM519120 GSM615196 GSM615332 GSM441755 GSM441690 GSM491283 GSM441857 GSM441643 GSM282406 GSM441851 
+##        98       107       105       101        93       105       102       103       111       108       111       102       110       100 
+## GSM177885 GSM519358 GSM282450 GSM615633 GSM178060 GSM282570 GSM519415 GSM519222 GSM282401 
+##       106       104       108        96       107        99        95        94       100</code></pre>
+<pre class="r"><code>cat(&quot;Number of total distinct relevant genes:\n&quot;)</code></pre>
+<pre><code>## Number of total distinct relevant genes:</code></pre>
+<pre class="r"><code>length(unique(unlist(relevant_genes)))</code></pre>
+<pre><code>## [1] 407</code></pre>
+</div>
+<div id="molecular-tumor-board-mtb-report" class="section level2">
+<h2><span class="header-section-number">4.2</span> Molecular Tumor Board (MTB) Report</h2>
+<p>This script filters SNVs and CNVs using gene-drug public databases.
+Then classifies the variants into levels of evidence and finally presents the results.</p>
+<p>The expression of each gene can be found in column “Patient.Expr”. The expression is devidied into three groups:</p>
+<ul>
+<li>HIGH: above 75% quantile</li>
+<li>NOMRAL: between 25%-75% quantile</li>
+<li>LOW: below 25% quantile</li>
+</ul>
+<p>In “MTB-report/results_curated” the results are limited to those in which “Known Var” matches with the expression of the gene (eg. HIGH expression corresponds to GoF evidence). For normal expression the decision is unclear.</p>
+<div id="perform-mtb-analysis" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Perform MTB analysis</h3>
+<p>All necessary scripts and resources are placed in the <code>MTB</code> directory of this repository.
+The code for performing the MTB analysis is contained in the <code>MTB/mtb_analysis.R</code> file:</p>
+<pre class="r"><code># ===============================================================#
+# GENERATION OF MOLECULAR TUMOR BOARD (MTB) REPORT #
+#---------------------------------------------------------------#
+# This script filters SNVs and CNVs using gene-drug
+# public # databases. Then classifies the variants
+# into levels of # evidence and finally presents the
+# results in a pdf report #
+# ===============================================================#
+# Julia Perera-Bel # Florian J. Auer #
+# ===============================================================#
+
+require(stringr)
+require(xtable)
+require(pander)
+require(timeSeries)
+require(devtools)
+
+
+#&#39; Generate MTB results for patients
+#&#39;
+#&#39; @param patients patient ids (must be present as columns in exprs.quant and relevant.genes)
+#&#39; @param exprs.quant gene expression levels (HIGH,NORMAL,LOW)
+#&#39; @param relevant.genes list of relevant genes for each patient
+#&#39; @param exprs.quant.gene.column column name of the gene name in `exprs.quant`
+#&#39; @param cancer name of the cancer
+#&#39; @param verbose print some information
+#&#39;
+#&#39; @return list of mtb results (data.frame) for each patient
+mtb_analysis &lt;- function(
+    patients, exprs.quant, relevant.genes, cancer = &quot;BRCA&quot;,
+    exprs.quant.gene.column = &quot;probe&quot;, verbose = FALSE
+) {
+
+    ###################################### Load
+    ###################################### additional
+    ###################################### data and
+    ###################################### scripts ##
+
+    ## Load helper functions
+    ## source_url(&#39;https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/helpers/get_druggable.r&#39;)
+    ## source_url(&#39;https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/helpers/get_levels.r&#39;)
+    ## Local copy
+    source(&quot;MTB/get_druggable.r&quot;)
+    source(&quot;MTB/get_levels.r&quot;)
+
+    ## Cancer type synonyms between databases synonyms
+    ## = read.csv(
+    ## url(&#39;https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/cancer_types.csv&#39;),
+    ## header = TRUE, sep=&#39;\t&#39; ) Local copy
+    synonyms &lt;- read.csv(&quot;MTB/cancer_types.csv&quot;, header = TRUE, sep = &quot;\t&quot;)
+
+    ## Get cancer type synonyms in the databases
+    cancerSynonyms &lt;- synonyms[synonyms$tcga_cancer == cancer,
+        ]
+    cancer_GDKD &lt;- cancerSynonyms$knowledge
+    cancer_CIVIC &lt;- unique(unlist(strsplit(cancerSynonyms$civic, &quot;,&quot;)))
+
+    if (verbose) {
+        cat(
+            paste0(
+                &quot;Cancer synonyms for \&quot;&quot;, cancer, &quot;\&quot;:\n&quot;,
+                collapse = &quot;&quot;
+            )
+        )
+        cat(
+            paste0(
+                c(cancer_CIVIC, cancer_GDKD),
+                collapse = &quot;, &quot;
+            ),
+            &quot;\n&quot;
+        )
+    }
+
+    ## DBs CIVIC = read.csv(
+    ## url(&#39;https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/CIViC.csv&#39;),
+    ## header = TRUE, sep=&#39;\t&#39; ) GDKD = read.csv(
+    ## url(&#39;https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/GDKD.csv&#39;),
+    ## header = TRUE, sep=&#39;\t&#39; ) TARGET = read.csv(
+    ## url(&#39;https://raw.githubusercontent.com/jperera-bel/MTB-Report/master/data/TARGET_MERIC.csv&#39;),
+    ## header = TRUE, sep=&#39;\t&#39; ) Local copy
+    CIVIC &lt;- read.csv(&quot;MTB/CIViC.csv&quot;, header = TRUE, sep = &quot;\t&quot;)
+    GDKD &lt;- read.csv(&quot;MTB/GDKD.csv&quot;, header = TRUE, sep = &quot;\t&quot;)
+    TARGET &lt;- read.csv(&quot;MTB/TARGET_MERIC.csv&quot;, header = TRUE, sep = &quot;\t&quot;)
+
+    ###################### Process Patients ##
+
+    mtb.results &lt;- list()
+    for (patient in patients) {
+        if (verbose) {
+            cat(&quot;Patient: &quot;, patient, &quot; &quot;)
+        }
+
+        ##################### Read genes list ##
+
+        ## Assume all are &#39;missense mutation&#39;
+        SNV_missense &lt;- data.frame(
+            Hugo_Symbol = relevant.genes[[patient]], Variant_Classification = &quot;missense mutation&quot;,
+            Protein_Change = &quot;&quot;
+        )
+
+        ## Assume all are &#39;nonsense mutation&#39;
+        SNV_nonsense &lt;- data.frame(
+            Hugo_Symbol = relevant.genes[[patient]], Variant_Classification = &quot;nonsense mutation&quot;,
+            Protein_Change = &quot;&quot;
+        )
+
+        ## Assume all are amplified
+        CNV_amplification &lt;- data.frame(
+            Hugo_Symbol = relevant.genes[[patient]], cn_alteration = &quot;amplification&quot;
+        )
+
+        ## Assume all are deleted
+        CNV_deletion &lt;- data.frame(
+            Hugo_Symbol = relevant.genes[[patient]], cn_alteration = &quot;deletion&quot;
+        )
+
+        if (nrow(SNV_missense) ==
+            0 &amp; nrow(SNV_nonsense) ==
+            0 &amp; nrow(CNV_amplification) ==
+            0 &amp; nrow(CNV_deletion) ==
+            0) {
+            warning(
+                &quot;The patient has no SNVs nor CNVs. Not worth continuing with the analysis!&quot;
+            )
+        }
+
+        ###################################### Filter
+        ###################################### SNVs
+        ###################################### and
+        ###################################### CNVs by
+        ###################################### database
+        ###################################### ##
+
+        ## GDKD DB
+        druggableGDKD &lt;- data.frame()
+        druggableGDKD &lt;- rbind(
+            match_SNV_GDKD(SNV_missense, db = GDKD),
+            match_SNV_GDKD(SNV_nonsense, db = GDKD)
+        )
+        druggableGDKD &lt;- rbind(
+            druggableGDKD, match_CNV_GDKD(CNV_amplification, db = GDKD),
+            match_CNV_GDKD(CNV_deletion, db = GDKD)
+        )
+        druggableGDKD &lt;- rbind(
+            druggableGDKD, match_WT_GDKD(
+                SNV_missense, CNV_amplification, cancer_GDKD,
+                db = GDKD
+            )
+        )
+        rownames(druggableGDKD) &lt;- NULL
+
+        ## CIVIC
+        druggableCIVIC &lt;- data.frame()
+        druggableCIVIC &lt;- unique(
+            rbind(
+                match_SNV_CIVIC(SNV_missense, db = CIVIC),
+                match_SNV_CIVIC(SNV_nonsense, db = CIVIC)
+            )
+        )
+        druggableCIVIC &lt;- rbind(
+            druggableCIVIC, match_CNV_CIVIC(CNV_amplification, db = CIVIC),
+            match_CNV_CIVIC(CNV_deletion, db = CIVIC)
+        )
+        rownames(druggableCIVIC) &lt;- NULL
+
+        ## TARGET DB
+        druggableTARGET &lt;- data.frame()
+        druggableTARGET &lt;- rbind(
+            match_TARGET_MERIC(SNV_missense, CNV_amplification, db = TARGET),
+            match_TARGET_MERIC(SNV_nonsense, CNV_deletion, db = TARGET)
+        )
+
+        if (nrow(druggableGDKD) ==
+            0 &amp; nrow(druggableCIVIC) ==
+            0 &amp; nrow(druggableTARGET) ==
+            0) {
+            warning(
+                &quot;No gene-drug interations were found. Not worth continuing with the analysis!&quot;
+            )
+        }
+
+        ######################################################### Classify
+        ######################################################### filtered
+        ######################################################### variants
+        ######################################################### by
+        ######################################################### Levels
+        ######################################################### of
+        ######################################################### Evidence
+        ######################################################### ##
+
+        ## KNWOLEDGE
+        levelsGDKD &lt;- get_levels_GDKD(druggableGDKD, cancer_GDKD)
+
+        ## CIVIC
+        levelsCIVIC &lt;- get_levels_CIVIC(druggableCIVIC, cancer_CIVIC)
+
+        levels &lt;- merge_levels(levelsGDKD, levelsCIVIC)
+
+        ## Homogeneize/clean the final table
+        table &lt;- clean_levels(levels, synonyms, sort_by = &quot;genes&quot;)
+
+        ################################################# Generate
+        ################################################# report
+        ################################################# from
+        ################################################# table
+        ################################################# and
+        ################################################# patient
+        ################################################# data
+        ################################################# ##
+
+        ## Fix format issues
+        table$`Pat Var` &lt;- sapply(table$`Pat Var`, function(x) gsub(&quot;NEW&quot;, &quot;&quot;, x))
+        table$`Pat Var` &lt;- sapply(
+            table$`Pat Var`, function(x) gsub(&quot;([A-Z]) ([A-Z])&quot;, &quot;\\1, \\2&quot;, x)
+        )
+        table$`Pat Var` &lt;- sapply(table$`Pat Var`, function(x) gsub(&quot; &quot;, &quot;&quot;, x))
+        table &lt;- unique(table)
+
+        ############################# TARGET with
+        ############################# other genes ##
+
+        ## recover genes not in previous table
+        druggableTARGET &lt;- as.data.frame(
+            lapply(druggableTARGET, as.character),
+            stringsAsFactors = FALSE
+        )
+
+        if (nrow(druggableTARGET) !=
+            0) {
+            new_gene &lt;- !(druggableTARGET$Gene %in% table$Gene)
+            druggableTARGET &lt;- druggableTARGET[new_gene,
+                ]
+            druggableTARGET &lt;- druggableTARGET[, c(1, 2, 4, 3, 5)]
+
+            if (nrow(druggableTARGET) !=
+                0) {
+
+                ## clean
+                druggableTARGET$Patient_variant &lt;- gsub(
+                  pattern = &quot;amplification&quot;, replacement = &quot;amp.&quot;,
+                  druggableTARGET$Patient_variant
+              )
+                druggableTARGET$Patient_variant &lt;- gsub(
+                  pattern = &quot;deletion&quot;, replacement = &quot;del.&quot;,
+                  druggableTARGET$Patient_variant
+              )
+
+                ## adjust colnames
+                colnames(druggableTARGET) &lt;- c(
+                  &quot;Gene&quot;, &quot;Pat Var&quot;, &quot;Known Var&quot;, &quot;Predicts&quot;,
+                  &quot;Drugs&quot;
+              )
+
+                ## remove duplicated rows
+                druggableTARGET &lt;- druggableTARGET[!duplicated(druggableTARGET[, -2]),
+                  ]
+                ## keep only predictive (Drugs column
+                ## full)
+                druggableTARGET &lt;- druggableTARGET[druggableTARGET$Drugs !=
+                  &quot;&quot;, ]
+
+                if (nrow(druggableTARGET) !=
+                  0) {
+                  ## merge table + target
+                  result &lt;- rbind(
+                    table, setNames(
+                      data.frame(
+                        matrix(
+                          NA, nrow = nrow(druggableTARGET),
+                          ncol = ncol(table)
+                      )
+                    ),
+                      colnames(table)
+                  )
+                )
+                  result[(nrow(table) +
+                    1):(nrow(table) +
+                    nrow(druggableTARGET)),
+                    c(1, 2, 4, 5, 6)] &lt;- druggableTARGET
+                } else {
+                  result &lt;- table
+                }
+            } else {
+                result &lt;- table
+            }
+        } else {
+            result &lt;- table
+        }
+
+        ################################ Filter and
+        ################################ combine
+        ################################ results ##
+
+        ## add expression
+        result$Patient.Expr &lt;- exprs.quant[match(result$Gene, exprs.quant[, exprs.quant.gene.column]),
+            patient]
+
+        ## match expression with effect observed in
+        ## evidence remove normal unless &#39;Known
+        ## Var==&#39;expression&#39;
+        normal &lt;- subset(
+            result, subset = Patient.Expr == &quot;NORMAL&quot; &amp;
+                `Known Var` == &quot;expression&quot;
+        )
+
+        ## match HIGH with GoF
+        high &lt;- subset(result, subset = Patient.Expr == &quot;HIGH&quot;)
+        retain &lt;- unique(
+            high$Gene[grep(
+                &quot;GoF|Amplification|ampl\\.|overexpression&quot;,
+                high$`Known Var`
+            )]
+        )
+        high &lt;- subset(result, subset = Gene %in% retain)
+
+        ## match LOW with LoF
+        low &lt;- subset(result, subset = Patient.Expr == &quot;LOW&quot;)
+        retain &lt;- unique(
+            high$Gene[grep(&quot;LoF|deletion|del\\.&quot;, high$`Known Var`)]
+        )
+        low &lt;- subset(low, subset = Gene %in% retain)
+
+        ## merge normal, high and low
+        result &lt;- rbind(normal, high, low)
+
+        result &lt;- result[, c(1, 10, 3:9)]
+
+        if (verbose) {
+            cat(
+                &quot;has &quot;, nrow(result),
+                &quot; results.\n&quot;
+            )
+        }
+
+        # save
+        mtb.results[[patient]] &lt;- result
+    }
+
+    return(mtb.results)
+}</code></pre>
+<p>The script is loaded into a dedicated environment to avoid side effects, and the <code>mtb_analysis</code> function is called to perform the analysis and to retrieve the results:</p>
+<pre class="r"><code>mtb &lt;- new.env()
+source(&quot;MTB/mtb_analysis.R&quot;, local = mtb)
+mtb_results &lt;- mtb$mtb_analysis(
+    patients = patients$geo_accession, exprs.quant = ge_expression_level_by_quantiles,
+    relevant.genes = relevant_genes, cancer = &quot;BRCA&quot;, verbose = TRUE
+)</code></pre>
+<pre><code>## Cancer synonyms for &quot;BRCA&quot;:
+## Breast Cancer, Estrogen-receptor Positive Breast Cancer, Inflammatory Breast Carcinoma, Her2-receptor Positive Breast Cancer, Her2-receptor Negative Breast Cancer, Triple-receptor Negative Breast Cancer, Breast Carcinoma, breast, breast cancer 
+## Patient:  GSM615195  has  1  results.
+## Patient:  GSM615184  has  18  results.
+## Patient:  GSM519380  has  2  results.
+## Patient:  GSM615651  has  4  results.
+## Patient:  GSM411374  has  53  results.
+## Patient:  GSM411334  has  1  results.
+## Patient:  GSM519217  has  134  results.
+## Patient:  GSM411387  has  51  results.
+## Patient:  GSM615695  has  116  results.
+## Patient:  GSM50112  has  9  results.
+## Patient:  GSM50102  has  51  results.
+## Patient:  GSM491233  has  27  results.
+## Patient:  GSM50093  has  3  results.
+## Patient:  GSM491186  has  6  results.
+## Patient:  GSM615160  has  26  results.
+## Patient:  GSM177970  has  53  results.
+## Patient:  GSM615368  has  80  results.
+## Patient:  GSM519167  has  77  results.
+## Patient:  GSM447209  has  82  results.
+## Patient:  GSM519266  has  158  results.
+## Patient:  GSM447247  has  156  results.
+## Patient:  GSM615233  has  2  results.
+## Patient:  GSM441751  has  11  results.
+## Patient:  GSM491230  has  13  results.
+## Patient:  GSM441624  has  53  results.
+## Patient:  GSM150978  has  1  results.
+## Patient:  GSM491264  has  2  results.
+## Patient:  GSM282439  has  15  results.
+## Patient:  GSM282391  has  7  results.
+## Patient:  GSM441626  has  8  results.
+## Patient:  GSM151024  has  10  results.
+## Patient:  GSM615180  has  1  results.
+## Patient:  GSM150944  has  8  results.
+## Patient:  GSM150990  has  8  results.
+## Patient:  GSM151054  has  98  results.
+## Patient:  GSM441661  has  8  results.
+## Patient:  GSM441813  has  108  results.
+## Patient:  GSM491251  has  3  results.
+## Patient:  GSM177894  has  17  results.
+## Patient:  GSM519397  has  14  results.
+## Patient:  GSM519175  has  5  results.
+## Patient:  GSM441789  has  2  results.
+## Patient:  GSM441637  has  93  results.
+## Patient:  GSM151009  has  55  results.
+## Patient:  GSM150958  has  10  results.
+## Patient:  GSM411347  has  1  results.
+## Patient:  GSM615221  has  23  results.
+## Patient:  GSM282516  has  9  results.
+## Patient:  GSM178025  has  6  results.
+## Patient:  GSM441693  has  8  results.
+## Patient:  GSM491205  has  88  results.
+## Patient:  GSM615662  has  10  results.
+## Patient:  GSM150976  has  8  results.
+## Patient:  GSM519171  has  83  results.
+## Patient:  GSM519131  has  10  results.
+## Patient:  GSM441726  has  0  results.
+## Patient:  GSM151268  has  2  results.
+## Patient:  GSM615189  has  1  results.
+## Patient:  GSM615823  has  40  results.
+## Patient:  GSM615200  has  57  results.
+## Patient:  GSM519120  has  79  results.
+## Patient:  GSM615196  has  66  results.
+## Patient:  GSM615332  has  8  results.
+## Patient:  GSM441755  has  22  results.
+## Patient:  GSM441690  has  1  results.
+## Patient:  GSM491283  has  87  results.
+## Patient:  GSM441857  has  1  results.
+## Patient:  GSM441643  has  113  results.
+## Patient:  GSM282406  has  5  results.
+## Patient:  GSM441851  has  2  results.
+## Patient:  GSM177885  has  52  results.
+## Patient:  GSM519358  has  81  results.
+## Patient:  GSM282450  has  13  results.
+## Patient:  GSM615633  has  30  results.
+## Patient:  GSM178060  has  2  results.
+## Patient:  GSM282570  has  5  results.
+## Patient:  GSM519415  has  8  results.
+## Patient:  GSM519222  has  89  results.
+## Patient:  GSM282401  has  59  results.</code></pre>
+<pre class="r"><code>rm(mtb)</code></pre>
+</div>
+<div id="include-mtb-results-in-the-network" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Include MTB results in the network</h3>
+<p>For the sake of the visualization the results of the MTB analysis for a gene are simply stored as <code>TRUE</code> for those genes in the corresponding patient.
+Additionally all results are kept for those genes within the network, namely cancer, confidence level, drugs, evidences, known variations, predictions, and references.</p>
+<pre class="r"><code>## MTB columns
+mtb_attributes &lt;- c(
+    Cancer = &quot;Cancer&quot;, KnownVar = &quot;Known Var&quot;, Prediction = &quot;Predicts&quot;,
+    Drugs = &quot;Drugs&quot;, Evidence = &quot;Evidence&quot;, Reference = &quot;Ref&quot;,
+    ConfidenceLevel = &quot;level&quot;
+)
+
+mtb_nodeAttributes &lt;- NULL
+
+for (patientId in patients$geo_accession) {
+    cat(paste0(&quot;MTB patient &quot;, patientId))
+    if (nrow(mtb_results[[patientId]]) !=
+        0) {
+        genes &lt;- unique(mtb_results[[patientId]]$Gene)
+
+        for (gene in genes) {
+            ## Get the node id for the gene
+            tmp_gene_id &lt;- ppi_integrated_network_rcx$nodes$id[ppi_integrated_network_rcx$nodes$name ==
+                gene]
+
+            ## Add a boolean indicator for the gene
+            ## (for visualization)
+            res &lt;- createNodeAttributes(
+                propertyOf = tmp_gene_id, name = paste0(patientId, &quot;_MTB&quot;),
+                value = TRUE
+            )
+
+            if (is.null(mtb_nodeAttributes)) {
+                mtb_nodeAttributes &lt;- res
+            } else {
+                mtb_nodeAttributes &lt;- updateNodeAttributes(mtb_nodeAttributes, res)
+            }
+
+            cat(&quot;.&quot;)
+
+            ## Add all MTB attributes as ordered lists
+            tmp_gene &lt;- c()
+            for (attr_i in seq(length(mtb_attributes))) {
+                tmp_gene &lt;- append(tmp_gene, gene)
+
+                attr_name &lt;- mtb_attributes[attr_i]
+                attr_called &lt;- names(mtb_attributes)[attr_i]
+
+                sel_gene &lt;- mtb_results[[patientId]]$Gene ==
+                  gene
+
+                tmp_mtb_value &lt;- mtb_results[[patientId]][,
+                  attr_name][sel_gene]
+                tmp_mtb_value[is.na(tmp_mtb_value)] &lt;- &quot;&quot;
+
+                mtb_nodeAttributes &lt;- updateNodeAttributes(
+                  mtb_nodeAttributes, createNodeAttributes(
+                    propertyOf = tmp_gene_id, name = paste0(patientId, &quot;_MTB_&quot;, attr_called),
+                    value = list(tmp_mtb_value),
+                    isList = TRUE
+                )
+              )
+
+                cat(&quot;.&quot;)
+            }
+        }
+    }
+    cat(&quot;done\n&quot;)
+}</code></pre>
+<pre><code>## MTB patient GSM615195........done
+## MTB patient GSM615184................done
+## MTB patient GSM519380................done
+## MTB patient GSM615651................done
+## MTB patient GSM411374........................done
+## MTB patient GSM411334........done
+## MTB patient GSM519217........................................................done
+## MTB patient GSM411387........done
+## MTB patient GSM615695........................................done
+## MTB patient GSM50112................done
+## MTB patient GSM50102........................done
+## MTB patient GSM491233................done
+## MTB patient GSM50093........done
+## MTB patient GSM491186........done
+## MTB patient GSM615160........................done
+## MTB patient GSM177970........................done
+## MTB patient GSM615368........................................done
+## MTB patient GSM519167................done
+## MTB patient GSM447209................................done
+## MTB patient GSM519266................................................done
+## MTB patient GSM447247........................................................................done
+## MTB patient GSM615233................done
+## MTB patient GSM441751........................................done
+## MTB patient GSM491230........................done
+## MTB patient GSM441624........................done
+## MTB patient GSM150978........done
+## MTB patient GSM491264................done
+## MTB patient GSM282439........................................................done
+## MTB patient GSM282391................done
+## MTB patient GSM441626........................done
+## MTB patient GSM151024........................................................done
+## MTB patient GSM615180........done
+## MTB patient GSM150944........................done
+## MTB patient GSM150990................done
+## MTB patient GSM151054........................................................done
+## MTB patient GSM441661................done
+## MTB patient GSM441813................................................done
+## MTB patient GSM491251........................done
+## MTB patient GSM177894........................done
+## MTB patient GSM519397................................................done
+## MTB patient GSM519175................done
+## MTB patient GSM441789................done
+## MTB patient GSM441637................................done
+## MTB patient GSM151009........................................done
+## MTB patient GSM150958................................done
+## MTB patient GSM411347........done
+## MTB patient GSM615221........................done
+## MTB patient GSM282516................................done
+## MTB patient GSM178025........done
+## MTB patient GSM441693........................done
+## MTB patient GSM491205................................done
+## MTB patient GSM615662........done
+## MTB patient GSM150976................done
+## MTB patient GSM519171........................................done
+## MTB patient GSM519131........................................done
+## MTB patient GSM441726done
+## MTB patient GSM151268................done
+## MTB patient GSM615189........done
+## MTB patient GSM615823........................done
+## MTB patient GSM615200................................done
+## MTB patient GSM519120................done
+## MTB patient GSM615196................................done
+## MTB patient GSM615332................................done
+## MTB patient GSM441755........................................done
+## MTB patient GSM441690........done
+## MTB patient GSM491283........................done
+## MTB patient GSM441857........done
+## MTB patient GSM441643........................................................done
+## MTB patient GSM282406................done
+## MTB patient GSM441851................done
+## MTB patient GSM177885................done
+## MTB patient GSM519358........................done
+## MTB patient GSM282450........................done
+## MTB patient GSM615633................................done
+## MTB patient GSM178060................done
+## MTB patient GSM282570........................done
+## MTB patient GSM519415........................................done
+## MTB patient GSM519222........................................done
+## MTB patient GSM282401................................................done</code></pre>
+<pre class="r"><code>ppi_integrated_network_rcx &lt;- updateNodeAttributes(ppi_integrated_network_rcx, mtb_nodeAttributes)</code></pre>
+<pre class="r"><code>printAttributes(ppi_integrated_network_rcx$nodeAttributes)</code></pre>
+</div>
+</div>
+<div id="create-patient-specific-subnetworks" class="section level2">
+<h2><span class="header-section-number">4.3</span> Create patient-specific subnetworks</h2>
+<pre class="r"><code>createCombinedSubnetwork &lt;- function(ppi_integrated_network_rcx) {
+    all_rel_genes &lt;- unique(unlist(relevant_genes))
+
+    tmp_nodes &lt;- ppi_integrated_network_rcx$nodes
+    tmp_edges &lt;- ppi_integrated_network_rcx$edges
+
+    ## select node in the subnetwork
+    sel_nodes &lt;- tmp_nodes$name %in% all_rel_genes
+    tmp_nodes &lt;- tmp_nodes[sel_nodes, ]
+
+    ## select edges that start AND end in the selected
+    ## nodes
+    sel_edges &lt;- tmp_edges$source %in% tmp_nodes$id &amp; tmp_edges$target %in%
+        tmp_nodes$id
+    tmp_edges &lt;- tmp_edges[sel_edges, ]
+
+    ppi_integrated_network_rcx$nodes &lt;- tmp_nodes
+    ppi_integrated_network_rcx$edges &lt;- tmp_edges
+
+    ## remove all attributes not included in the nodes
+    ppi_integrated_network_rcx$nodeAttributes &lt;- ppi_integrated_network_rcx$nodeAttributes[ppi_integrated_network_rcx$nodeAttributes$propertyOf %in%
+        ppi_integrated_network_rcx$nodes$id, ]
+
+    for (patientId in names(relevant_genes)) {
+        ## get ids of relevant genes for patients
+        rel_gene_ids &lt;- ppi_integrated_network_rcx$nodes$id[ppi_integrated_network_rcx$nodes$name %in%
+            relevant_genes[[patientId]]]
+
+        ## select node attributes relevant for patient
+        sel_node_attr &lt;- startsWith(
+            ppi_integrated_network_rcx$nodeAttributes$name,
+            patientId
+        )
+        keep_node_attr &lt;- ppi_integrated_network_rcx$nodeAttributes$propertyOf %in%
+            rel_gene_ids
+        remove_node_attr &lt;- sel_node_attr &amp; !keep_node_attr
+
+        ppi_integrated_network_rcx$nodeAttributes &lt;- ppi_integrated_network_rcx$nodeAttributes[!remove_node_attr,
+            ]
+    }
+
+    ppi_integrated_network_rcx &lt;- updateMetaData(ppi_integrated_network_rcx)
+}
+
+combined_subnetwork_rcx &lt;- createCombinedSubnetwork(ppi_integrated_network_rcx)
+
+combined_subnetwork_rcx &lt;- updateNetworkAttributes(
+    combined_subnetwork_rcx, createNetworkAttributes(
+        name = &quot;name&quot;, value = &quot;Combined patient-specific breast cancer subnetworks&quot;
+    )
+)
+
+print(combined_subnetwork_rcx$metaData)</code></pre>
+<pre><code>## Meta-data:</code></pre>
+<div id="htmlwidget-403172fa0474bd0cce33" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-403172fa0474bd0cce33">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4"],["nodes","edges","networkAttributes","nodeAttributes"],["1.0","1.0","1.0","1.0"],[6371,27613,null,null],[407,1539,13,29031],[1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>printAttributes(combined_subnetwork_rcx$nodeAttributes)</code></pre>
+<p>Include the number of occurrences of the genes in the patients</p>
+<pre class="r"><code>getOccurrences &lt;- function(network) {
+    gene_occurrences &lt;- table(unlist(relevant_genes))
+    gene_occurrences_po &lt;- network$nodes$id[match(
+        names(gene_occurrences),
+        network$nodes$name
+    )]
+    names(gene_occurrences) &lt;- NULL
+
+    result &lt;- createNodeAttributes(
+        propertyOf = gene_occurrences_po, name = rep(&quot;Occurrence&quot;, length(gene_occurrences)),
+        value = gene_occurrences, dataType = rep(&quot;integer&quot;, length(gene_occurrences))
+    )
+    return(result)
+}
+
+occurrence &lt;- getOccurrences(combined_subnetwork_rcx)
+combined_subnetwork_rcx &lt;- updateNodeAttributes(combined_subnetwork_rcx, occurrence)
+
+printAttributes(combined_subnetwork_rcx$nodeAttributes)</code></pre>
+<p>Also include the number of occurrences by subtype</p>
+<pre class="r"><code>getOccurrencesBySubtype &lt;- function(network) {
+    subtypes &lt;- unique(patients$subtype)
+    occurrences &lt;- data.frame(gene = sort(unique(unlist(relevant_genes))))
+    for (s in subtypes) {
+        pats &lt;- patients[patients$subtype == s, &quot;geo_accession&quot;]
+        ## combine all genes with the gene in each
+        ## patient
+        genes &lt;- c(occurrences$gene, unlist(relevant_genes[pats]))
+        ## substract the one count added gene
+        occurrences[s] &lt;- table(unlist(genes)) -
+            1
+    }
+    ## prepare for creating nodeAttributes aspect
+    occurrences &lt;- plyr::dlply(
+        occurrences, 1, function(x) {
+            list(x[-1])
+        }
+    )
+    occurrences &lt;- lapply(occurrences, unlist)
+    gene_occurrences_po &lt;- network$nodes$id[match(
+        names(occurrences),
+        network$nodes$name
+    )]
+
+    result &lt;- createNodeAttributes(
+        propertyOf = gene_occurrences_po, name = rep(&quot;OccurrenceBySubtype&quot;, length(occurrences)),
+        value = occurrences, dataType = rep(&quot;integer&quot;, length(occurrences))
+    )
+    return(result)
+}
+
+occurrenceBySubtype &lt;- getOccurrencesBySubtype(combined_subnetwork_rcx)
+combined_subnetwork_rcx &lt;- updateNodeAttributes(combined_subnetwork_rcx, occurrenceBySubtype)
+
+printAttributes(combined_subnetwork_rcx$nodeAttributes)</code></pre>
+</div>
+<div id="add-concentric-cartesian-layout" class="section level2">
+<h2><span class="header-section-number">4.4</span> Add concentric cartesian layout</h2>
+<p>The cartesian layout is built manually to form a concentric layout.
+The nodes are placed on layers around the center, while the number of nodes constantly grows.
+The position of the nodes is calculated on the number of nodes in the layer.
+The maximal distance in x and y direction is set by <code>dX</code> and <code>dY</code>.
+To avoid the outermost layer only to be filled sparsely it is balanced with the layer beneath.</p>
+<pre class="r"><code>buildLayout &lt;- function(rcx_network, dX = 70, dY = 70) {
+    nodes &lt;- rcx_network$nodes$id
+
+    layer &lt;- 0
+    nodesInLayer &lt;- 0
+    counter &lt;- 0
+    remaining &lt;- length(nodes) -
+        counter
+
+    xs &lt;- c()
+    ys &lt;- c()
+
+    ## determine max. number of nodes in the layers
+    getMaxNodesInLayer &lt;- function(layer) {
+        if (layer == 0)
+            res &lt;- 1 else if (layer == 1)
+            res &lt;- 4 else if (layer == 2)
+            res &lt;- 12 else res &lt;- 8 * (layer - 1) - (4 * floor(log(layer, 8)))
+        return(res)
+    }
+    maxNodesInLayer &lt;- getMaxNodesInLayer(layer)
+
+    for (n in nodes) {
+        ## distribute all nodes evenly in a circle
+        if (remaining &lt; maxNodesInLayer)
+            fracts &lt;- 360/remaining else fracts &lt;- 360/maxNodesInLayer
+
+        ## calc x and y position
+        x &lt;- sin((pi/180) * fracts * nodesInLayer) *
+            dX * layer
+        y &lt;- cos((pi/180) * fracts * nodesInLayer) *
+            dY * layer
+
+        xs &lt;- append(xs, x)
+        ys &lt;- append(ys, y)
+
+        nodesInLayer &lt;- nodesInLayer + 1
+        counter &lt;- counter + 1
+
+        ## if one layer is full
+        if (nodesInLayer == maxNodesInLayer) {
+            remaining &lt;- length(nodes) -
+                counter
+            nodesInLayer &lt;- 0
+            layer &lt;- layer + 1
+
+            maxNodesInLayer &lt;- getMaxNodesInLayer(layer)
+            maxNodesInNextLayer &lt;- getMaxNodesInLayer(layer + 1)
+            ## for the outer two circles, distribute
+            ## more evenly
+            if (remaining &gt; maxNodesInLayer &amp; (remaining &lt;
+                maxNodesInLayer + maxNodesInNextLayer)) {
+                ## keep the fraction between the two
+                ## circles
+                maxNodesInLayer &lt;- min(
+                  floor(
+                    remaining * (maxNodesInLayer/maxNodesInLayer +
+                      maxNodesInNextLayer)
+                ),
+                  maxNodesInLayer
+              )
+            }
+        }
+    }
+
+    res &lt;- createCartesianLayout(combined_subnetwork_rcx$nodes$id, xs, ys)
+
+    return(res)
+}
+
+
+combined_subnetwork_rcx &lt;- updateCartesianLayout(
+    combined_subnetwork_rcx, buildLayout(combined_subnetwork_rcx)
+)
+
+print(combined_subnetwork_rcx$metaData)</code></pre>
+<pre><code>## Meta-data:</code></pre>
+<div id="htmlwidget-51927ef34c645c5c54b9" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-51927ef34c645c5c54b9">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["nodes","edges","networkAttributes","nodeAttributes","cartesianLayout"],["1.0","1.0","1.0","1.0","1.0"],[6371,27613,null,null,null],[407,1539,13,29845,407],[1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="save-combined-subnetwork" class="section level2">
+<h2><span class="header-section-number">4.5</span> Save combined subnetwork</h2>
+<p>To make the network available to for further analyses, we can upload the network to the NDEx platform (<a href="https://www.ndexbio.org/" class="uri">https://www.ndexbio.org/</a>).
+Of course for this an account is required.</p>
+<pre class="r"><code>ndex_con &lt;- ndex_connect(username = &quot;florianjauer&quot;, password = &quot;****&quot;)
+ndexHPRDuuid &lt;- ndex_create_network(ndex_con, combined_subnetwork_rcx)
+ndexHPRDuuid</code></pre>
+<p>Until now, the network is only visible to the owner.
+To change that, and make it visible to everyone, we have to update this property:</p>
+<pre class="r"><code>ndex_network_set_systemProperties(ndex_con, ndexHPRDuuid, visibility = TRUE)</code></pre>
+<p>The combined subnetwork is available on NDEx:</p>
+<p><a href="https://www.ndexbio.org/viewer/networks/a420aaee-4be9-11ec-b3be-0ac135e8bacf" class="uri">https://www.ndexbio.org/viewer/networks/a420aaee-4be9-11ec-b3be-0ac135e8bacf</a></p>
+<pre class="r"><code>combined_subnetwork_rcx &lt;- ndex_get_network(ndex_con, &quot;a420aaee-4be9-11ec-b3be-0ac135e8bacf&quot;)</code></pre>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/Combined-subnetworks-on-NDEx.png" alt="" />
+<p class="caption">Combined subnetworks on the NDEx platform with default circular layout)</p>
+</div>
+<div class="pagination">
+<div class="prev">
+Previous: <a href="DataExplorationAndPreparation.html">Data Exploration and Preparation</a>
+</div>
+<div class="curr">
+Data Integration
+</div>
+<div class="next">
+Next: <a href="Visualization.html">Visualization</a>
+</div>
+</div>
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1><span class="header-section-number">5</span> Session info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.0.3 (2020-10-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.3 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
+##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
+##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
+## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+## 
+## loaded via a namespace (and not attached):
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
+##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
+## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
+## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
+## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
+## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
+## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
+## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
+## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

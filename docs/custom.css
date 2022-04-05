@@ -1,0 +1,34 @@
+body {
+  max-width: 1400px !important;
+}
+
+.main-container {
+    max-width: 1400px !important;
+}
+
+p > img {
+    padding-left: 0px !important;
+}
+
+.dataTables_wrapper {
+    left: -45px;
+}
+
+.pagination {
+  background-color: #d7ff91;
+  font-size: 1.4em;
+  width: 80%;
+  margin: 50px 150px 0 0;
+}
+
+.pagination div{
+  display: inline-block;
+  width: 32%;
+}
+
+.pagination .curr{
+  font-weight: bold;
+}
+
+
+

@@ -1,0 +1,5 @@
+<div class="pagination">
+<div class="prev">Previous: [Overview](Overview.html)</div>
+<div class="curr">Software requirements</div>
+<div class="next">Next: [ndexr](Ndexr.html)</div>
+</div>

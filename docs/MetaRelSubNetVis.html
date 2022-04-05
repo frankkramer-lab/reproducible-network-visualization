@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2022-03-30" />
+
+<title>Interactive visualization with MetaRelSubNetVis</title>
+
+<script src="MetaRelSubNetVis_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="MetaRelSubNetVis_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="MetaRelSubNetVis_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="MetaRelSubNetVis_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="MetaRelSubNetVis_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="MetaRelSubNetVis_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="MetaRelSubNetVis_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="MetaRelSubNetVis_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="MetaRelSubNetVis_files/navigation-1.1/tabsets.js"></script>
+<link href="MetaRelSubNetVis_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="MetaRelSubNetVis_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Interactive visualization with MetaRelSubNetVis</h1>
+<p class="author-name">Florian J. Auer<span class="affil-mark">1</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>IT-Infrastructure for Translational Medical Research, University of Augsburg</p>
+<h4 class="date">03/30/2022</h4>
+
+</div>
+
+
+<ul>
+<li><a href="Overview.html">Overview</a> <em>A short introduction</em>
+<ul>
+<li><a href="SoftwareRequirements.html">Software requirements</a> <em>Installation of required packages</em></li>
+<li><a href="Ndexr.html">ndexr</a> <em>ndexr - interface with the network data exchange (NDEx)</em></li>
+<li><a href="RCX.html">RCX</a> <em>RCX - R implementation of the Cytoscape Exchange (CX) format</em></li>
+</ul></li>
+<li><a href="DataExplorationAndPreparation.html">Data Exploration and Preparation</a> <em>Loading the source data, explore the content and prepare the data for its usage</em></li>
+<li><a href="DataIntegration.html">Data Integration</a> <em>Combine the network data with patient information, gene expression and relevance score</em></li>
+<li><a href="Visualization.html">Visualization</a> <em>Explore different ways of visualizing the networks</em>
+<ul>
+<li><a href="MetaRelSubNetVis.html">MetaRelSubNetVis</a> <em>Comparative web-based visualization</em></li>
+<li><a href="NDExEdit.html">NDExEdit</a> <em>Web-based data-dependant visualization with NDExEdit</em></li>
+<li><a href="RCXvis.html">RCX based</a> <em>R-based visualization with the RCX package</em></li>
+<li><a href="CytoscapeAndRCy3.html">Cytoscape and RCy3</a> <em>Using the RCy3 package to remotly control Cytoscape</em></li>
+</ul></li>
+</ul>
+<div id="metarelsubnetvis" class="section level1">
+<h1><span class="header-section-number">1</span> MetaRelSubNetVis</h1>
+<p>MetaRelSubNetVis allows the comparison the integrated networks of patients within patient groups with respect to the individuals’ contained biological data.
+The previously created and to the NDEx uploaded network contains all the necessary information and description of the data attribute.
+It is available on NDEx as “Combined patient-specific breast cancer subnetworks” at <a href="https://www.ndexbio.org/viewer/networks/a420aaee-4be9-11ec-b3be-0ac135e8bacf" class="uri">https://www.ndexbio.org/viewer/networks/a420aaee-4be9-11ec-b3be-0ac135e8bacf</a></p>
+<p>The MetaRelSubNetVis website is available at <a href="https://frankkramer-lab.github.io/MetaRelSubNetVis" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis</a>:</p>
+<p><img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/home.png" alt="Shareable visualization of interactive patient comparison on MetaRelSubNetVis" />
+With MetaRelSubNetVis we provide a visualization tool that allows users to inspect differences between two groups of patients by directly loading the network from the NDEx platform.
+Our previous network is already available as sample network on the website, but NDEx platform can be queried for any other publicly available networks.
+Additionaly, the network not only has to be set to be public, but explicitly marked as searchable to be found by the search.</p>
+</div>
+<div id="network-data-requirements" class="section level1">
+<h1><span class="header-section-number">2</span> Network data requirements</h1>
+<p>To make sure, your network is compatible as input for this class comparison, it has to fulfill the specific properties.</p>
+<p>The network needs to conform to the <a href="https://home.ndexbio.org/data-model/">CX data model</a> (which should already the case if it passed validation on the NDEx platform) and contain the aspects <code>nodes</code>, <code>edges</code>, <code>nodeAttributes</code>, and <code>networkAttributes</code>.</p>
+<div id="nodes" class="section level2">
+<h2><span class="header-section-number">2.1</span> Nodes</h2>
+<p>Each node has to have an id (property <code>@id</code>) and a name (property <code>n</code>).</p>
+</div>
+<div id="edges" class="section level2">
+<h2><span class="header-section-number">2.2</span> Edges</h2>
+<p>Each edge has to have an id (property <code>@id</code>), a source (property <code>s</code>) and a target (property <code>t</code>).</p>
+</div>
+<div id="nodeattributes" class="section level2">
+<h2><span class="header-section-number">2.3</span> NodeAttributes</h2>
+<p>Each node can have multiple attributes.
+A node attribute’s relation to a node is indicated by the node attribute’s property <code>po</code>.
+The name of the node attribute (property <code>n</code>) always starts with a patient identifier, followed by <code>_</code>.
+After that the attribute is described.
+The following are required for each patient:</p>
+<ul>
+<li><em>Score:</em> Relevance score, a numeric value</li>
+<li><em>GE:</em> Gene expression, a numeric value</li>
+<li><em>GE_Level:</em> Gene expression level, one of the following values: (<code>LOW</code>, <code>HIGH</code>, <code>NORMAL</code>)</li>
+</ul>
+<p>Optional attributes are:</p>
+<ul>
+<li><em>MTB:</em> a boolean value</li>
+</ul>
+</div>
+<div id="networkattributes" class="section level2">
+<h2><span class="header-section-number">2.4</span> NetworkAttributes</h2>
+<p>NetworkAttributes are used to describe the patient samples. Please note: The order within each of these attributes is crucical.</p>
+<ul>
+<li><em>Patients:</em> String list of patient identifiers</li>
+<li><em>PatientSubtype:</em> String list of each patient’s cancer subtype</li>
+<li><em>PatientSurvivalYears:</em> Double list of each patient’s metastasis free survival</li>
+<li><em>PatientGroups:</em> String list of each patient’s group (in sum there can only be two different types of groups!)</li>
+</ul>
+<p>Furthermore the property name contains the network’s name (property <code>name</code>) that will be used as a headline for this application.</p>
+</div>
+</div>
+<div id="interactive-exploration" class="section level1">
+<h1><span class="header-section-number">3</span> Interactive exploration</h1>
+<p>Clicking the “Open the app with this network” for the “Combined patient-specific breast cancer subnetworks” will open it in for exploration:</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/without-selection.png" alt="" />
+<p class="caption">“Combined patient-specific breast cancer subnetworks” network loaded in MetaRelSubNetVis <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=1&amp;cT=1&amp;cN=1&amp;cL=1&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=1&amp;cT=1&amp;cN=1&amp;cL=1&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<p>By default all nodes are displayed in a concentric layout.
+The graph is interactive, meaning the nodes are draggable and preserve their position, even when the patient selection or visualization parameters change.
+The graph can also be zoomed in and moved to adjust the investigation of the content as wanted.</p>
+<p>A specific patient can be investigated by selecting one from the metastatic or non-metastatic patients in the patients tab.
+For the single available patients their cancer subtype is displayed along their identifier.
+Selecting for example the patient GSM615368 with Basal cancer subtype from the metastatic group displays only the relevant genes to this subnetwork.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient-gel-rel.png" alt="" />
+<p class="caption">Visualization of patient GSM615368 colored by gene expression level and sized by relevance score <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;col=0&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<p>By default the subnetwork is colored by its gene expression level, and sized by the relevance score.
+The results of the molecular tumor board analysis are marked by a green border around the corresponding nodes.
+The coloring and sizing of the nodes can easily be adjusted, for example by changing it to gene expression and relevance score respectively.
+The displayed nodes can be filtered to lie above a certain threshold.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient-rel-ge.png" alt="" />
+<p class="caption">Visualization of patient GSM615368 colored by relevance score and sized by gene expression, and adjusted threshold <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00037401755&amp;col=2&amp;size=0&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00037401755&amp;col=2&amp;size=0&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<div style="page-break-after: always;"></div>
+<p>The coloring follows a gradient consistent over the relevance scores of all patients.
+It is also notable, that lower values of the relevance score for genes does not necessarily imply the lack of relevance:
+the selected genes still represent the top 140 relevant genes.</p>
+<p>To display the subnetwork in the context of all genes combined by all patients, it is possible to include those genes within the visualization.
+Since not being relevant to this subnetwork, they are displayed in gray.
+The adjustment of the threshold (although here reset to include all relevant genes) then still includes otherwise no longer applicable nodes as default gray nodes.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient-ge-rel-all.png" alt="" />
+<p class="caption">Visualization of patient GSM615368 colored by gene expression and sized by relevance score including genes present in remaining subnetworks <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;sel=3406,1106&amp;col=1&amp;size=1&amp;all=true&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;th=0.00029828155&amp;sel=3406,1106&amp;col=1&amp;size=1&amp;all=true&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<p>Additionally the available nodes can searched and highlited within the graph.
+All the adjacent edges are highlighted as well to put focus on the interaction with the remaining nodes.</p>
+<p>Selecting an aditional patient from the non-metastatic group, e.g. GSM615184, as well from the Basal cancer subtype, the relevance scores (or other data if selected) are displayed for both patients in the corresponding half of the node (left for metastatic, right for non-metastatic).
+Gene only present in the patient of one group are colored gray for the other group.
+The size of the nodes is set to small for nodes only present in one group and double the size when present in both groups to make it easily distinguishable.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/two-patients.png" alt="" />
+<p class="caption">Comparative visualization of patient GSM615368 and GSM615184 colored by relevance score <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=false&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<p>However, it is also possible to only display the nodes shared between both patients.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/two-patients-only-shared.png" alt="" />
+<p class="caption">Comparative visualization of common genes between patient GSM615368 and GSM615184 colored by relevance score <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pa=GSM615368&amp;pb=GSM615184&amp;th=0.00031651055&amp;sel=3406,1106&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=0&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<p>Disselecting the patient from the metastatic group leaves only the remaining patient visualized, here with marked genes <code>MYC</code> and <code>CCND1</code>.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/one-patient2.png" alt="" />
+<p class="caption">Visualization of patient GSM615184 colored by relevance score and sized by gene expression <br/> (<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+<p>The visualizations generated by setting the various parameters can easily exported as images in different formats for further use or publication.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/image-export.png" alt="" />
+<p class="caption">Image export options</p>
+</div>
+<p>The exported image in PNG format with transparent background from the current visualized network then can be included everywhere, even here:</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/patient2-GSM615184.PNG" alt="" />
+<p class="caption">Shareable visualization of interactive patient comparison on MetaRelSubNetVis <br/>(<a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;dwn=true&amp;img=PNG,1,true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1016,1251&amp;col=2&amp;size=1&amp;all=false&amp;shared=true&amp;mtb=true&amp;dwn=true&amp;img=PNG,1,true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=0&amp;cL=0&amp;cD=1&amp;cG=1&amp;cIm=1</a>)</p>
+</div>
+</div>
+<div id="sharing-the-network-by-visualization-link" class="section level1">
+<h1><span class="header-section-number">4</span> Sharing the network by visualization link</h1>
+<p>The results of the data integration with networks, and its visualization are useful information to collaborators.
+However, sharing the data needs the receiver to be able to handle the tools for exploration and visualization.
+Sharing the visualization only as images omits much of the otherwise included information.</p>
+<p>MetaRelSubNetVis combines both to an advanced, but simple to use web-based visualization and exploration tool.
+One can generate links for sharing a specific subnetwork including the settings from current visualization.<br />
+Furthermore it is possible to set the options for automatic image download or display of the sidebar and its components.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/link-generator1.png" alt="" />
+<p class="caption">Exported PNG image of patient GSM615184 colored by relevance score and sized by gene expression with transparend background</p>
+</div>
+<div style="page-break-after: always;"></div>
+<p>The current visualization is summarized to comprehend and review the current settings.</p>
+<div class="figure">
+<img src="/home/flockowak/Projekte/Workflow/Workflow/img/MetaRelSubNetVis/link-generator2.png" alt="" />
+<p class="caption">Set options for image download or display of the sidebar and its components</p>
+</div>
+<div style="page-break-after: always;"></div>
+<p>The remaining options can force the rendering of the network visualization and trigger an download dialogue, or determine the behaviour of the exploration panel.
+It is possible to set different options for the sidebar and the components:
+- <em>None:</em> hides the element completely
+- <em>Button</em> displays the element collapsed
+- <em>Full</em> displays the element in expanded form.</p>
+<p>The here used options show the sidebar, patients and layout tab expanded, hides the link generator tab, and displays the remaining elements collapsed.</p>
+<p>The link to share the current network with the set options and current visualization is as follows:</p>
+<p><a href="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1251,1016&amp;col=2&amp;size=0&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=2&amp;cIm=1" class="uri">https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1251,1016&amp;col=2&amp;size=0&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=2&amp;cIm=1</a></p>
+<p>This link starts the MetaRelSubNetVis app to display the network, and the selected patient the same way as when the link was generated.
+The link then can be used to share custom visualization with collaborators to point out certain specifics to discuss.
+Furthermore, it can be provided along the image used within a publication to enable the reader additional investigation and exploration of the studied network integration.</p>
+<p>With this link, also an interactive visualization of the network can be embedded on a distinct website:</p>
+<div style="height: 50em;">
+<iframe src="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&amp;pb=GSM615184&amp;th=0.00030449335&amp;sel=1251,1016&amp;col=2&amp;size=0&amp;all=false&amp;shared=true&amp;mtb=true&amp;sb=0&amp;cP=0&amp;cT=1&amp;cN=1&amp;cL=0&amp;cD=1&amp;cG=2&amp;cIm=1" allowfullscreen allow="autoplay" data-external="1" style="-webkit-transform:scale(0.5);-moz-transform-scale(0.5);-moz-transform-origin: top left; -webkit-transform-origin: top left; -o-transform-origin: top left; -ms-transform-origin: top left; transform-origin: top left;width: 200%;height: 100em;">
+</iframe>
+</div>
+<div class="pagination">
+<div class="prev">
+Previous: <a href="Visualization.html">Visualization</a>
+</div>
+<div class="curr">
+MetaRelSubNetVis
+</div>
+<div class="next">
+Next: <a href="NDExEdit.html">NDExEdit</a>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

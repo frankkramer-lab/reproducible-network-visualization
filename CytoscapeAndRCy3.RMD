@@ -1,0 +1,68 @@
+---
+title: "Cytoscape and RCy3"
+author: 
+  - name: Florian J. Auer
+    url: https://github.com/florian-j-auer
+    affiliation: IT-Infrastructure for Translational Medical Research, University of Augsburg
+    affiliation_url: https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/
+date: "03/30/2022"
+output: 
+  BiocStyle::html_document:
+    css: custom.css
+    self_contained: no
+    toc: yes
+    toc_float: yes
+  BiocStyle::pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=55,
+                                     args.newline = TRUE,
+                                     arrow = TRUE),
+                      tidy=TRUE)
+```
+
+```{r navigation, eval=HTML, results='asis', echo=FALSE}
+res <- knitr::knit_child('navigation/navigation.Rmd', quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+## Cytoscape
+
+The most prominent software environment for biological network analysis and visualization is Cytoscape (https://cytoscape.org/). 
+It provides support for large networks and comes with a rich set of features for custom visualization, and advanced layout and analysis algorithms. 
+One of these visualization features is the "attribute-to-visual mapping", where the network's data translates to its visual representation.
+Based on this visualization strategy, Cytoscape contributed aspects to the CX-format to capture the visual representation as part of the network.
+Because of these aspects, the visualization not only can be documented along with the network, but also reproduced on other platforms, and even shared between networks with the same attributes used for creating the visualization.
+
+
+# Setup
+
+## Load libraries
+
+```{r libraries, eval=FALSE}
+library(ndexr)
+library(RCy3)
+```
+
+
+
+
+## Load network
+
+
+
+# Visualization
+
+```{r navigation2, eval=HTML, results='asis', echo=FALSE}
+res <- knitr::knit_child(HTML_file, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+# Session info
+```{r sessionInfo}
+sessionInfo()
+```
+
+

@@ -1,0 +1,5 @@
+<div class="pagination">
+<div class="prev">Previous: [Introduction](Introduction.html)</div>
+<div class="curr">Setup</div>
+<div class="next">Next: [Data Exploration and Preparation](DataExplorationAndPreparation.html)</div>
+</div>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2022-03-30" />
+
+<title>Data Exploration and Preparation</title>
+
+<script src="DataExplorationAndPreparation_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="DataExplorationAndPreparation_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="DataExplorationAndPreparation_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="DataExplorationAndPreparation_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="DataExplorationAndPreparation_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="DataExplorationAndPreparation_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="DataExplorationAndPreparation_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="DataExplorationAndPreparation_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="DataExplorationAndPreparation_files/navigation-1.1/tabsets.js"></script>
+<link href="DataExplorationAndPreparation_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="DataExplorationAndPreparation_files/highlightjs-9.12.0/highlight.js"></script>
+<script src="DataExplorationAndPreparation_files/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="DataExplorationAndPreparation_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="DataExplorationAndPreparation_files/datatables-binding-0.21/datatables.js"></script>
+<link href="DataExplorationAndPreparation_files/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="DataExplorationAndPreparation_files/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="DataExplorationAndPreparation_files/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="DataExplorationAndPreparation_files/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="DataExplorationAndPreparation_files/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Exploration and Preparation</h1>
+<p class="author-name">Florian J. Auer<span class="affil-mark">1</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>IT-Infrastructure for Translational Medical Research, University of Augsburg</p>
+<h4 class="date">03/30/2022</h4>
+
+</div>
+
+
+<ul>
+<li><a href="Overview.html">Overview</a> <em>A short introduction</em>
+<ul>
+<li><a href="SoftwareRequirements.html">Software requirements</a> <em>Installation of required packages</em></li>
+<li><a href="Ndexr.html">ndexr</a> <em>ndexr - interface with the network data exchange (NDEx)</em></li>
+<li><a href="RCX.html">RCX</a> <em>RCX - R implementation of the Cytoscape Exchange (CX) format</em></li>
+</ul></li>
+<li><a href="DataExplorationAndPreparation.html">Data Exploration and Preparation</a> <em>Loading the source data, explore the content and prepare the data for its usage</em></li>
+<li><a href="DataIntegration.html">Data Integration</a> <em>Combine the network data with patient information, gene expression and relevance score</em></li>
+<li><a href="Visualization.html">Visualization</a> <em>Explore different ways of visualizing the networks</em>
+<ul>
+<li><a href="MetaRelSubNetVis.html">MetaRelSubNetVis</a> <em>Comparative web-based visualization</em></li>
+<li><a href="NDExEdit.html">NDExEdit</a> <em>Web-based data-dependant visualization with NDExEdit</em></li>
+<li><a href="RCXvis.html">RCX based</a> <em>R-based visualization with the RCX package</em></li>
+<li><a href="CytoscapeAndRCy3.html">Cytoscape and RCy3</a> <em>Using the RCy3 package to remotly control Cytoscape</em></li>
+</ul></li>
+</ul>
+<div id="load-libraries" class="section level1">
+<h1><span class="header-section-number">1</span> Load libraries</h1>
+<pre class="r"><code>library(survival)
+library(RColorBrewer)
+library(dplyr)
+library(gplots)
+library(igraph)
+library(ndexr)
+library(RCX)</code></pre>
+</div>
+<div id="patient-information" class="section level1">
+<h1><span class="header-section-number">2</span> Patient information</h1>
+<p>We applied our methods to a large breast cancer patient dataset that we previously studied and preprocessed [27]. That data is compiled out of 10 public microarray datasets measured on Affymetrix Human Genome HG-U133 Plus 2.0 and HG-U133A arrays. The datasets are available from the Gene Expression Omnibus (GEO) [28] data repository (accession numbers GSE25066, GSE20685, GSE19615, GSE17907, GSE16446, GSE17705, GSE2603, GSE11121, GSE7390, GSE6532). The RMA probe-summary algorithm [29] was used to process each of the datasets, and only samples with metadata on metastasis-free survival were selected and combined together on the basis of HG-U133A array probe names. Quantile normalization was applied over all datasets. In the case of several probes mapping to one gene, only the probe with the highest average value was considered.</p>
+<p>The patients were assigned to one of two classes: 393 patients with distant metastasis within the first 5 years and 576 patients without metastasis having the last follow-up between 5 and 10 years. Breast cancer molecular subtypes for the patient samples were predicted in [27] utilizing genefu R-package [30].</p>
+<p>The constant of labels_GEO_HG.csv</p>
+<ol style="list-style-type: decimal">
+<li><p>People who had metastatic event during the first 0-5 years (correspond to “1”). 393 patients.</p></li>
+<li><p>People who did not have metastatic event during the first five years and who had the last follow up between 5 and 10 years. No metastatic events at all. This class corresponds to “0”. 576 patients.</p></li>
+</ol>
+<p>We retrained the Graph-CNN on 872 patients and generated relevances for <strong>97 test patients</strong>.</p>
+<p><strong>It is not stated which patients those 97 patients are!!!</strong>
+Use own information</p>
+<p>Load the patient information about the 97 patients:</p>
+<pre class="r"><code>patients &lt;- read.csv(&quot;data/patient_information.csv&quot;, stringsAsFactors = F)
+head(patients)</code></pre>
+<div id="htmlwidget-3a653bfafe890625cd7f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3a653bfafe890625cd7f">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["GSM615233","GSM519226","GSM411347","GSM615195","GSM615097","GSM615221"],[1,0,1,1,0,1],[1,1,1,1,1,1],[1,0,1,1,0,1],["LumA","LumA","LumB","Basal","LumA","LumB"],[0.791,9.8,0.619444444444444,0.764,5.552,3.362],[1,0,1,1,0,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Patient.ID<\/th>\n      <th>label<\/th>\n      <th>Predicted<\/th>\n      <th>Concordance<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,4,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>The patient data is composed of different subtypes with and without metastatic events:</p>
+<pre class="r"><code>table(patients[, c(&quot;subtype&quot;, &quot;met.event&quot;)])</code></pre>
+<pre><code>##         met.event
+## subtype   0  1
+##   Basal   6 13
+##   Her2    1  4
+##   LumA   25  3
+##   LumB   24 18
+##   Normal  2  1</code></pre>
+<p>There is a difference between labeled and predicted metastatic event.
+Therefore the patients are filtered for only correctly predicted metastatic events:</p>
+<pre class="r"><code>## Check colnames
+colnames(patients) &lt;- gsub(&quot;Patient.ID&quot;, &quot;geo_accession&quot;, colnames(patients))
+colnames(patients) &lt;- gsub(&quot;Predicted&quot;, &quot;predicted&quot;, colnames(patients))
+# colnames(patients) = gsub(&#39;Concordance&#39;,
+# &#39;concordance&#39;, colnames(patients))
+
+## Only select patients, that are correctly classified
+patients &lt;- patients[patients$Concordance == 1, ]
+patients$Concordance &lt;- NULL
+patients &lt;- patients[order(patients$subtype),
+    ]
+
+## differentiate between the two groups
+selMetastatic &lt;- patients$met.event == 1
+
+head(patients)</code></pre>
+<div id="htmlwidget-dfef390762fdf50b85e1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dfef390762fdf50b85e1">{"x":{"filter":"none","vertical":false,"data":[["4","12","16","31","36","38"],["GSM615195","GSM615184","GSM519380","GSM615651","GSM411374","GSM411334"],[1,0,0,1,1,1],[1,0,0,1,1,1],["Basal","Basal","Basal","Basal","Basal","Basal"],[0.764,7.302,9.2,0.791238877481177,0.444444444444444,1.06111111111111],[1,0,0,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>geo_accession<\/th>\n      <th>label<\/th>\n      <th>predicted<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Survival by subtype:</p>
+<pre class="r"><code>survival &lt;- survfit(
+    Surv(mfs.years, met.event) ~
+        subtype, data = patients
+)
+print(survival)</code></pre>
+<pre><code>## Call: survfit(formula = Surv(mfs.years, met.event) ~ subtype, data = patients)
+## 
+##                 n events median 0.95LCL 0.95UCL
+## subtype=Basal  17     11   0.90   0.728      NA
+## subtype=Her2    4      3   3.92   0.900      NA
+## subtype=LumA   24      2     NA      NA      NA
+## subtype=LumB   33     15     NA   3.362      NA
+## subtype=Normal  1      0     NA      NA      NA</code></pre>
+<pre class="r"><code>colors &lt;- brewer.pal(5, &quot;Dark2&quot;)
+names(colors) &lt;- c(&quot;Basal&quot;, &quot;Her2&quot;, &quot;LumA&quot;, &quot;LumB&quot;, &quot;Normal&quot;)
+
+plot(
+    survival, col = colors, lwd = 2, mark.time = TRUE, xlab = &quot;Years since study entry&quot;,
+    ylab = &quot;Survival&quot;
+)
+legend(
+    &quot;bottomleft&quot;, names(colors),
+    col = colors, lwd = 2, bty = &quot;n&quot;
+)</code></pre>
+<p><img src="DataExplorationAndPreparation_files/figure-html/patientsSurvival-1.png" width="100%" /></p>
+</div>
+<div id="gene-expression" class="section level1">
+<h1><span class="header-section-number">3</span> Gene expression</h1>
+<p><a href="http://mypathsem.bioinf.med.uni-goettingen.de/resources/glrp" class="uri">http://mypathsem.bioinf.med.uni-goettingen.de/resources/glrp</a>
+<a href="http://mypathsem.bioinf.med.uni-goettingen.de/fileadmin/mypathsem_resources/WP3/GEO_HG_PPI.csv.zip" class="uri">http://mypathsem.bioinf.med.uni-goettingen.de/fileadmin/mypathsem_resources/WP3/GEO_HG_PPI.csv.zip</a></p>
+<p>Gene expression of the whole data set:</p>
+<pre class="r"><code>ge_all &lt;- read.csv(&quot;data/GEO_HG_PPI.csv.gz&quot;, stringsAsFactors = F)</code></pre>
+<p>Get the column names for the genes and the patient ids:</p>
+<pre class="r"><code>ge_gene_col &lt;- &quot;probe&quot;
+ge_patient_cols &lt;- colnames(ge_all)[colnames(ge_all) !=
+    ge_gene_col]</code></pre>
+<p>Get the mean, standard deviation and boundaries for the 25% and 75% quantile for each gene (probe) based on its expression in all patients.</p>
+<pre class="r"><code>ge_with_statistics &lt;- ge_all %&gt;%
+    rowwise() %&gt;%
+    do(
+        {
+            curRow &lt;- unlist(.[ge_patient_cols])
+            result &lt;- data.frame(., stringsAsFactors = F)
+            result[&quot;mean&quot;] &lt;- mean(curRow)
+            result[&quot;stdev&quot;] &lt;- sd(curRow)
+            quartiles &lt;- quantile(curRow, probs = c(0, 0.25, 0.4, 0.5, 0.6, 0.75, 1))
+            result[&quot;Q25&quot;] &lt;- quartiles[&quot;25%&quot;]
+            result[&quot;Q50&quot;] &lt;- quartiles[&quot;50%&quot;]
+            result[&quot;Q75&quot;] &lt;- quartiles[&quot;75%&quot;]
+            result
+        }
+    )
+
+print(
+    unique(
+        gsub(&quot;GSM[0-9]+&quot;, &quot;GSM*&quot;, colnames(ge_with_statistics))
+    )
+)</code></pre>
+<pre><code>## [1] &quot;GSM*&quot;  &quot;probe&quot; &quot;mean&quot;  &quot;stdev&quot; &quot;Q25&quot;   &quot;Q50&quot;   &quot;Q75&quot;</code></pre>
+<pre class="r"><code>tmp_no_col &lt;- dim(ge_with_statistics)[2]
+head(ge_with_statistics[, (tmp_no_col - 5):tmp_no_col])</code></pre>
+<div id="htmlwidget-e9b77984d87e5011d711" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e9b77984d87e5011d711">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"],[13.7905684975581,13.745996022482,13.4899178241702,13.3244115731178,13.3090619348191,13.2958993357437],[0.271288946669042,0.308646046981276,0.289099276092234,0.311041798319005,0.311160415464224,0.222352342600975],[13.6727507026536,13.5638285752365,13.3036647769379,13.0958050870101,13.1304367781615,13.1554704197711],[13.8412178056526,13.7957282814976,13.4912934397558,13.3036647769379,13.2865734204242,13.2699265147267],[14.0279729138725,13.9489238112051,13.7116058041407,13.5638285752365,13.4912934397558,13.406418889682]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>probe<\/th>\n      <th>mean<\/th>\n      <th>stdev<\/th>\n      <th>Q25<\/th>\n      <th>Q50<\/th>\n      <th>Q75<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>This data can be used to calculate the expression level of a gene (LOW, NORMAL or HIGH) using quartile boundaries.</p>
+<pre class="r"><code>ge_expression_level_by_quantiles &lt;- ge_with_statistics %&gt;%
+    rowwise() %&gt;%
+    do(
+        {
+            curRow &lt;- unlist(.[ge_patient_cols])
+            l &lt;- unlist(.[&quot;Q25&quot;])
+            h &lt;- unlist(.[&quot;Q75&quot;])
+
+            curRow[ge_patient_cols] &lt;- ifelse(
+                curRow &lt; l, &quot;LOW&quot;, ifelse(curRow &gt; h, &quot;HIGH&quot;, &quot;NORMAL&quot;)
+            )
+            curRow &lt;- c(
+                unlist(.[ge_gene_col]),
+                curRow
+            )
+            result &lt;- as.data.frame(
+                t(curRow),
+                stringsAsFactors = F
+            )
+            result
+        }
+    )
+
+print(
+    unique(
+        gsub(
+            &quot;GSM[0-9]+&quot;, &quot;GSM*&quot;, colnames(ge_expression_level_by_quantiles)
+        )
+    )
+)</code></pre>
+<pre><code>## [1] &quot;probe&quot; &quot;GSM*&quot;</code></pre>
+<pre class="r"><code>head(ge_expression_level_by_quantiles[, 1:7])</code></pre>
+<div id="htmlwidget-a7dadfa1bb2e5f8251a4" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a7dadfa1bb2e5f8251a4">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"],["NORMAL","LOW","NORMAL","HIGH","NORMAL","HIGH"],["NORMAL","HIGH","NORMAL","NORMAL","NORMAL","NORMAL"],["HIGH","NORMAL","NORMAL","HIGH","NORMAL","NORMAL"],["HIGH","NORMAL","LOW","HIGH","NORMAL","NORMAL"],["HIGH","LOW","NORMAL","HIGH","LOW","LOW"],["NORMAL","NORMAL","LOW","HIGH","NORMAL","HIGH"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>probe<\/th>\n      <th>GSM177885<\/th>\n      <th>GSM177887<\/th>\n      <th>GSM177894<\/th>\n      <th>GSM177895<\/th>\n      <th>GSM177899<\/th>\n      <th>GSM177900<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Get the gene expression only for the patients and order patients by subtype</p>
+<pre class="r"><code>ge_patients &lt;- ge_all[, patients$geo_accession[order(patients$subtype)]]
+rownames(ge_patients) &lt;- ge_all$probe</code></pre>
+<p>Check the gene expression data to be normalized, therefore make a boxplot of the expression data:</p>
+<pre class="r"><code>boxColors &lt;- sapply(
+    colnames(ge_patients),
+    function(x) {
+        subtype &lt;- patients$subtype[patients$geo_accession ==
+            x]
+        return(colors[subtype])
+    }
+)
+
+boxplot(ge_patients, col = boxColors)
+par(xpd = TRUE)
+legend(
+    &quot;topright&quot;, legend = names(colors),
+    col = colors, bty = &quot;o&quot;, pch = 20, pt.cex = 3, cex = 1,
+    horiz = FALSE, inset = c(0.03, 0.1)
+)</code></pre>
+<p><img src="DataExplorationAndPreparation_files/figure-html/geBoxplot-1.png" width="100%" /></p>
+<div id="differential-gene-expression" class="section level2">
+<h2><span class="header-section-number">3.1</span> Differential gene expression</h2>
+<p>t-test</p>
+<pre class="r"><code>## perform a t-test for each gene
+ttest &lt;- apply(
+    ge_patients, 1, function(x) {
+        res &lt;- t.test(x[selMetastatic], y = x[!selMetastatic])
+        return(res$p.value)
+    }
+)
+
+## adjust for multiple testing
+de &lt;- data.frame(
+    prope = names(ttest),
+    pvalue = ttest, qvalue = p.adjust(ttest)
+)
+
+## re-order by q-value
+de &lt;- de[order(de$qvalue),
+    ]
+
+## select differentially expressed genes
+de_genes &lt;- de$prope[de$qvalue &lt; 0.01]
+print(de[de_genes, ])</code></pre>
+<div id="htmlwidget-dc4d8814ddd4da27fab4" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dc4d8814ddd4da27fab4">{"x":{"filter":"none","vertical":false,"data":[["MELK","PLAT","RRM2","CENPE","TPX2","PDE4A","FMOD","KCND3","AURKA","HJURP","BIRC5","CCNB2","C7","EVL","BTG2","BUB1B","YWHAZ"],["MELK","PLAT","RRM2","CENPE","TPX2","PDE4A","FMOD","KCND3","AURKA","HJURP","BIRC5","CCNB2","C7","EVL","BTG2","BUB1B","YWHAZ"],[9.0701268221033e-09,2.48211965883519e-08,3.45289648603788e-08,8.65940381519533e-08,1.07630431820996e-07,1.09693027721063e-07,1.16764976264896e-07,1.29240740131648e-07,1.32291930328542e-07,1.6064597381319e-07,2.88958833788655e-07,4.02907447093328e-07,6.0994485846928e-07,7.8212886267129e-07,1.01406664916688e-06,1.03480002113707e-06,1.17622749890131e-06],[6.24750335506475e-05,0.000170943580903979,0.000237766452028568,0.000596199952676198,0.000740927892655737,0.000755017109804076,0.000803576566655012,0.000889305532845869,0.000910168480660367,0.00110508365386093,0.00198745885879837,0.00277079451366082,0.00419398084683477,0.00537713593086512,0.00697069414637315,0.00711218054527508,0.00808303537244983]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>prope<\/th>\n      <th>pvalue<\/th>\n      <th>qvalue<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="heatmap-visualization" class="section level2">
+<h2><span class="header-section-number">3.2</span> Heatmap visualization</h2>
+<p>A heatmap is a graphical representation of data where the individual values contained in a matrix are represented as colors. Now that we have a subset of DE genes, we can use their counts to generate a heatmap. We expect DE genes to be able to separate the samples from different groups into different clusters of the dendrograms.</p>
+<pre class="r"><code># colors
+pal &lt;- brewer.pal(9, &quot;RdYlBu&quot;)
+
+# heatmap
+heatmap.2(
+  as.matrix(ge_patients[de_genes,]) , 
+  dist=function(x) {as.dist(1-cor(t(x)))}, 
+  scale=&quot;row&quot;,  
+  col=pal, 
+  colCol = boxColors,
+  ColSideColors = ifelse(patients$met.event == 1, &quot;red&quot;, &quot;black&quot;),  
+  trace=&quot;none&quot;, 
+  cexRow=1, 
+  cexCol=0.5,
+  dendrogram = &quot;column&quot;
+)
+
+## legend
+par(xpd=TRUE)
+
+## non-/metastatic
+legend(&quot;topleft&quot;, 
+       legend = c(&quot;metastatic&quot;, &quot;non-metastatic&quot;) , 
+       col = c(&quot;red&quot;, &quot;black&quot;) , 
+       bty = &quot;o&quot;, pch=20 , pt.cex = 3, cex = 1, 
+       horiz = FALSE, 
+       inset=c(-0.1,0.25)
+)
+
+## subtypes
+legend(&quot;bottomleft&quot;, 
+       legend = names(colors) , 
+       col = colors , 
+       bty = &quot;o&quot;, pch=20 , pt.cex = 3, cex = 1, 
+       horiz = FALSE, 
+       inset=c(-0.1,-0.27)
+)</code></pre>
+<p><img src="DataExplorationAndPreparation_files/figure-html/heatmap-1.png" width="100%" /></p>
+</div>
+</div>
+<div id="relevance-score" class="section level1">
+<h1><span class="header-section-number">4</span> Relevance score</h1>
+<p>Paper supplement:</p>
+<pre class="r"><code>relevance_score &lt;- read.csv(&quot;data/ppi_relevance_score.csv&quot;)
+print(
+    unique(gsub(&quot;GSM[0-9]+&quot;, &quot;GSM*&quot;, colnames(relevance_score)))
+)</code></pre>
+<pre><code>## [1] &quot;GSM*&quot;  &quot;probe&quot;</code></pre>
+<pre class="r"><code>tmp_no_col &lt;- dim(relevance_score)[2]
+head(relevance_score[, (tmp_no_col - 6):tmp_no_col])</code></pre>
+<div id="htmlwidget-9501f5efebb8dcf916b3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9501f5efebb8dcf916b3">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],[0.0005343682,0.00081849255,0.00043124746,0.00038521574,0.00056253927,0.000441811],[0.00053190044,0.00088571175,0.0004374442,0.00034262292,0.00055476755,0.00042197868],[0.0005322866,0.0008743374,0.0004494849,0.00033717856,0.00065266475,0.00044667587],[0.00050334266,0.000801643,0.0004692455,0.00034471025,0.0005729415,0.00045488623],[0.0005299115,0.00085546135,0.0004679081,0.00036993017,0.0006054741,0.00042372616],[0.0005491435,0.00084973825,0.00043032455,0.00035017062,0.00064561085,0.0004902194],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>GSM178060<\/th>\n      <th>GSM282570<\/th>\n      <th>GSM519415<\/th>\n      <th>GSM151009<\/th>\n      <th>GSM150958<\/th>\n      <th>GSM519222<\/th>\n      <th>probe<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="ppi-networks" class="section level1">
+<h1><span class="header-section-number">5</span> PPI networks</h1>
+<p>We used the Human Protein Reference Database (HPRD) protein-protein interaction (PPI) network [26] as the molecular network to structure the gene expression data. The database contains protein-protein interaction information based on yeast two-hybrid analysis, in vitro and in vivo methods. The PPI network is an undirected graph with binary interactions between pairs of proteins. The graph is not connected.</p>
+<p>[26] Keshava Prasad TS, Goel R, Kandasamy K, Keerthikumar S, Kumar S, Mathivanan S, Telikicherla D, Raju R, Shafreen B, Venugopal A, Balakrishnan L, Marimuthu A, Banerjee S, Somanathan DS, Sebastian A, Rani S, Ray S, Harrys Kishore CJ, Kanth S, Ahmed M, Kashyap MK, Mohmood R, Ramachandra YL, Krishna V, Rahiman BA, Mohan S, Ranganathan P, Ramabadran S, Chaerkady R, Pandey A. Human protein reference database?2009 update. Nucleic Acids Res. 2009; 37:767–72. <a href="https://doi.org/10.1093/nar/gkn892" class="uri">https://doi.org/10.1093/nar/gkn892</a>.</p>
+<p>From website <a href="http://hprd.org/" class="uri">http://hprd.org/</a>
+Latest release: Apr 13, 2010</p>
+<div id="from-publication" class="section level2">
+<h2><span class="header-section-number">5.1</span> From publication:</h2>
+<p><a href="http://mypathsem.bioinf.med.uni-goettingen.de/resources/glrp" class="uri">http://mypathsem.bioinf.med.uni-goettingen.de/resources/glrp</a></p>
+<p><a href="http://mypathsem.bioinf.med.uni-goettingen.de/fileadmin/mypathsem_resources/WP3/HPRD_PPI.csv.zip" class="uri">http://mypathsem.bioinf.med.uni-goettingen.de/fileadmin/mypathsem_resources/WP3/HPRD_PPI.csv.zip</a></p>
+<pre class="r"><code>ppi_network_matrix &lt;- read.csv(&quot;data/HPRD_PPI.csv.gz&quot;, check.names = FALSE)
+ppi_network_igraph &lt;- graph_from_adjacency_matrix(
+    as.matrix(ppi_network_matrix),
+    mode = &quot;undirected&quot;
+)
+
+gorder(ppi_network_igraph)</code></pre>
+<pre><code>## [1] 6888</code></pre>
+<pre class="r"><code>gsize(ppi_network_igraph)</code></pre>
+<pre><code>## [1] 27859</code></pre>
+<p>Remove multiple edges and loops from one node to itself from the network.</p>
+<pre class="r"><code>ppi_network_igraph &lt;- simplify(
+    ppi_network_igraph, remove.multiple = T, remove.loops = T
+)
+
+gorder(ppi_network_igraph)</code></pre>
+<pre><code>## [1] 6888</code></pre>
+<pre class="r"><code>gsize(ppi_network_igraph)</code></pre>
+<pre><code>## [1] 27841</code></pre>
+<p>Prepare the igraph network for converting to RCX, therefore IDs have to be set for nodes and edges.
+The CX convention is, in contrast to R, that the IDs start at 0.</p>
+<pre class="r"><code>V(ppi_network_igraph)$id &lt;- seq(
+    0, gorder(ppi_network_igraph) -
+        1
+)
+E(ppi_network_igraph)$id &lt;- seq(
+    0, gsize(ppi_network_igraph) -
+        1
+)
+
+summary(ppi_network_igraph)</code></pre>
+<pre><code>## IGRAPH 33adf86 UN-- 6888 27841 -- 
+## + attr: name (v/c), id (v/n), id (e/n)</code></pre>
+<p>For the conversion from igraph to RCX, the vertex attribute containing the node names has to be specified.</p>
+<pre class="r"><code>ppi_network_rcx &lt;- fromIgraph(ppi_network_igraph, nodeName = &quot;name&quot;)
+ppi_network_rcx$metaData</code></pre>
+<pre><code>## Meta-data:
+##    name version idCounter elementCount consistencyGroup
+## 1 nodes     1.0      6887         6888                1
+## 2 edges     1.0     27840        27841                1</code></pre>
+<p>Add some information to the network</p>
+<pre class="r"><code>networkAttributes &lt;- createNetworkAttributes(
+  name = c(&quot;author&quot;, 
+           &quot;name&quot;,
+           &quot;description&quot;,
+           &quot;reference&quot;,
+           &quot;organism&quot;,
+           &quot;networkType&quot;),
+  value = c(&quot;Florian J. Auer&quot;,
+            &quot;Human Protein Reference Database (HPRD) PPI network&quot;,
+            paste0(&#39;Protein-protein interaction (PPI) network from the &#39;,
+                   &#39;&lt;a href=&quot;http://hprd.org/&quot; target=&quot;_blank&quot;&gt;&#39;,
+                   &#39;Human Protein Reference Database (HPRD)&lt;/a&gt; &#39;,
+                   &#39;used for training and generating subnetworks&#39;),
+            paste0(&#39;Chereda, H., Bleckmann, A., Menck, K. et al. &#39;,
+                   &#39;Explaining decisions of graph convolutional neural networks: &#39;,
+                   &#39;patient-specific molecular subnetworks responsible for &#39;,
+                   &#39;metastasis prediction in breast cancer. Genome Med 13, 42 (2021). &#39;,
+                   &#39;&lt;a href=&quot;https://doi.org/10.1186/s13073-021-00845-7&quot; &#39;,
+                   &#39;target=&quot;_blank&quot;&gt;https://doi.org/10.1186/s13073-021-00845-7&lt;/a&gt;&#39;),
+            &quot;Homo sapiens&quot;,
+            &quot;Protein-protein interaction&quot;)
+)
+ppi_network_rcx &lt;- updateNetworkAttributes(ppi_network_rcx, networkAttributes)
+
+ppi_network_rcx$metaData</code></pre>
+<pre><code>## Meta-data:
+##                name version idCounter elementCount consistencyGroup
+## 1             nodes     1.0      6887         6888                1
+## 2             edges     1.0     27840        27841                1
+## 3 networkAttributes     1.0        NA            6                1</code></pre>
+</div>
+<div id="upload-to-ndex" class="section level2">
+<h2><span class="header-section-number">5.2</span> Upload to NDEx</h2>
+<p>To make the network available to for further analyses, we can upload the network to the NDEx platform (<a href="https://www.ndexbio.org/" class="uri">https://www.ndexbio.org/</a>).
+Of course for this an account is required.</p>
+<pre class="r"><code>ndex_con &lt;- ndex_connect(username = &quot;florianjauer&quot;, password = &quot;****&quot;)
+ndexHPRDuuid &lt;- ndex_create_network(ndex_con, ppi_network_rcx)</code></pre>
+<p>Until now, the network is only visible to the owner.
+To change that, and make it visible to everyone, we have to update this property:</p>
+<pre class="r"><code>ndex_network_set_systemProperties(ndex_con, ndexHPRDuuid, visibility = TRUE)</code></pre>
+</div>
+<div id="load-from-ndex" class="section level2">
+<h2><span class="header-section-number">5.3</span> Load from NDEx:</h2>
+<p>This network is also available on the NDEx platform as “Human Protein Reference Database (HPRD) PPI network”:</p>
+<p><a href="https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf" class="uri">https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf</a></p>
+<p>The R package <code>ndexr</code> can be used to download the network from NDEx:</p>
+<pre class="r"><code>ndex_con &lt;- ndex_connect()
+ndexHPRD &lt;- ndex_find_networks(ndex_con, &quot;HPRD AND owner:florianjauer&quot;)
+
+print(
+    ndexHPRD[c(
+        &quot;name&quot;, &quot;owner&quot;, &quot;externalId&quot;, &quot;nodeCount&quot;, &quot;edgeCount&quot;
+    )]
+)</code></pre>
+<div id="htmlwidget-5cb5ae747220a68e52eb" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5cb5ae747220a68e52eb">{"x":{"filter":"none","vertical":false,"data":[["1"],["Human Protein Reference Database (HPRD) PPI network"],["florianjauer"],["079f4c66-3b77-11ec-b3be-0ac135e8bacf"],[6888],[27841]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>owner<\/th>\n      <th>externalId<\/th>\n      <th>nodeCount<\/th>\n      <th>edgeCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>ppi_network_rcx &lt;- ndex_get_network(ndex_con, &quot;079f4c66-3b77-11ec-b3be-0ac135e8bacf&quot;)
+print(ppi_network_rcx$metaData)</code></pre>
+<pre><code>## Meta-data:</code></pre>
+<div id="htmlwidget-8af3db36b0593142a6f6" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8af3db36b0593142a6f6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3"],["nodes","edges","networkAttributes"],["1.0","1.0","1.0"],[6887,27840,null],[6888,27841,7],[1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>print(ppi_network_rcx$networkAttributes$name)</code></pre>
+<pre><code>## [1] &quot;name&quot;        &quot;description&quot; &quot;version&quot;     &quot;author&quot;      &quot;networkType&quot; &quot;organism&quot;    &quot;reference&quot;</code></pre>
+<p>NDEx added automatically the version to the network attributes.</p>
+<div class="pagination">
+<div class="prev">
+Previous: <a href="RCX.html">RCX</a>
+</div>
+<div class="curr">
+Data Exploration and Preparation
+</div>
+<div class="next">
+Next: <a href="DataIntegration.html">Data Integration</a>
+</div>
+</div>
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1><span class="header-section-number">6</span> Session info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.0.3 (2020-10-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.3 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
+##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
+##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
+## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+## 
+## loaded via a namespace (and not attached):
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
+##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
+## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
+## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
+## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
+## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
+## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
+## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
+## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

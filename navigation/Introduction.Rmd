@@ -1,0 +1,4 @@
+<div class="pagination">
+<div class="curr">Introduction</div>
+<div class="next">Next: [Software requirements](SoftwareRequirements.html)</div>
+</div>

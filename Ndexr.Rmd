@@ -1,0 +1,351 @@
+---
+title: "ndexr -  interface with the network data exchange (NDEx)"
+author: 
+  - name: Florian J. Auer
+    url: https://github.com/florian-j-auer
+    affiliation: IT-Infrastructure for Translational Medical Research, University of Augsburg
+    affiliation_url: https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/
+date: "03/30/2022"
+output: 
+  BiocStyle::html_document:
+    css: custom.css
+    self_contained: no
+    toc: yes
+    toc_float: yes
+  BiocStyle::pdf_document:
+    toc: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=55,
+                                     args.newline = TRUE,
+                                     arrow = TRUE),
+                      tidy=TRUE)
+```
+
+```{r navigation, eval=HTML, results='asis', echo=FALSE}
+res <- knitr::knit_child('navigation/navigation.Rmd', quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+# Load libraries
+
+```{r libraries, warning=FALSE, message=FALSE}
+library(ndexr)
+library(RCX)
+```
+
+# Introduction
+
+The Network Data Exchange, or NDEx, is an open-source software framework 
+to manipulate, store and exchange networks of various types and formats (Pratt et al., 2015, Cell Systems 1, 302-305, October 28, 2015 ©2015 Elsevier Inc. [ScienceDirect](http://www.sciencedirect.com/science/article/pii/S2405471215001477)). 
+NDEx can be used to upload, share and publicly distribute networks, while providing
+an output in formats, that can be used by plenty of other applications.
+
+This package provides an interface to query the public NDEx server (https://www.ndexbio.org/), as well as private installations, in order to upload, download or modify biological networks. 
+
+This document aims to help the user to install and benefit from the
+wide range of funtionality of this implementation.
+The package also provides classes to implement the Cytoscape
+Cyberinfrastructure (CX) Format and to extend the [iGraph Package] (http://igraph.org/r/).
+
+ndexr is compatible with both NDEx API versions 1.3 and 2.0.
+
+For a complete documentation see the package vignette and reference manual at Bioconductor:
+
+https://bioconductor.org/packages/ndexr
+
+
+# Quick Start
+
+Some short overview of the most important functions:
+
+```{r connect1, eval=FALSE}
+## login to the NDEx server
+ndexcon = ndex_connect("username", "password")
+```
+
+```{r connect2, echo=FALSE, results='hide', message=FALSE}
+## login to the NDEx server
+ndexcon = ndex_connect()
+```
+
+```{r search}
+## search the networks for "EGFR"
+networks <- ndex_find_networks(ndexcon, "EGFR")
+
+## UUID of the first search result
+networkId <- networks[1,'externalId']
+
+## get summary of the network
+networkSummary <- ndex_network_get_summary(ndexcon, networkId)
+
+## get the entire network as RCX object
+rcx <- ndex_get_network(ndexcon, networkId)
+
+## remove NDEx artefacts from network
+rcx <- rcx_asNewNetwork(rcx)
+
+## do some fancy stuff with the network, then
+## update the meta-data
+rcx <- rcx_updateMetaData(rcx)
+```
+
+```{r upload, eval=FALSE}
+## upload network as a new network to the NDEx server
+networkId <- ndex_create_network(ndexcon, rcx)
+
+## do some other fancy stuff with the network, then
+## update the network on the server
+networkId <- ndex_update_network(ndexcon, rcx)
+
+## realize, you did bad things to the poor network, so better 
+## delete it on the server
+ndex_delete_network(ndexcon, networkId)
+```
+
+# Connect to a server
+
+First, establish an connection to the NDEx server. This object is
+required for most of the other ndexr functions, because it stores
+options and authentication details. It is possible to connect to the
+server anonymously or provide a username and password to enable further
+functionality.
+
+```{r connect3, eval=FALSE}
+## connect anonymously
+ndexcon = ndex_connect()
+
+## log in with user name and password
+ndexconUser = ndex_connect(username="username", password="password")
+```
+
+This package is developed following the structure of the documented api structure. 
+For complete description of the NDEx server api see [*http://www.home.ndexbio.org/using-the-ndex-server-api/*](http://www.home.ndexbio.org/using-the-ndex-server-api/). The R functions are named by the category, context and function they fulfill. 
+In the following, the usage is described in detail, and hopefully gives a better understanding of logic behind the naming convention of this package.
+
+# Find Networks
+
+To explore or search the networks on an NDEx server, this package offers a function to retrieve a list of networks from the server.
+It is possible to restrict the networks to a specific search string (e.g. “EGFR”), an account name (only networks of this account will be shown), or limit the number of fetched networks.
+
+```{r find}
+## list networks on server
+networks <- ndex_find_networks(ndexcon) 
+## same as previous
+networks <- ndex_find_networks(ndexcon, start=0, size=5)
+
+## search for "EGFR"
+networksEgfr <- ndex_find_networks(ndexcon, searchString="EGFR")
+## same as previous
+networksEgfr <- ndex_find_networks(ndexcon, "EGFR")
+
+## same as previous
+networksOfUser <- ndex_find_networks(ndexcon, accountName="ndextutorials")
+```
+
+As result you get a data.frame containing information of the networks.
+
+```{r networkInfo}
+names(networks) 
+
+print(networks[,c('name','externalId')])
+```
+
+# Simple network operations
+
+To both, users and networks stored on an NDEx server, a universally
+unique identifier (UUID) is assigned. Although both have the same format
+(i.e. “xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”, where x is one of
+`[a-z0-9]`), it has to be distinguished between the user UUID and the
+network UUID, but the difference is obvious by the context. Within RCX
+objects and search results, the network UUID is also referred to as
+“externalId” (see previous section). This UUID can be
+used to access a network on the server and retrieve just a summary of
+the network (similar to the results of a network search) or even the
+entire network as RCX object (see next section). 
+
+Since networks can contain many nodes and edges, and a huge amount of other
+attributes, it is typically advisable to first get a network summary, to
+check the node and edge counts for a network before retrieving the
+entire network. Thereby the structure of the network summary is similar
+the structure of the network list
+
+```{r networkInfo2}
+## UUID of the first search result
+networkId <- networksOfUser[1,'externalId']
+
+## get network summary
+networkSummary <- ndex_network_get_summary(ndexcon, networkId)
+
+names(networkSummary)
+
+networkSummary[c('name','externalId')]
+
+## get the entire network as RCX object
+rcx <- ndex_get_network(ndexcon, networkId)
+```
+
+To send a network to an server, there are two possibilities. Either one
+wants to update an existing network on the server or create a new one.
+In both cases, a UUID is returned, either of the updated network or a
+newly generated one for the created network. For updating a network, the
+UUID is extracted from the “externalId” property of the “ndexStatus”
+aspect, or can be set manually.
+
+```{r create, eval=FALSE}
+## create a new network on server
+networkId <- ndex_create_network(ndexcon, rcx)
+
+## update a network on server
+networkId <- ndex_update_network(ndexcon, rcx)
+
+## same as previous
+networkId <- ndex_update_network(ndexcon, rcx, networkId)
+```
+
+Besides creating, reading and updating, it is also possible to delete
+networks on the server. This operation cannot be undone, so be careful!
+
+```{r delete, eval=FALSE}
+## deletes the network from the server
+ndex_delete_network(ndexcon, networkId)
+```
+
+# Example Workflow
+
+This example workflow shows how to connect to the public NDEx server, browse and retrieve the pathways of the Pathway Interaction Database of the NCI which are hosted there.
+
+```{r workflow, eval=FALSE}
+## load the library!
+library(ndexr)
+
+## login to the NDEx server
+ndexcon = ndex_connect()
+
+## retrieve pathways of user "nci-pid"
+networks_pid <- ndex_find_networks(ndexcon, accountName="nci-pid")
+
+## list retrieved network information
+networks_pid[,"name"]
+
+## show information on the first pathways listed
+networks_pid[1,]
+
+## retrieve network data
+mynetwork = ndex_get_network(ndexcon, networks_pid[1,"externalId"])
+```
+
+This code snippet starts with loading the ndexr library and connecting to the server anonymously.
+Afterwards `ndex_find_networks` retrieves a list of networks of user `nci-pid`, which contains the data of the Pathway Interaction Database. The function `ndex_get_network` downloads the network data and stores in the `RCX` format.
+
+# Aspects and Metadata
+
+In general it is not advisable to retrieve a complete RCX object from a
+server without knowing the number of aspects and its corresponding size,
+because this may cause unwanted or unnecessary network traffic and
+decline in performance. To avoid these problems, a possible workflow is
+to download the meta-data of a network at first to check the available
+aspects.
+
+```{r metadata}
+## get meta-data for a network
+metadata = ndex_network_get_metadata(ndexcon, networkId)
+
+names(metadata)
+
+print(metadata[c('name','elementCount')])
+```
+
+Afterwards, only the favored aspects can be downloaded individually.
+
+```{r networkAttributes}
+## get aspect "nodeCitations" for the network
+networkAttibutes = ndex_network_get_aspect(ndexcon, networkId, "networkAttributes")
+
+print(networkAttibutes)
+```
+
+# NDEx Network properties
+
+Even after creation, it is possible to change the name, the description
+or version of a network.
+
+```{r networkProperties, eval=FALSE}
+ndex_network_update_profile(ndexcon, networkId, name="My network", version="1.3")
+ndex_network_update_profile(ndexcon, networkId, description="Nothing to see here")
+```
+
+For collaborative work, it is necessary to share networks between
+several users and groups. Therefore there are specialized functions to
+grant access to a network, change the permissions and withdraw access
+permissions. It is possible to use those functions on single users or
+groups. Possible permissions are “READ” to have reading access to
+private networks, “WRITE” to be able modify, and “ADMIN” for the owner
+of the network.
+
+```{r permissions, eval=FALSE}
+## show all user who have permission to a network
+permissions = ndex_network_get_permission(ndexcon, networkId, 'user')
+
+## show all groups who have permission to a network
+permissions = ndex_network_get_permission(ndexcon, networkId, 'group')
+
+## show all users with write access to a network
+permissions = ndex_network_get_permission(ndexcon, networkId, 'user', 'WRITE')
+
+## grant an user permission to a network
+ndex_network_update_permission(ndexcon, networkId, user=someUserUuid, 'READ')
+
+## change the permission of an user to the network
+ndex_network_update_permission(ndexcon, networkId, user=someUserUuid, 'WRITE')
+
+## withdraw the permission from an user
+ndex_network_delete_permission(ndexcon, networkId, user=someUserUuid)
+```
+
+Besides permission management on user and group level, it is also
+possible to set some system properties on a network that influence the
+accessibility further. By default a network is private, which means that
+it is only visible to the owner and invited users and groups. If at some
+point one decides to make the network readable by anyone, it is possible
+to change the visibility of a network to “PUBLIC”.
+
+```{r visibility, eval=FALSE}
+ndex_network_set_systemProperties(ndexcon, networkId, visibility="PUBLIC")
+ndex_network_set_systemProperties(ndexcon, networkId, visibility="PRIVATE")
+```
+
+When a network has reached the point to be published, further edits
+should be prevented. While it would be possible to set the access
+permissions of all users and groups to “READ”, this approach is very
+inconvenient. Therefore, a simpler way is to just set the network to
+read-only using the network system properties.
+
+```{r readonly, eval=FALSE}
+ndex_network_set_systemProperties(ndexcon, networkId, readOnly=TRUE)
+```
+
+One also has the option at the NDEx server to choose a selection of
+their favorite networks for display in his or her home page.
+
+```{r showcase, eval=FALSE}
+ndex_network_set_systemProperties(ndexcon, networkId, showcase=TRUE)
+ndex_network_set_systemProperties(ndexcon, networkId, showcase=FALSE)
+
+# change more than one property simultaneously
+ndex_network_set_systemProperties(ndexcon, networkId, readOnly=TRUE, visibility="PUBLIC", showcase=TRUE)
+```
+
+
+
+```{r navigation2, eval=HTML, results='asis', echo=FALSE}
+res <- knitr::knit_child(HTML_file, quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+# Session info
+```{r sessionInfo}
+sessionInfo()
+```

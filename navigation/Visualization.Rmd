@@ -1,0 +1,5 @@
+<div class="pagination">
+<div class="prev">Previous: [Data Integration](DataIntegration.html)</div>
+<div class="curr">Visualization</div>
+<div class="next">Next: [MetaRelSubNetVis](MetaRelSubNetVis.html)</div>
+</div>

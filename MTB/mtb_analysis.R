@@ -126,8 +126,9 @@ mtb_analysis = function(patients,
     CNV_deletion = data.frame(Hugo_Symbol=relevant.genes[[patient]],
                               cn_alteration = "deletion")
     
-    if( nrow(SNV) == 0 & nrow(CNV) == 0) warning('The patient has no SNVs nor CNVs. Not worth continuing with the analysis!')
-    
+    if( nrow(SNV_missense) == 0 & nrow(SNV_nonsense) == 0 & nrow(CNV_amplification) == 0 & nrow(CNV_deletion) == 0) {
+    	warning('The patient has no SNVs nor CNVs. Not worth continuing with the analysis!')
+    }
     
     ######################################
     ## Filter SNVs and CNVs by database ##
