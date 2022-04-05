@@ -8,7 +8,7 @@ author:
 date: "03/30/2022"
 output: 
   BiocStyle::html_document:
-    css: custom.css
+    css: ["custom.css", "bioconductor.css"]
     self_contained: no
     toc: yes
     toc_float: yes
@@ -1057,7 +1057,7 @@ combined_subnetwork_rcx = ndex_get_network(ndex_con, "a420aaee-4be9-11ec-b3be-0a
 
 
 
-![Combined subnetworks on the NDEx platform with default circular layout)](img/Combined-subnetworks-on-NDEx.png)
+![Combined subnetworks on the NDEx platform with default circular layout)](docs/img/Combined-subnetworks-on-NDEx.png)
 
 
 

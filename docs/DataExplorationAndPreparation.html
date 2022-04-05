@@ -70,6 +70,7 @@ if (window.hljs) {
 
 <link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
 <link rel="stylesheet" href="custom.css" type="text/css" />
+<link rel="stylesheet" href="bioconductor.css" type="text/css" />
 
 
 
@@ -303,8 +304,8 @@ Use own information</p>
 <p>Load the patient information about the 97 patients:</p>
 <pre class="r"><code>patients &lt;- read.csv(&quot;data/patient_information.csv&quot;, stringsAsFactors = F)
 head(patients)</code></pre>
-<div id="htmlwidget-3a653bfafe890625cd7f" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3a653bfafe890625cd7f">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["GSM615233","GSM519226","GSM411347","GSM615195","GSM615097","GSM615221"],[1,0,1,1,0,1],[1,1,1,1,1,1],[1,0,1,1,0,1],["LumA","LumA","LumB","Basal","LumA","LumB"],[0.791,9.8,0.619444444444444,0.764,5.552,3.362],[1,0,1,1,0,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Patient.ID<\/th>\n      <th>label<\/th>\n      <th>Predicted<\/th>\n      <th>Concordance<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,4,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-729b35cc29b1c5f2ff3d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-729b35cc29b1c5f2ff3d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["GSM615233","GSM519226","GSM411347","GSM615195","GSM615097","GSM615221"],[1,0,1,1,0,1],[1,1,1,1,1,1],[1,0,1,1,0,1],["LumA","LumA","LumB","Basal","LumA","LumB"],[0.791,9.8,0.619444444444444,0.764,5.552,3.362],[1,0,1,1,0,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Patient.ID<\/th>\n      <th>label<\/th>\n      <th>Predicted<\/th>\n      <th>Concordance<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,4,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>The patient data is composed of different subtypes with and without metastatic events:</p>
 <pre class="r"><code>table(patients[, c(&quot;subtype&quot;, &quot;met.event&quot;)])</code></pre>
 <pre><code>##         met.event
@@ -332,8 +333,8 @@ patients &lt;- patients[order(patients$subtype),
 selMetastatic &lt;- patients$met.event == 1
 
 head(patients)</code></pre>
-<div id="htmlwidget-dfef390762fdf50b85e1" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dfef390762fdf50b85e1">{"x":{"filter":"none","vertical":false,"data":[["4","12","16","31","36","38"],["GSM615195","GSM615184","GSM519380","GSM615651","GSM411374","GSM411334"],[1,0,0,1,1,1],[1,0,0,1,1,1],["Basal","Basal","Basal","Basal","Basal","Basal"],[0.764,7.302,9.2,0.791238877481177,0.444444444444444,1.06111111111111],[1,0,0,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>geo_accession<\/th>\n      <th>label<\/th>\n      <th>predicted<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-156f7afb38c3b10b34c6" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-156f7afb38c3b10b34c6">{"x":{"filter":"none","vertical":false,"data":[["4","12","16","31","36","38"],["GSM615195","GSM615184","GSM519380","GSM615651","GSM411374","GSM411334"],[1,0,0,1,1,1],[1,0,0,1,1,1],["Basal","Basal","Basal","Basal","Basal","Basal"],[0.764,7.302,9.2,0.791238877481177,0.444444444444444,1.06111111111111],[1,0,0,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>geo_accession<\/th>\n      <th>label<\/th>\n      <th>predicted<\/th>\n      <th>subtype<\/th>\n      <th>mfs.years<\/th>\n      <th>met.event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Survival by subtype:</p>
 <pre class="r"><code>survival &lt;- survfit(
     Surv(mfs.years, met.event) ~
@@ -396,8 +397,8 @@ print(
 <pre><code>## [1] &quot;GSM*&quot;  &quot;probe&quot; &quot;mean&quot;  &quot;stdev&quot; &quot;Q25&quot;   &quot;Q50&quot;   &quot;Q75&quot;</code></pre>
 <pre class="r"><code>tmp_no_col &lt;- dim(ge_with_statistics)[2]
 head(ge_with_statistics[, (tmp_no_col - 5):tmp_no_col])</code></pre>
-<div id="htmlwidget-e9b77984d87e5011d711" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e9b77984d87e5011d711">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"],[13.7905684975581,13.745996022482,13.4899178241702,13.3244115731178,13.3090619348191,13.2958993357437],[0.271288946669042,0.308646046981276,0.289099276092234,0.311041798319005,0.311160415464224,0.222352342600975],[13.6727507026536,13.5638285752365,13.3036647769379,13.0958050870101,13.1304367781615,13.1554704197711],[13.8412178056526,13.7957282814976,13.4912934397558,13.3036647769379,13.2865734204242,13.2699265147267],[14.0279729138725,13.9489238112051,13.7116058041407,13.5638285752365,13.4912934397558,13.406418889682]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>probe<\/th>\n      <th>mean<\/th>\n      <th>stdev<\/th>\n      <th>Q25<\/th>\n      <th>Q50<\/th>\n      <th>Q75<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c6f41910d3c3460a0fdb" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c6f41910d3c3460a0fdb">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"],[13.7905684975581,13.745996022482,13.4899178241702,13.3244115731178,13.3090619348191,13.2958993357437],[0.271288946669042,0.308646046981276,0.289099276092234,0.311041798319005,0.311160415464224,0.222352342600975],[13.6727507026536,13.5638285752365,13.3036647769379,13.0958050870101,13.1304367781615,13.1554704197711],[13.8412178056526,13.7957282814976,13.4912934397558,13.3036647769379,13.2865734204242,13.2699265147267],[14.0279729138725,13.9489238112051,13.7116058041407,13.5638285752365,13.4912934397558,13.406418889682]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>probe<\/th>\n      <th>mean<\/th>\n      <th>stdev<\/th>\n      <th>Q25<\/th>\n      <th>Q50<\/th>\n      <th>Q75<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>This data can be used to calculate the expression level of a gene (LOW, NORMAL or HIGH) using quartile boundaries.</p>
 <pre class="r"><code>ge_expression_level_by_quantiles &lt;- ge_with_statistics %&gt;%
     rowwise() %&gt;%
@@ -431,8 +432,8 @@ print(
 )</code></pre>
 <pre><code>## [1] &quot;probe&quot; &quot;GSM*&quot;</code></pre>
 <pre class="r"><code>head(ge_expression_level_by_quantiles[, 1:7])</code></pre>
-<div id="htmlwidget-a7dadfa1bb2e5f8251a4" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a7dadfa1bb2e5f8251a4">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"],["NORMAL","LOW","NORMAL","HIGH","NORMAL","HIGH"],["NORMAL","HIGH","NORMAL","NORMAL","NORMAL","NORMAL"],["HIGH","NORMAL","NORMAL","HIGH","NORMAL","NORMAL"],["HIGH","NORMAL","LOW","HIGH","NORMAL","NORMAL"],["HIGH","LOW","NORMAL","HIGH","LOW","LOW"],["NORMAL","NORMAL","LOW","HIGH","NORMAL","HIGH"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>probe<\/th>\n      <th>GSM177885<\/th>\n      <th>GSM177887<\/th>\n      <th>GSM177894<\/th>\n      <th>GSM177895<\/th>\n      <th>GSM177899<\/th>\n      <th>GSM177900<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-90e8cc5b0de2769949c7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-90e8cc5b0de2769949c7">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"],["NORMAL","LOW","NORMAL","HIGH","NORMAL","HIGH"],["NORMAL","HIGH","NORMAL","NORMAL","NORMAL","NORMAL"],["HIGH","NORMAL","NORMAL","HIGH","NORMAL","NORMAL"],["HIGH","NORMAL","LOW","HIGH","NORMAL","NORMAL"],["HIGH","LOW","NORMAL","HIGH","LOW","LOW"],["NORMAL","NORMAL","LOW","HIGH","NORMAL","HIGH"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>probe<\/th>\n      <th>GSM177885<\/th>\n      <th>GSM177887<\/th>\n      <th>GSM177894<\/th>\n      <th>GSM177895<\/th>\n      <th>GSM177899<\/th>\n      <th>GSM177900<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Get the gene expression only for the patients and order patients by subtype</p>
 <pre class="r"><code>ge_patients &lt;- ge_all[, patients$geo_accession[order(patients$subtype)]]
 rownames(ge_patients) &lt;- ge_all$probe</code></pre>
@@ -478,8 +479,8 @@ de &lt;- de[order(de$qvalue),
 ## select differentially expressed genes
 de_genes &lt;- de$prope[de$qvalue &lt; 0.01]
 print(de[de_genes, ])</code></pre>
-<div id="htmlwidget-dc4d8814ddd4da27fab4" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dc4d8814ddd4da27fab4">{"x":{"filter":"none","vertical":false,"data":[["MELK","PLAT","RRM2","CENPE","TPX2","PDE4A","FMOD","KCND3","AURKA","HJURP","BIRC5","CCNB2","C7","EVL","BTG2","BUB1B","YWHAZ"],["MELK","PLAT","RRM2","CENPE","TPX2","PDE4A","FMOD","KCND3","AURKA","HJURP","BIRC5","CCNB2","C7","EVL","BTG2","BUB1B","YWHAZ"],[9.0701268221033e-09,2.48211965883519e-08,3.45289648603788e-08,8.65940381519533e-08,1.07630431820996e-07,1.09693027721063e-07,1.16764976264896e-07,1.29240740131648e-07,1.32291930328542e-07,1.6064597381319e-07,2.88958833788655e-07,4.02907447093328e-07,6.0994485846928e-07,7.8212886267129e-07,1.01406664916688e-06,1.03480002113707e-06,1.17622749890131e-06],[6.24750335506475e-05,0.000170943580903979,0.000237766452028568,0.000596199952676198,0.000740927892655737,0.000755017109804076,0.000803576566655012,0.000889305532845869,0.000910168480660367,0.00110508365386093,0.00198745885879837,0.00277079451366082,0.00419398084683477,0.00537713593086512,0.00697069414637315,0.00711218054527508,0.00808303537244983]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>prope<\/th>\n      <th>pvalue<\/th>\n      <th>qvalue<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-29fd110531941a165fe7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-29fd110531941a165fe7">{"x":{"filter":"none","vertical":false,"data":[["MELK","PLAT","RRM2","CENPE","TPX2","PDE4A","FMOD","KCND3","AURKA","HJURP","BIRC5","CCNB2","C7","EVL","BTG2","BUB1B","YWHAZ"],["MELK","PLAT","RRM2","CENPE","TPX2","PDE4A","FMOD","KCND3","AURKA","HJURP","BIRC5","CCNB2","C7","EVL","BTG2","BUB1B","YWHAZ"],[9.0701268221033e-09,2.48211965883519e-08,3.45289648603788e-08,8.65940381519533e-08,1.07630431820996e-07,1.09693027721063e-07,1.16764976264896e-07,1.29240740131648e-07,1.32291930328542e-07,1.6064597381319e-07,2.88958833788655e-07,4.02907447093328e-07,6.0994485846928e-07,7.8212886267129e-07,1.01406664916688e-06,1.03480002113707e-06,1.17622749890131e-06],[6.24750335506475e-05,0.000170943580903979,0.000237766452028568,0.000596199952676198,0.000740927892655737,0.000755017109804076,0.000803576566655012,0.000889305532845869,0.000910168480660367,0.00110508365386093,0.00198745885879837,0.00277079451366082,0.00419398084683477,0.00537713593086512,0.00697069414637315,0.00711218054527508,0.00808303537244983]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>prope<\/th>\n      <th>pvalue<\/th>\n      <th>qvalue<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="heatmap-visualization" class="section level2">
 <h2><span class="header-section-number">3.2</span> Heatmap visualization</h2>
@@ -534,8 +535,8 @@ print(
 <pre><code>## [1] &quot;GSM*&quot;  &quot;probe&quot;</code></pre>
 <pre class="r"><code>tmp_no_col &lt;- dim(relevance_score)[2]
 head(relevance_score[, (tmp_no_col - 6):tmp_no_col])</code></pre>
-<div id="htmlwidget-9501f5efebb8dcf916b3" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9501f5efebb8dcf916b3">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],[0.0005343682,0.00081849255,0.00043124746,0.00038521574,0.00056253927,0.000441811],[0.00053190044,0.00088571175,0.0004374442,0.00034262292,0.00055476755,0.00042197868],[0.0005322866,0.0008743374,0.0004494849,0.00033717856,0.00065266475,0.00044667587],[0.00050334266,0.000801643,0.0004692455,0.00034471025,0.0005729415,0.00045488623],[0.0005299115,0.00085546135,0.0004679081,0.00036993017,0.0006054741,0.00042372616],[0.0005491435,0.00084973825,0.00043032455,0.00035017062,0.00064561085,0.0004902194],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>GSM178060<\/th>\n      <th>GSM282570<\/th>\n      <th>GSM519415<\/th>\n      <th>GSM151009<\/th>\n      <th>GSM150958<\/th>\n      <th>GSM519222<\/th>\n      <th>probe<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3b43b52fbfe7587be7d1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3b43b52fbfe7587be7d1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],[0.0005343682,0.00081849255,0.00043124746,0.00038521574,0.00056253927,0.000441811],[0.00053190044,0.00088571175,0.0004374442,0.00034262292,0.00055476755,0.00042197868],[0.0005322866,0.0008743374,0.0004494849,0.00033717856,0.00065266475,0.00044667587],[0.00050334266,0.000801643,0.0004692455,0.00034471025,0.0005729415,0.00045488623],[0.0005299115,0.00085546135,0.0004679081,0.00036993017,0.0006054741,0.00042372616],[0.0005491435,0.00084973825,0.00043032455,0.00035017062,0.00064561085,0.0004902194],["RPL41","EEF1A1","TPT1","RPL23A","UBC","RPS2"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>GSM178060<\/th>\n      <th>GSM282570<\/th>\n      <th>GSM519415<\/th>\n      <th>GSM151009<\/th>\n      <th>GSM150958<\/th>\n      <th>GSM519222<\/th>\n      <th>probe<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="ppi-networks" class="section level1">
 <h1><span class="header-section-number">5</span> PPI networks</h1>
@@ -578,7 +579,7 @@ E(ppi_network_igraph)$id &lt;- seq(
 )
 
 summary(ppi_network_igraph)</code></pre>
-<pre><code>## IGRAPH 33adf86 UN-- 6888 27841 -- 
+<pre><code>## IGRAPH 7426dd4 UN-- 6888 27841 -- 
 ## + attr: name (v/c), id (v/n), id (e/n)</code></pre>
 <p>For the conversion from igraph to RCX, the vertex attribute containing the node names has to be specified.</p>
 <pre class="r"><code>ppi_network_rcx &lt;- fromIgraph(ppi_network_igraph, nodeName = &quot;name&quot;)
@@ -642,13 +643,13 @@ print(
         &quot;name&quot;, &quot;owner&quot;, &quot;externalId&quot;, &quot;nodeCount&quot;, &quot;edgeCount&quot;
     )]
 )</code></pre>
-<div id="htmlwidget-5cb5ae747220a68e52eb" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5cb5ae747220a68e52eb">{"x":{"filter":"none","vertical":false,"data":[["1"],["Human Protein Reference Database (HPRD) PPI network"],["florianjauer"],["079f4c66-3b77-11ec-b3be-0ac135e8bacf"],[6888],[27841]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>owner<\/th>\n      <th>externalId<\/th>\n      <th>nodeCount<\/th>\n      <th>edgeCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c1a82def23f232707c6e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c1a82def23f232707c6e">{"x":{"filter":"none","vertical":false,"data":[["1"],["Human Protein Reference Database (HPRD) PPI network"],["florianjauer"],["079f4c66-3b77-11ec-b3be-0ac135e8bacf"],[6888],[27841]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>owner<\/th>\n      <th>externalId<\/th>\n      <th>nodeCount<\/th>\n      <th>edgeCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>ppi_network_rcx &lt;- ndex_get_network(ndex_con, &quot;079f4c66-3b77-11ec-b3be-0ac135e8bacf&quot;)
 print(ppi_network_rcx$metaData)</code></pre>
 <pre><code>## Meta-data:</code></pre>
-<div id="htmlwidget-8af3db36b0593142a6f6" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8af3db36b0593142a6f6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3"],["nodes","edges","networkAttributes"],["1.0","1.0","1.0"],[6887,27840,null],[6888,27841,7],[1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f457aaab6fdf76c4e9ff" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f457aaab6fdf76c4e9ff">{"x":{"filter":"none","vertical":false,"data":[["1","2","3"],["nodes","edges","networkAttributes"],["1.0","1.0","1.0"],[6887,27840,null],[6888,27841,7],[1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>print(ppi_network_rcx$networkAttributes$name)</code></pre>
 <pre><code>## [1] &quot;name&quot;        &quot;description&quot; &quot;version&quot;     &quot;author&quot;      &quot;networkType&quot; &quot;organism&quot;    &quot;reference&quot;</code></pre>
 <p>NDEx added automatically the version to the network attributes.</p>
@@ -677,29 +678,34 @@ Next: <a href="DataIntegration.html">Data Integration</a>
 ## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
-##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
-##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
-## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2     
+##  [6] usethis_2.1.2       timeSeries_3062.100 timeDate_3043.102   pander_0.6.4        xtable_1.8-4       
+## [11] stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0        igraph_1.2.7       
+## [16] gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
-##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
-## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
-## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
-## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
-## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
-## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
-## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
-## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
-## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1   
+##  [6] BiocManager_1.30.16 highr_0.9           stats4_4.0.3        remotes_2.4.1       yaml_2.2.1         
+## [11] sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2          digest_0.6.28      
+## [16] htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24      
+## [21] purrr_0.3.4         webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1     
+## [26] ellipsis_0.3.2      DT_0.21             withr_2.4.2         cachem_1.0.6        BiocGenerics_0.36.1
+## [31] cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0     
+## [41] graph_1.68.0        prettyunits_1.1.1   tools_4.0.3         formatR_1.11        lifecycle_1.0.1    
+## [46] callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2      tinytex_0.34       
+## [51] rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7       
+## [56] rmarkdown_2.11      testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1       
+## [61] R6_2.5.1            knitr_1.36          fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.2    
+## [66] desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
 ## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
 </div>
 

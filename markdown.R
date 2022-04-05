@@ -9,19 +9,19 @@
 ## 03/30/2022
 
 ## Files to process
-rmd_files = c("MetaRelSubNetVis.Rmd")
-# rmd_files = c(
-#   "Overview.Rmd",
-#   "SoftwareRequirements.Rmd",
-#   "Ndexr.Rmd",
-#   "RCX.Rmd",
-#   # "RCXvis.Rmd",
-#   "DataExplorationAndPreparation.Rmd",
-#   "DataIntegration.Rmd",
-#   "Visualization.Rmd",
-#   "MetaRelSubNetVis.Rmd",
-#   "NDExEdit.Rmd"
-# )
+# rmd_files = c("MetaRelSubNetVis.Rmd")
+rmd_files = c(
+  "Overview.Rmd",
+  "SoftwareRequirements.Rmd",
+  "Ndexr.Rmd",
+  "RCX.Rmd",
+  # "RCXvis.Rmd",
+  "DataExplorationAndPreparation.Rmd",
+  "DataIntegration.Rmd",
+  "Visualization.Rmd",
+  "MetaRelSubNetVis.Rmd",
+  "NDExEdit.Rmd"
+)
 # exclude = c("navigation.Rmd", "NDExR-and-Cytoscape.Rmd")
 # 
 # rmd_files = list.files(".", "*.Rmd")

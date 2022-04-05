@@ -8,7 +8,7 @@ author:
 date: "03/30/2022"
 output: 
   BiocStyle::html_document:
-    css: custom.css
+    css: ["custom.css", "bioconductor.css"]
     self_contained: no
     toc: yes
     toc_float: yes
@@ -37,7 +37,7 @@ https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf
 The network does not have any visualization yet.
 By default a circular layout is applied to at the NDEx platform to be able to display the network in a way:
 
-![Combined subnetworks on the NDEx platform with default circular layout)](img/Combined-subnetworks-on-NDEx.png)
+![Combined subnetworks on the NDEx platform with default circular layout)](docs/img/Combined-subnetworks-on-NDEx.png)
 
 In the following chapters different tools will be used to visualize the data and document the performed steps in a reproducible manner.
 
@@ -70,7 +70,7 @@ In this chapter the details of how the visual properties can be created and even
 ```{r tmp, eval=F}
 visualize(combined_subnetwork_rcx, c(name="circle"))
 ```
-![Combined subnetworks with circle (circular) layout (default on NDEx)](img/Combined_subnetworks.png)
+![Combined subnetworks with circle (circular) layout (default on NDEx)](docs/img/Combined_subnetworks.png)
 
 # [Cytoscape and RCy3](CytoscapeAndRCy3.html) 
 

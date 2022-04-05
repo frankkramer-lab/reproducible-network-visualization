@@ -70,6 +70,7 @@ if (window.hljs) {
 
 <link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
 <link rel="stylesheet" href="custom.css" type="text/css" />
+<link rel="stylesheet" href="bioconductor.css" type="text/css" />
 
 
 
@@ -411,8 +412,8 @@ To get a better overview of the contained aspects, the mandatory and automatical
 This includes information about the number of elements or the highest used ID, if an aspect uses internal IDs:</p>
 <pre class="r"><code>print(rcx$metaData)</code></pre>
 <pre><code>## Meta-data:</code></pre>
-<div id="htmlwidget-844ef62d4c9b5e41fc74" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-844ef62d4c9b5e41fc74">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8"],["nodes","edges","nodeAttributes","edgeAttributes","networkAttributes","cartesianLayout","cyVisualProperties","cyHiddenAttributes"],["1.0","1.0","1.0","1.0","1.0","1.0","1.0","1.0"],[11551,11554,null,null,null,null,null,null],[75,159,1129,229,10,75,3,1],[1,1,1,1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d7981d890d8c8ca21f97" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d7981d890d8c8ca21f97">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8"],["nodes","edges","nodeAttributes","edgeAttributes","networkAttributes","cartesianLayout","cyVisualProperties","cyHiddenAttributes"],["1.0","1.0","1.0","1.0","1.0","1.0","1.0","1.0"],[11551,11554,null,null,null,null,null,null],[75,159,1129,229,10,75,3,1],[1,1,1,1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Besides exploring the RCX-object manually, a summary of the object, or single aspects, can provide more insight on them:</p>
 <pre class="r"><code>summary(rcx$nodeAttributes)</code></pre>
 <pre><code>##       propertyOf        name               value    
@@ -423,13 +424,15 @@ This includes information about the number of elements or the highest used ID, i
 <p>We already can quickly see that there are many different node attributes are used.
 The different node attributes are:</p>
 <pre class="r"><code>unique(rcx$nodeAttributes$name)</code></pre>
-<pre><code>##  [1] &quot;sbo&quot;                   &quot;metaId&quot;                &quot;compartmentCode&quot;       &quot;sbml type&quot;             &quot;sbml id&quot;              
-##  [6] &quot;reversible&quot;            &quot;sbml compartment&quot;      &quot;cyId&quot;                  &quot;label&quot;                 &quot;sbml type ext&quot;        
-## [11] &quot;fast&quot;                  &quot;constant&quot;              &quot;units&quot;                 &quot;boundaryCondition&quot;     &quot;derivedUnits&quot;         
-## [16] &quot;sbml initial amount&quot;   &quot;value&quot;                 &quot;substanceUnits&quot;        &quot;hasOnlySubstanceUnits&quot; &quot;uniprot&quot;              
-## [21] &quot;inchikey&quot;              &quot;chebi&quot;                 &quot;biocyc&quot;                &quot;cas&quot;                   &quot;chemspider&quot;           
-## [26] &quot;kegg.compound&quot;         &quot;inchi&quot;                 &quot;pubchem.compound&quot;      &quot;hmdb&quot;                  &quot;scale&quot;                
-## [31] &quot;exponent&quot;              &quot;kind&quot;                  &quot;multiplier&quot;            &quot;unitSid&quot;</code></pre>
+<pre><code>##  [1] &quot;sbo&quot;                   &quot;metaId&quot;                &quot;compartmentCode&quot;       &quot;sbml type&quot;            
+##  [5] &quot;sbml id&quot;               &quot;reversible&quot;            &quot;sbml compartment&quot;      &quot;cyId&quot;                 
+##  [9] &quot;label&quot;                 &quot;sbml type ext&quot;         &quot;fast&quot;                  &quot;constant&quot;             
+## [13] &quot;units&quot;                 &quot;boundaryCondition&quot;     &quot;derivedUnits&quot;          &quot;sbml initial amount&quot;  
+## [17] &quot;value&quot;                 &quot;substanceUnits&quot;        &quot;hasOnlySubstanceUnits&quot; &quot;uniprot&quot;              
+## [21] &quot;inchikey&quot;              &quot;chebi&quot;                 &quot;biocyc&quot;                &quot;cas&quot;                  
+## [25] &quot;chemspider&quot;            &quot;kegg.compound&quot;         &quot;inchi&quot;                 &quot;pubchem.compound&quot;     
+## [29] &quot;hmdb&quot;                  &quot;scale&quot;                 &quot;exponent&quot;              &quot;kind&quot;                 
+## [33] &quot;multiplier&quot;            &quot;unitSid&quot;</code></pre>
 </div>
 <div id="visualize-the-network" class="section level2">
 <h2><span class="header-section-number">2.3</span> Visualize the network</h2>
@@ -456,8 +459,8 @@ rcx &lt;- updateMetaData(rcx)
 
 print(rcx$metaData)</code></pre>
 <pre><code>## Meta-data:</code></pre>
-<div id="htmlwidget-aa9a38ff638194f33f7e" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-aa9a38ff638194f33f7e">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["nodes","edges","nodeAttributes","edgeAttributes","networkAttributes","cartesianLayout","cyHiddenAttributes"],["1.0","1.0","1.0","1.0","1.0","1.0","1.0"],[11551,11554,null,null,null,null,null],[75,159,1129,229,10,75,1],[1,1,1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3d41af86ae7b2f81c2dd" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3d41af86ae7b2f81c2dd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["nodes","edges","nodeAttributes","edgeAttributes","networkAttributes","cartesianLayout","cyHiddenAttributes"],["1.0","1.0","1.0","1.0","1.0","1.0","1.0"],[11551,11554,null,null,null,null,null],[75,159,1129,229,10,75,1],[1,1,1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Lets have a look at the visualization now:</p>
 <pre class="r"><code>visualize(rcx, layout = c(name = &quot;cose&quot;))</code></pre>
 <div class="figure">
@@ -677,10 +680,12 @@ test &lt;- validate(nodes)</code></pre>
 <p>It is always useful to get some basic information about the network.
 For example this can be the number of elements in the different aspects of the network:</p>
 <pre class="r"><code>countElements(rcx)</code></pre>
-<pre><code>##              NodesAspect           MetaDataAspect              EdgesAspect     NodeAttributesAspect     EdgeAttributesAspect 
-##                       75                       NA                      159                     1129                      229 
-##  NetworkAttributesAspect    CartesianLayoutAspect CyHiddenAttributesAspect CyVisualPropertiesAspect 
-##                       10                       75                        1                        1</code></pre>
+<pre><code>##              NodesAspect           MetaDataAspect              EdgesAspect     NodeAttributesAspect 
+##                       75                       NA                      159                     1129 
+##     EdgeAttributesAspect  NetworkAttributesAspect    CartesianLayoutAspect CyHiddenAttributesAspect 
+##                      229                       10                       75                        1 
+## CyVisualPropertiesAspect 
+##                        1</code></pre>
 <p>This also works for single aspects:</p>
 <pre class="r"><code>countElements(rcx$nodes)</code></pre>
 <pre><code>## [1] 75</code></pre>
@@ -714,12 +719,14 @@ This has been done intentionally to avoid naming conflicts.
 The different naming can be converted to each other:</p>
 <pre class="r"><code>## all classes
 aspectClasses</code></pre>
-<pre><code>##                        rcx                   metaData                      nodes                      edges             nodeAttributes 
-##                      &quot;RCX&quot;           &quot;MetaDataAspect&quot;              &quot;NodesAspect&quot;              &quot;EdgesAspect&quot;     &quot;NodeAttributesAspect&quot; 
-##             edgeAttributes          networkAttributes            cartesianLayout                   cyGroups         cyVisualProperties 
-##     &quot;EdgeAttributesAspect&quot;  &quot;NetworkAttributesAspect&quot;    &quot;CartesianLayoutAspect&quot;           &quot;CyGroupsAspect&quot; &quot;CyVisualPropertiesAspect&quot; 
-##         cyHiddenAttributes         cyNetworkRelations              cySubNetworks              cyTableColumn 
-## &quot;CyHiddenAttributesAspect&quot; &quot;CyNetworkRelationsAspect&quot;      &quot;CySubNetworksAspect&quot;      &quot;CyTableColumnAspect&quot;</code></pre>
+<pre><code>##                        rcx                   metaData                      nodes                      edges 
+##                      &quot;RCX&quot;           &quot;MetaDataAspect&quot;              &quot;NodesAspect&quot;              &quot;EdgesAspect&quot; 
+##             nodeAttributes             edgeAttributes          networkAttributes            cartesianLayout 
+##     &quot;NodeAttributesAspect&quot;     &quot;EdgeAttributesAspect&quot;  &quot;NetworkAttributesAspect&quot;    &quot;CartesianLayoutAspect&quot; 
+##                   cyGroups         cyVisualProperties         cyHiddenAttributes         cyNetworkRelations 
+##           &quot;CyGroupsAspect&quot; &quot;CyVisualPropertiesAspect&quot; &quot;CyHiddenAttributesAspect&quot; &quot;CyNetworkRelationsAspect&quot; 
+##              cySubNetworks              cyTableColumn 
+##      &quot;CySubNetworksAspect&quot;      &quot;CyTableColumnAspect&quot;</code></pre>
 <pre class="r"><code>## class of nodes
 aspectName2Class(&quot;nodes&quot;)</code></pre>
 <pre><code>##         nodes 
@@ -740,15 +747,17 @@ class(rcx[[aspectClass2Name(&quot;NodesAspect&quot;)]])</code></pre>
 RCX networks can be simply converted to igraph objects as follows:</p>
 <pre class="r"><code>ig &lt;- toIgraph(rcx)
 summary(ig)</code></pre>
-<pre><code>## IGRAPH 5643057 UN-- 75 159 -- 
-## + attr: attribute...name (g/c), description (g/c), smpdb (g/c), sbmlVersion (g/c), sbml id (g/c), metaId (g/c), sbmlNetwork
-## | (g/c), label (g/c), networkType (g/c), reference (g/c), name (v/n), id (v/n), sbo (v/c), metaId (v/c), compartmentCode (v/c),
-## | compartmentCode...dataType (v/c), sbml type (v/c), sbml id (v/c), reversible (v/c), sbml compartment (v/c), cyId (v/c), label
-## | (v/c), sbml type ext (v/c), fast (v/c), constant (v/c), units (v/c), boundaryCondition (v/c), derivedUnits (v/c), sbml initial
-## | amount (v/c), value (v/c), substanceUnits (v/c), hasOnlySubstanceUnits (v/c), uniprot (v/c), inchikey (v/c), chebi (v/c),
-## | biocyc (v/c), cas (v/c), chemspider (v/c), kegg.compound (v/c), inchi (v/c), pubchem.compound (v/c), hmdb (v/c), scale (v/c),
-## | scale...dataType (v/c), exponent (v/c), kind (v/c), multiplier (v/c), unitSid (v/c), cartesianLayout...x (v/n),
-## | cartesianLayout...y (v/n), id (e/n), interaction (e/c), sbo (e/c), stoichiometry (e/c), interaction type (e/c)</code></pre>
+<pre><code>## IGRAPH e55cc54 UN-- 75 159 -- 
+## + attr: attribute...name (g/c), description (g/c), smpdb (g/c), sbmlVersion (g/c), sbml id (g/c),
+## | metaId (g/c), sbmlNetwork (g/c), label (g/c), networkType (g/c), reference (g/c), name (v/n), id
+## | (v/n), sbo (v/c), metaId (v/c), compartmentCode (v/c), compartmentCode...dataType (v/c), sbml type
+## | (v/c), sbml id (v/c), reversible (v/c), sbml compartment (v/c), cyId (v/c), label (v/c), sbml type
+## | ext (v/c), fast (v/c), constant (v/c), units (v/c), boundaryCondition (v/c), derivedUnits (v/c),
+## | sbml initial amount (v/c), value (v/c), substanceUnits (v/c), hasOnlySubstanceUnits (v/c), uniprot
+## | (v/c), inchikey (v/c), chebi (v/c), biocyc (v/c), cas (v/c), chemspider (v/c), kegg.compound (v/c),
+## | inchi (v/c), pubchem.compound (v/c), hmdb (v/c), scale (v/c), scale...dataType (v/c), exponent
+## | (v/c), kind (v/c), multiplier (v/c), unitSid (v/c), cartesianLayout...x (v/n), cartesianLayout...y
+## | (v/n), id (e/n), interaction (e/c), sbo (e/c), stoichiometry (e/c), interaction type (e/c)</code></pre>
 <p>To ensure a consistent conversion in both direction, some conventions have to be matched:
 For example avoiding collisions between <code>name</code> used in nodes, <code>name</code> used as nodes attribute, and the <code>name</code> used by igraph, the first two were re-named in igraph to <code>nodeName</code> and <code>attribute...name</code> respectively.
 A similar convention is used for the cartesian coordinates:
@@ -786,8 +795,8 @@ The conversion back to the RCX object works analogously:</p>
 <pre class="r"><code>rcxBack &lt;- fromGraphNEL(gNel)
 print(rcxBack$metaData)</code></pre>
 <pre><code>## Meta-data:</code></pre>
-<div id="htmlwidget-bf1324795d14ffee2576" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bf1324795d14ffee2576">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["nodes","edges","nodeAttributes","edgeAttributes","networkAttributes","cartesianLayout"],["1.0","1.0","1.0","1.0","1.0","1.0"],[11551,11554,null,null,null,null],[75,159,1129,388,10,75],[1,1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0e87cc7af71c4c3f6819" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0e87cc7af71c4c3f6819">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["nodes","edges","nodeAttributes","edgeAttributes","networkAttributes","cartesianLayout"],["1.0","1.0","1.0","1.0","1.0","1.0"],[11551,11554,null,null,null,null],[75,159,1129,388,10,75],[1,1,1,1,1,1]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>version<\/th>\n      <th>idCounter<\/th>\n      <th>elementCount<\/th>\n      <th>consistencyGroup<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":[3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>As igraph, graphNEL objects can not hold information about the visual representation of the network, so here too we can restore the original layout by adding the <code>CyVisualProperties</code> aspect we saved previously.</p>
 <div class="pagination">
 <div class="prev">
@@ -813,29 +822,34 @@ Next: <a href="DataExplorationAndPreparation.html">Data Exploration and Preparat
 ## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
-##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
-##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
-## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2     
+##  [6] usethis_2.1.2       timeSeries_3062.100 timeDate_3043.102   pander_0.6.4        xtable_1.8-4       
+## [11] stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0        igraph_1.2.7       
+## [16] gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
-##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
-## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
-## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
-## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
-## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
-## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
-## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
-## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
-## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1   
+##  [6] BiocManager_1.30.16 highr_0.9           stats4_4.0.3        remotes_2.4.1       yaml_2.2.1         
+## [11] sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2          digest_0.6.28      
+## [16] htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24      
+## [21] purrr_0.3.4         webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1     
+## [26] ellipsis_0.3.2      DT_0.21             withr_2.4.2         cachem_1.0.6        BiocGenerics_0.36.1
+## [31] cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0     
+## [41] graph_1.68.0        prettyunits_1.1.1   tools_4.0.3         formatR_1.11        lifecycle_1.0.1    
+## [46] callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2      tinytex_0.34       
+## [51] rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7       
+## [56] rmarkdown_2.11      testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1       
+## [61] R6_2.5.1            knitr_1.36          fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.2    
+## [66] desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
 ## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
 </div>
 

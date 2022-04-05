@@ -8,7 +8,7 @@ author:
 date: "03/30/2022"
 output: 
   BiocStyle::html_document:
-    css: custom.css
+    css: ["custom.css", "bioconductor.css"]
     self_contained: no
     toc: yes
     toc_float: yes

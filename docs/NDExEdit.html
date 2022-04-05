@@ -62,6 +62,7 @@ if (window.hljs) {
 
 <link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
 <link rel="stylesheet" href="custom.css" type="text/css" />
+<link rel="stylesheet" href="bioconductor.css" type="text/css" />
 
 
 
@@ -296,7 +297,7 @@ Each of these steps is described in detail below.</p>
 <p><a href="https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf" class="uri">https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf</a></p>
 <p>We could search the network using the option to brows NDEx or simply load the network by its UUID:</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit_upload.png" alt="" />
+<img src="img/NDExEdit/NDExEdit_upload.png" alt="" />
 <p class="caption">NDExEdit: upload networks</p>
 </div>
 <div style="page-break-after: always;"></div>
@@ -304,7 +305,7 @@ Each of these steps is described in detail below.</p>
 In the beginning all nodes are cluttered together, because the network does neither contain a visualization nor a layout applied.
 To achieve the same layout as at the NDEx platform, we can simply apply a circular layout by selecting it from the “Layout graph” option above the graph.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-with-combined-subnetworks-loaded.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-with-combined-subnetworks-loaded.png" alt="" />
 <p class="caption">Blank network with circular layout applied</p>
 </div>
 </div>
@@ -316,14 +317,14 @@ Therefore, some properties are already present, which influence the default visu
 Those default values also apply if attributes used for a mapping are not set for a node or edge (fallback).</p>
 <p>To change the default node label position, we switch to the edit tab and click on the yellow edit button right below the node properties to start editing.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-edit-tab.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-edit-tab.png" alt="" />
 <p class="caption">Edit tab with shown node properties subchapter</p>
 </div>
 <p>There is also a button directly below the nodes chapter to reset all set visual properties to the default values.</p>
 <p>The entry responsible for the label position is the <code>NODE_LABEL_POSITION</code> property.
 Changing the value to <code>C,C,c,0.00,0.00</code> sets the label position with its center (first <code>C</code>) to the center of the node (second <code>C</code>).</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-node-default-properties-edit.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-node-default-properties-edit.png" alt="" />
 <p class="caption">Editing node properties</p>
 </div>
 <div style="page-break-after: always;"></div>
@@ -331,39 +332,39 @@ Changing the value to <code>C,C,c,0.00,0.00</code> sets the label position with 
 The edit mode only can be left with accepting or canceling the edits.
 This applies to any edits of properties or mappings on the page!</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-editing-mode.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-editing-mode.png" alt="" />
 <p class="caption">Accepting or cancling the changes</p>
 </div>
 <p>Next we will create a continuous mapping based on the number of occurrences of the genes across the different patients (<code>Occurrence</code> node attribute).
 At the continuous subchapter we start typing the attribute name and select the occurrence, type for example “width” in the style property input box and select the prompted “NODE_WIDTH”, and click on the green plus to start defining the mapping.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-node-mapping-continuous-create.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-node-mapping-continuous-create.png" alt="" />
 <p class="caption">Create an continuous mapping for node color and size, node label size base on gene occurances</p>
 </div>
 <p>The distribution of the occurrence values along the node ids is shown in the histogram above to simplify selection of appropriate values.
 Since we have 79 patients included, and the node ids start at 1, we define the mapping with these values as limits.
 After saving the mapping, we can explore the defined mapping, e.g. the created color gradient.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-node-mapping-continuous-created.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-node-mapping-continuous-created.png" alt="" />
 <p class="caption">Created continuous mapping for gene occurrences</p>
 </div>
 <div style="page-break-after: always;"></div>
 <p>Also the graph is updated immediately after:</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEDIT-occurrences.png" alt="" />
+<img src="img/NDExEdit/NDExEDIT-occurrences.png" alt="" />
 <p class="caption">Network visualization based on gene occurences across patients</p>
 </div>
 <div style="page-break-after: always;"></div>
 <p>The network now can be exported in different formats, namely PNG, JPEG, or downloaded as CX file.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-export-options.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-export-options.png" alt="" />
 <p class="caption">Export options for the network with included visualization</p>
 </div>
 <div style="page-break-after: always;"></div>
 <p>Additionally, the network can directly uploaded the the NDEx platform when logged in.
 The symbol in the upper right indicates the connection status.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-export-to-NDEx.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-export-to-NDEx.png" alt="" />
 <p class="caption">Export the network directly to the NDEx platform</p>
 </div>
 </div>
@@ -379,20 +380,20 @@ Analogously, we set the default edge color (property <code>EDGE_UNSELECTED_PAINT
 The different levels <code>LOW</code>, <code>NORMAL</code>, and <code>HIGH</code> should be mapped to blue, yellow and red.</p>
 <p>Also we mark the results of the molecular tumor board analysis for this patient by a green border.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-GSM615368-discrete.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-GSM615368-discrete.png" alt="" />
 <p class="caption">Discrete mapping for the gene expression levels and MTB results</p>
 </div>
 <p>Next create the continuous mapping for the node size.
 The mapping is limited by the min. value of 0.000298, and the max. value 0.000922 for relevance scores.
 The values of the relevance scores for this patient are stored in the node attribute <code>GSM615368_Score</code>.</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-GSM615368-continuous.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-GSM615368-continuous.png" alt="" />
 <p class="caption">Continous mapping based on the relevance score of patient GSM615368</p>
 </div>
 <div style="page-break-after: always;"></div>
 <p>The finished network looks as follows:</p>
 <div class="figure">
-<img src="/home/flockowak/Projekte/Workflow/Workflow/img/NDExEdit/NDExEdit-GSM615368-visualization.png" alt="" />
+<img src="img/NDExEdit/NDExEdit-GSM615368-visualization.png" alt="" />
 <p class="caption">Discrete mapping based on the gene expression level of patient GSM615368 on NDExEdit</p>
 </div>
 <div style="height: 50em;">
@@ -425,29 +426,34 @@ Next: <a href="RCXvis.html">RCX based</a>
 ## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
-##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
-##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
-## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2     
+##  [6] usethis_2.1.2       timeSeries_3062.100 timeDate_3043.102   pander_0.6.4        xtable_1.8-4       
+## [11] stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0        igraph_1.2.7       
+## [16] gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
-##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
-## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
-## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
-## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
-## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
-## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
-## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
-## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
-## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1   
+##  [6] BiocManager_1.30.16 highr_0.9           stats4_4.0.3        remotes_2.4.1       yaml_2.2.1         
+## [11] sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2          digest_0.6.28      
+## [16] htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24      
+## [21] purrr_0.3.4         webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1     
+## [26] ellipsis_0.3.2      DT_0.21             withr_2.4.2         cachem_1.0.6        BiocGenerics_0.36.1
+## [31] cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0     
+## [41] graph_1.68.0        prettyunits_1.1.1   tools_4.0.3         formatR_1.11        lifecycle_1.0.1    
+## [46] callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2      tinytex_0.34       
+## [51] rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7       
+## [56] rmarkdown_2.11      testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1       
+## [61] R6_2.5.1            knitr_1.36          fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.2    
+## [66] desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
 ## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
 </div>
 

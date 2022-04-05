@@ -8,7 +8,7 @@ author:
 date: "03/30/2022"
 output: 
   BiocStyle::html_document:
-    css: custom.css
+    css: ["custom.css", "bioconductor.css"]
     self_contained: no
     toc: yes
     toc_float: yes
@@ -63,7 +63,7 @@ https://www.ndexbio.org/viewer/networks/079f4c66-3b77-11ec-b3be-0ac135e8bacf
 
 We could search the network using the option to brows NDEx or simply load the network by its UUID:
 
-![NDExEdit: upload networks](img/NDExEdit/NDExEdit_upload.png)
+![NDExEdit: upload networks](docs/img/NDExEdit/NDExEdit_upload.png)
 
 \newpage
 
@@ -71,7 +71,7 @@ Once the network is available, open the network to edit its visual styles.
 In the beginning all nodes are cluttered together, because the network does neither contain a visualization nor a layout applied.
 To achieve the same layout as at the NDEx platform, we can simply apply a circular layout by selecting it from the "Layout graph" option above the graph.
 
-![Blank network with circular layout applied](img/NDExEdit/NDExEdit-with-combined-subnetworks-loaded.png)
+![Blank network with circular layout applied](docs/img/NDExEdit/NDExEdit-with-combined-subnetworks-loaded.png)
 
 ## Create mappings
 
@@ -82,14 +82,14 @@ Those default values also apply if attributes used for a mapping are not set for
 
 To change the default node label position, we switch to the edit tab and click on the yellow edit button right below the node properties to start editing.
 
-![Edit tab with shown node properties subchapter](img/NDExEdit/NDExEdit-edit-tab.png)
+![Edit tab with shown node properties subchapter](docs/img/NDExEdit/NDExEdit-edit-tab.png)
 
 There is also a button directly below the nodes chapter to reset all set visual properties to the default values.
 
 The entry responsible for the label position is the `NODE_LABEL_POSITION` property.
 Changing the value to `C,C,c,0.00,0.00` sets the label position with its center (first `C`) to the center of the node (second `C`).
 
-![Editing node properties](img/NDExEdit/NDExEdit-node-default-properties-edit.png)
+![Editing node properties](docs/img/NDExEdit/NDExEdit-node-default-properties-edit.png)
 
 \newpage
 
@@ -97,37 +97,37 @@ The yellow symbol next to the node properties subchapter header indicates the pr
 The edit mode only can be left with accepting or canceling the edits.
 This applies to any edits of properties or mappings on the page!
 
-![Accepting or cancling the changes](img/NDExEdit/NDExEdit-editing-mode.png)
+![Accepting or cancling the changes](docs/img/NDExEdit/NDExEdit-editing-mode.png)
 
 Next we will create a continuous mapping based on the number of occurrences of the genes across the different patients (`Occurrence` node attribute).
 At the continuous subchapter we start typing the attribute name and select the occurrence, type for example "width" in the style property input box and select the prompted "NODE_WIDTH", and click on the green plus to start defining the mapping.
 
-![Create an continuous mapping for node color and size, node label size base on gene occurances](img/NDExEdit/NDExEdit-node-mapping-continuous-create.png)
+![Create an continuous mapping for node color and size, node label size base on gene occurances](docs/img/NDExEdit/NDExEdit-node-mapping-continuous-create.png)
 
 The distribution of the occurrence values along the node ids is shown in the histogram above to simplify selection of appropriate values.
 Since we have 79 patients included, and the node ids start at 1, we define the mapping with these values as limits.
 After saving the mapping, we can explore the defined mapping, e.g. the created color gradient.
 
-![Created continuous mapping for gene occurrences](img/NDExEdit/NDExEdit-node-mapping-continuous-created.png)
+![Created continuous mapping for gene occurrences](docs/img/NDExEdit/NDExEdit-node-mapping-continuous-created.png)
 
 \newpage
 
 Also the graph is updated immediately after:
 
-![Network visualization based on gene occurences across patients](img/NDExEdit/NDExEDIT-occurrences.png)
+![Network visualization based on gene occurences across patients](docs/img/NDExEdit/NDExEDIT-occurrences.png)
 
 \newpage
 
 The network now can be exported in different formats, namely PNG, JPEG, or downloaded as CX file.
 
-![Export options for the network with included visualization](img/NDExEdit/NDExEdit-export-options.png)
+![Export options for the network with included visualization](docs/img/NDExEdit/NDExEdit-export-options.png)
 
 \newpage
 
 Additionally, the network can directly uploaded the the NDEx platform when logged in.
 The symbol in the upper right indicates the connection status.
 
-![Export the network directly to the NDEx platform](img/NDExEdit/NDExEdit-export-to-NDEx.png)
+![Export the network directly to the NDEx platform](docs/img/NDExEdit/NDExEdit-export-to-NDEx.png)
 
 # Visualize one patient
 
@@ -143,19 +143,19 @@ The different levels `LOW`, `NORMAL`, and `HIGH` should be mapped to blue, yello
 
 Also we mark the results of the molecular tumor board analysis for this patient by a green border.
 
-![Discrete mapping for the gene expression levels and MTB results](img/NDExEdit/NDExEdit-GSM615368-discrete.png)
+![Discrete mapping for the gene expression levels and MTB results](docs/img/NDExEdit/NDExEdit-GSM615368-discrete.png)
 
 Next create the continuous mapping for the node size.
 The mapping is limited by the min. value of 0.000298, and the max. value 0.000922 for relevance scores.
 The values of the relevance scores for this patient are stored in the node attribute `GSM615368_Score`.
 
-![Continous mapping based on the relevance score of patient GSM615368](img/NDExEdit/NDExEdit-GSM615368-continuous.png)
+![Continous mapping based on the relevance score of patient GSM615368](docs/img/NDExEdit/NDExEdit-GSM615368-continuous.png)
 
 \newpage
 
 The finished network looks as follows:
 
-![Discrete mapping based on the gene expression level of patient GSM615368 on NDExEdit](img/NDExEdit/NDExEdit-GSM615368-visualization.png)
+![Discrete mapping based on the gene expression level of patient GSM615368 on NDExEdit](docs/img/NDExEdit/NDExEdit-GSM615368-visualization.png)
 
 ```{r websiteHTML, eval=HTML, results='asis', echo=FALSE}
 cat('<div style="height: 50em;"><iframe src="https://frankkramer-lab.github.io/MetaRelSubNetVis?uuid=a420aaee-4be9-11ec-b3be-0ac135e8bacf&pa=GSM615368&th=0.00029828155&col=0&size=1&all=true&shared=false&mtb=true&sb=2" allowfullscreen="" allow="autoplay" data-external="1" style="-webkit-transform:scale(0.5);-moz-transform-scale(0.5);-moz-transform-origin: top left; -webkit-transform-origin: top left; -o-transform-origin: top left; -ms-transform-origin: top left; transform-origin: top left;width: 200%;height: 100em;"></iframe></div>')

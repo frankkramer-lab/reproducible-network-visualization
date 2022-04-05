@@ -70,6 +70,7 @@ if (window.hljs) {
 
 <link rel="stylesheet" href="/home/flockowak/R/x86_64-pc-linux-gnu-library/4.0/BiocStyle/resources/html/bioconductor.css" type="text/css" />
 <link rel="stylesheet" href="custom.css" type="text/css" />
+<link rel="stylesheet" href="bioconductor.css" type="text/css" />
 
 
 
@@ -366,13 +367,14 @@ networksEgfr &lt;- ndex_find_networks(ndexcon, &quot;EGFR&quot;)
 networksOfUser &lt;- ndex_find_networks(ndexcon, accountName = &quot;ndextutorials&quot;)</code></pre>
 <p>As result you get a data.frame containing information of the networks.</p>
 <pre class="r"><code>names(networks)</code></pre>
-<pre><code>##  [1] &quot;ownerUUID&quot;        &quot;isReadOnly&quot;       &quot;subnetworkIds&quot;    &quot;isValid&quot;          &quot;warnings&quot;         &quot;isShowcase&quot;       &quot;isCertified&quot;     
-##  [8] &quot;indexLevel&quot;       &quot;hasLayout&quot;        &quot;hasSample&quot;        &quot;cxFileSize&quot;       &quot;cx2FileSize&quot;      &quot;visibility&quot;       &quot;nodeCount&quot;       
-## [15] &quot;edgeCount&quot;        &quot;version&quot;          &quot;completed&quot;        &quot;owner&quot;            &quot;description&quot;      &quot;name&quot;             &quot;properties&quot;      
-## [22] &quot;externalId&quot;       &quot;isDeleted&quot;        &quot;modificationTime&quot; &quot;creationTime&quot;</code></pre>
+<pre><code>##  [1] &quot;ownerUUID&quot;        &quot;isReadOnly&quot;       &quot;subnetworkIds&quot;    &quot;isValid&quot;          &quot;warnings&quot;        
+##  [6] &quot;isShowcase&quot;       &quot;isCertified&quot;      &quot;indexLevel&quot;       &quot;hasLayout&quot;        &quot;hasSample&quot;       
+## [11] &quot;cxFileSize&quot;       &quot;cx2FileSize&quot;      &quot;visibility&quot;       &quot;nodeCount&quot;        &quot;edgeCount&quot;       
+## [16] &quot;version&quot;          &quot;completed&quot;        &quot;owner&quot;            &quot;description&quot;      &quot;name&quot;            
+## [21] &quot;properties&quot;       &quot;externalId&quot;       &quot;isDeleted&quot;        &quot;modificationTime&quot; &quot;creationTime&quot;</code></pre>
 <pre class="r"><code>print(networks[, c(&quot;name&quot;, &quot;externalId&quot;)])</code></pre>
-<div id="htmlwidget-830415bd37d0a91b3aef" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-830415bd37d0a91b3aef">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["San Diego Research Connectivity Map (Top Journals)","San Diego Research Connectivity Map","covid19","painmachine","rasmachine"],["9936b382-b06f-11ec-b3be-0ac135e8bacf","c2751109-b08a-11ec-b3be-0ac135e8bacf","a8c0decc-6bbb-11ea-bfdc-0ac135e8bacf","e1e5963a-eb0e-11e9-bb65-0ac135e8bacf","cdba5bd5-5195-11e9-9f06-0ac135e8bacf"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>externalId<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a50353aa38a9bd75c97b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a50353aa38a9bd75c97b">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["BNFO 286 (SP22) - Hedgehog (Hh) Signaling","covid19","rasmachine","painmachine","brca"],["34f25e05-b468-11ec-b3be-0ac135e8bacf","a8c0decc-6bbb-11ea-bfdc-0ac135e8bacf","cdba5bd5-5195-11e9-9f06-0ac135e8bacf","e1e5963a-eb0e-11e9-bb65-0ac135e8bacf","a16b5ca0-f6a3-11e8-aaa6-0ac135e8bacf"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>externalId<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="simple-network-operations" class="section level1">
 <h1><span class="header-section-number">6</span> Simple network operations</h1>
@@ -398,16 +400,17 @@ networkId &lt;- networksOfUser[1, &quot;externalId&quot;]
 networkSummary &lt;- ndex_network_get_summary(ndexcon, networkId)
 
 names(networkSummary)</code></pre>
-<pre><code>##  [1] &quot;ownerUUID&quot;        &quot;isReadOnly&quot;       &quot;subnetworkIds&quot;    &quot;isValid&quot;          &quot;warnings&quot;         &quot;isShowcase&quot;       &quot;isCertified&quot;     
-##  [8] &quot;indexLevel&quot;       &quot;hasLayout&quot;        &quot;hasSample&quot;        &quot;cxFileSize&quot;       &quot;cx2FileSize&quot;      &quot;visibility&quot;       &quot;nodeCount&quot;       
-## [15] &quot;edgeCount&quot;        &quot;version&quot;          &quot;completed&quot;        &quot;owner&quot;            &quot;description&quot;      &quot;name&quot;             &quot;properties&quot;      
-## [22] &quot;externalId&quot;       &quot;isDeleted&quot;        &quot;modificationTime&quot; &quot;creationTime&quot;</code></pre>
+<pre><code>##  [1] &quot;ownerUUID&quot;        &quot;isReadOnly&quot;       &quot;subnetworkIds&quot;    &quot;isValid&quot;          &quot;warnings&quot;        
+##  [6] &quot;isShowcase&quot;       &quot;isCertified&quot;      &quot;indexLevel&quot;       &quot;hasLayout&quot;        &quot;hasSample&quot;       
+## [11] &quot;cxFileSize&quot;       &quot;cx2FileSize&quot;      &quot;visibility&quot;       &quot;nodeCount&quot;        &quot;edgeCount&quot;       
+## [16] &quot;version&quot;          &quot;completed&quot;        &quot;owner&quot;            &quot;description&quot;      &quot;name&quot;            
+## [21] &quot;properties&quot;       &quot;externalId&quot;       &quot;isDeleted&quot;        &quot;modificationTime&quot; &quot;creationTime&quot;</code></pre>
 <pre class="r"><code>networkSummary[c(&quot;name&quot;, &quot;externalId&quot;)]</code></pre>
 <pre><code>## $name
-## [1] &quot;Metabolism&quot;
+## [1] &quot;BNFO 286 (SP22) - Hedgehog (Hh) Signaling&quot;
 ## 
 ## $externalId
-## [1] &quot;3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb&quot;</code></pre>
+## [1] &quot;34f25e05-b468-11ec-b3be-0ac135e8bacf&quot;</code></pre>
 <pre class="r"><code>## get the entire network as RCX object
 rcx &lt;- ndex_get_network(ndexcon, networkId)</code></pre>
 <p>To send a network to an server, there are two possibilities. Either one
@@ -466,15 +469,15 @@ metadata &lt;- ndex_network_get_metadata(ndexcon, networkId)
 names(metadata)</code></pre>
 <pre><code>## [1] &quot;name&quot;         &quot;elementCount&quot; &quot;version&quot;      &quot;idCounter&quot;</code></pre>
 <pre class="r"><code>print(metadata[c(&quot;name&quot;, &quot;elementCount&quot;)])</code></pre>
-<div id="htmlwidget-3ea483ab3a62cc162e8b" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3ea483ab3a62cc162e8b">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],["nodeAttributes","cyHiddenAttributes","nodes","networkAttributes","cyTableColumn","cartesianLayout","edgeAttributes","edges","cyVisualProperties","citations","edgeCitations"],[6259,3,6376,7,19,6376,56924,56924,3,2916,44129]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>elementCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8e17d1fd1650a968136d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8e17d1fd1650a968136d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["nodeAttributes","cyTableColumn","edges","cyVisualProperties","cyHiddenAttributes","nodes","networkAttributes","cartesianLayout","edgeAttributes"],[35,33,45,3,3,18,8,18,373]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>elementCount<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Afterwards, only the favored aspects can be downloaded individually.</p>
 <pre class="r"><code>## get aspect &#39;nodeCitations&#39; for the network
 networkAttibutes &lt;- ndex_network_get_aspect(ndexcon, networkId, &quot;networkAttributes&quot;)
 
 print(networkAttibutes)</code></pre>
-<div id="htmlwidget-4d4b48bb6a4f71903dc1" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4d4b48bb6a4f71903dc1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["description","version","URI","@context","Source","name","ndex:sourceFormat"],["&lt;b&gt;*** This network is used for tutorial purpose only and will not be updated. ***&lt;/b&gt;","Official","http://identifiers.org/reactome/REACT_111217.4","{\"KEGG GLYCAN\":\"http://identifiers.org/kegg.glycan/\",\"RAT GENOME DATABASE\":\"http://identifiers.org/rgd/\",\"CAZY\":\"http://identifiers.org/cazy/\",\"genbank indentifier\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/genbank_indentifier/\",\"HETEROGEN\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/HETEROGEN/\",\"hprd\":\"http://identifiers.org/hprd/\",\"GENE ONTOLOGY\":\"http://identifiers.org/go/\",\"UniProt Isoform\":\"http://identifiers.org/uniprot.isoform/\",\"sphingomyelin d18\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/sphingomyelin_d18/\",\"mint\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/mint/\",\"biogrid\":\"http://identifiers.org/biogrid/\",\"WIKIPEDIA\":\"http://identifiers.org/wikipedia.en/\",\"HGNC\":\"http://identifiers.org/hgnc/\",\"CHEBI\":\"http://identifiers.org/chebi/\",\"UniProt Knowledgebase\":\"http://identifiers.org/uniprot/\",\"PHARMGKB DRUG\":\"http://identifiers.org/pharmgkb.drug/\",\"Prosite\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/Prosite/\",\"KEGG COMPOUND\":\"http://identifiers.org/kegg.compound/\",\"PDBsum\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/PDBsum/\",\"GENPEPT\":\"http://www.ncbi.nlm.nih.gov/protein/\",\"NCBI GENE\":\"http://identifiers.org/ncbigene/\",\"PUBCHEM-COMPOUND\":\"http://identifiers.org/pubchem.compound/\",\"reactome\":\"http://identifiers.org/reactome/\",\"CHEMICAL NAME\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/CHEMICAL_NAME/\",\"KEGG DRUG\":\"http://identifiers.org/kegg.drug/\",\"ENSEMBL\":\"http://identifiers.org/ensembl/\",\"PROTEIN DATA BANK\":\"http://identifiers.org/pdb/\",\"Pfam\":\"http://identifiers.org/pfam/\",\"HGNC SYMBOL\":\"http://identifiers.org/hgnc.symbol/\",\"amaze\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/amaze/\",\"Smart\":\"http://identifiers.org/smart/\",\"interpro\":\"http://identifiers.org/interpro/\",\"intact\":\"http://identifiers.org/intact/\",\"InChIKey\":\"http://identifiers.org/inchikey/\",\"CAS\":\"http://identifiers.org/cas/\",\"REFSEQ\":\"http://identifiers.org/refseq/\",\"omim\":\"http://identifiers.org/omim/\",\"ENA\":\"http://identifiers.org/ena.embl/\",\"PANTHER Family\":\"http://identifiers.org/panther.family/\",\"nucleotide genbank identifier\":\"http://www.ncbi.nlm.nih.gov/nuccore/\",\"CHEMBL\":\"http://identifiers.org/chembl.compound/\",\"Prints\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/Prints/\",\"vega\":\"http://uri.ndexbio.org/ns/3bd76cf4-c4a1-11e4-bcc4-000c29cb28fb/vega/\",\"DRUGBANK\":\"http://www.drugbank.ca/drugs/\"}","http://purl.org/pc2/6/reactome_human","Metabolism","SIF"]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>n<\/th>\n      <th>v<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b16185881eab16696f2e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b16185881eab16696f2e">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8"],["name","description","version","labels","networkType","organism","rights","@context"],["BNFO 286 (SP22) - Hedgehog (Hh) Signaling","Hedgehog (Hh) signaling is fundamental during embryonic patterning and postnatal physiology. During development embryonic cells require a proper secretion and gradient diffusion of the vertebrate Hedgehog-family ligands, including Sonic, Desert, and Indian Hedgehog target genes.","BNFO 286 - SP22","SIGNOR-Hedgehog",["pathway","Signalling Pathway"],"Human, 9606, H.sapiens","Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)","{\"signor\": \"http://signor.uniroma2.it/relation_result.php?id=\", \"BTO\": \"http://identifiers.org/bto/BTO:\", \"uniprot\": \"http://identifiers.org/uniprot/\", \"pubmed\": \"http://identifiers.org/pubmed/\", \"CID\": \"http://identifiers.org/pubchem.compound/\", \"SID\": \"http://identifiers.org/pubchem.substance/\", \"chebi\": \"http://identifiers.org/chebi/CHEBI:\", \"hgnc.symbol\": \"http://identifiers.org/hgnc.symbol/\"}"],[null,null,null,"list_of_string","list_of_string",null,null,null]],"container":"<div class='horizontal-scroll'><table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>n<\/th>\n      <th>v<\/th>\n      <th>d<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="ndex-network-properties" class="section level1">
 <h1><span class="header-section-number">9</span> NDEx Network properties</h1>
@@ -558,29 +561,34 @@ Next: <a href="RCX.html">RCX</a>
 ## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
-##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2      usethis_2.1.2       timeSeries_3062.100
-##  [8] timeDate_3043.102   pander_0.6.4        xtable_1.8-4        stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0       
-## [15] igraph_1.2.7        gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
+##  [1] XML_3.99-0.8        httr_1.4.2          RJSONIO_1.3-1.6     pacman_0.5.1        devtools_2.4.2     
+##  [6] usethis_2.1.2       timeSeries_3062.100 timeDate_3043.102   pander_0.6.4        xtable_1.8-4       
+## [11] stringr_1.4.0       BiocStyle_2.18.1    RCX_0.99.1          ndexr_1.17.0        igraph_1.2.7       
+## [16] gplots_3.1.1        dplyr_1.0.7         RColorBrewer_1.1-2  survival_3.2-7     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1    BiocManager_1.30.16 highr_0.9          
-##  [8] stats4_4.0.3        remotes_2.4.1       yaml_2.2.1          sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2         
-## [15] digest_0.6.28       htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24       purrr_0.3.4        
-## [22] webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1      ellipsis_0.3.2      DT_0.21             withr_2.4.2        
-## [29] cachem_1.0.6        BiocGenerics_0.36.1 cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
-## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0      graph_1.68.0        prettyunits_1.1.1  
-## [43] tools_4.0.3         formatR_1.11        lifecycle_1.0.1     callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2     
-## [50] tinytex_0.34        rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7        rmarkdown_2.11     
-## [57] testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1        R6_2.5.1            knitr_1.36          fastmap_1.1.0      
-## [64] utf8_1.2.2          rprojroot_2.0.2     desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
+##  [1] pkgload_1.2.3       jsonlite_1.7.2      splines_4.0.3       gtools_3.9.2        assertthat_0.2.1   
+##  [6] BiocManager_1.30.16 highr_0.9           stats4_4.0.3        remotes_2.4.1       yaml_2.2.1         
+## [11] sessioninfo_1.1.1   pillar_1.6.4        lattice_0.20-41     glue_1.4.2          digest_0.6.28      
+## [16] htmltools_0.5.2     Matrix_1.2-18       plyr_1.8.6          pkgconfig_2.0.3     bookdown_0.24      
+## [21] purrr_0.3.4         webshot_0.5.2       processx_3.5.2      tibble_3.1.5        generics_0.1.1     
+## [26] ellipsis_0.3.2      DT_0.21             withr_2.4.2         cachem_1.0.6        BiocGenerics_0.36.1
+## [31] cli_3.0.1           mime_0.12           magrittr_2.0.1      crayon_1.4.1        ps_1.6.0           
+## [36] memoise_2.0.0       evaluate_0.14       fs_1.5.0            fansi_0.5.0         pkgbuild_1.2.0     
+## [41] graph_1.68.0        prettyunits_1.1.1   tools_4.0.3         formatR_1.11        lifecycle_1.0.1    
+## [46] callr_3.7.0         compiler_4.0.3      jquerylib_0.1.4     caTools_1.18.2      tinytex_0.34       
+## [51] rlang_0.4.12        grid_4.0.3          htmlwidgets_1.5.4   crosstalk_1.1.1     bitops_1.0-7       
+## [56] rmarkdown_2.11      testthat_3.1.0      DBI_1.1.1           curl_4.3.2          markdown_1.1       
+## [61] R6_2.5.1            knitr_1.36          fastmap_1.1.0       utf8_1.2.2          rprojroot_2.0.2    
+## [66] desc_1.4.0          KernSmooth_2.23-17  stringi_1.7.5       parallel_4.0.3      Rcpp_1.0.7         
 ## [71] vctrs_0.3.8         tidyselect_1.1.1    xfun_0.27</code></pre>
 </div>
 

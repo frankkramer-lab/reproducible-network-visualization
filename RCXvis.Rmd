@@ -8,7 +8,7 @@ author:
 date: "03/30/2022"
 output: 
   BiocStyle::html_document:
-    css: custom.css
+    css: ["custom.css", "bioconductor.css"]
     self_contained: no
     toc: yes
     toc_float: yes
@@ -136,7 +136,7 @@ writeCX(tmp_net, "tmp/CombinedNetworkTmp.cx")
 network_from_ndexedit = readCX("Combined subnetworks of relevant genes of the HPRD-PPI network.cx")
 visualize(network_from_ndexedit)
 ```
-![](img/RCX/1_network_orig.png)
+![](docs/img/RCX/1_network_orig.png)
 
 ```{r navigation2, eval=HTML, results='asis', echo=FALSE}
 res <- knitr::knit_child(HTML_file, quiet = TRUE)
